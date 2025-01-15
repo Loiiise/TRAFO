@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.IO", "TRAFO.IO\TRAFO.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.Parsing", "TRAFO.Parsing\TRAFO.Parsing.csproj", "{7BC5D2AD-42CB-4A46-9E19-26E184D9CB74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.Parsing.Tests", "Tests\TRAFO.Parsing.Tests\TRAFO.Parsing.Tests.csproj", "{198671CC-F754-43EC-975E-432F34647750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7BC5D2AD-42CB-4A46-9E19-26E184D9CB74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC5D2AD-42CB-4A46-9E19-26E184D9CB74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BC5D2AD-42CB-4A46-9E19-26E184D9CB74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198671CC-F754-43EC-975E-432F34647750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198671CC-F754-43EC-975E-432F34647750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198671CC-F754-43EC-975E-432F34647750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198671CC-F754-43EC-975E-432F34647750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
