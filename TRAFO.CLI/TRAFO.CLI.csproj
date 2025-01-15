@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TRAFO.FileHandling\TRAFO.FileHandling.csproj" />
+    <ProjectReference Include="..\TRAFO.FileHandling\TRAFO.IO.csproj" />
     <ProjectReference Include="..\TRAFO.Transaction\TRAFO.Parsing.csproj" />
   </ItemGroup>
 

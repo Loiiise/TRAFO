@@ -1,6 +1,6 @@
 ﻿using TRAFO.Logic;
 
-namespace TRAFO.FileHandling;
+namespace TRAFO.IO.TransactionWriting;
 
 public interface ITransactionWriter
 {

@@ -1,6 +1,4 @@
-﻿using TRAFO.Logic;
-
-namespace TRAFO.Categorization;
+﻿namespace TRAFO.Logic.Categorization;
 
 public interface ICategorizator
 {

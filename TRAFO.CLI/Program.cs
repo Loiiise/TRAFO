@@ -1,6 +1,7 @@
-﻿using TRAFO.Categorization;
-using TRAFO.FileHandling;
+﻿using TRAFO.IO.TransactionReading;
+using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic;
+using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
 namespace TRAFO.CLI

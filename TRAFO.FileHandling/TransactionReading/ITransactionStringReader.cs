@@ -1,4 +1,4 @@
-﻿namespace TRAFO.FileHandling;
+﻿namespace TRAFO.IO.TransactionReading;
 
 public interface ITransactionStringReader
 {
