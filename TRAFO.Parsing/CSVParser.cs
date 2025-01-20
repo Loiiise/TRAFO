@@ -53,7 +53,7 @@ public abstract class CSVParser : Parser
     }
 
     private IndexOutOfRangeException CSVParserConfigurationIndexOutOfRange(string indexName, int indexValue, int upperLimit)
-        => new IndexOutOfRangeException($"{nameof(_configuration.TimestampIndex)} was out of range. Was {_configuration.TimestampIndex}, but should have been smaller than {upperLimit}.");
+        => new IndexOutOfRangeException($"{nameof(indexName)} was out of range. Was {indexValue}, but should have been smaller than {upperLimit}.");
 
     private readonly CSVParserConfiguration _configuration;
 
