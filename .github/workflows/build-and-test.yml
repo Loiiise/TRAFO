@@ -39,10 +39,6 @@ jobs:
     - name: Build the project
       run: dotnet build /warnaserror
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test 
