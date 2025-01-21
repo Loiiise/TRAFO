@@ -19,10 +19,10 @@ public class CSVParserTests
         result.OtherPartyName.ShouldBe(transaction.OtherPartyName);
         result.Timestamp.ShouldBe(transaction.Timestamp);
         result.RawData.ShouldBe(transaction.RawData);
-        // Category is not set in the parser, so it will always be undefined here
-        result.Category.ShouldBe(Category.Undefined);
+        // Labels are not set in the parser, so the collection will always be empty
+        result.Labels.ShouldBe(Array.Empty<string>());
 
-        parser.Parse(transactionLine).ShouldBe(transaction with { Category = Category.Undefined });
+        parser.Parse(transactionLine).ShouldBe(transaction with { Labels = Array.Empty<string>() });
     }
 
     [Theory, MemberData(nameof(GenerateLegalStringAndTransactionObjects))]
@@ -31,7 +31,8 @@ public class CSVParserTests
         // Default parser, only legal values
         var parser = new MockCSVParser(0, 1, 2, 3);
         Should.NotThrow(() => parser.Parse(transactionLine));
-        parser.Parse(transactionLine).ShouldBe(transaction with { Category = Category.Undefined });
+        // Labels are not set in the parser, so the collection will always be empty
+        parser.Parse(transactionLine).ShouldBe(transaction with { Labels = Array.Empty<string>() });
 
         // Any index out of range should throw
         foreach (var throwingParser in new[]
@@ -144,7 +145,7 @@ public class CSVParserTests
             foreach (var currency in EnumExtensions.GetAllValues<Currency>())
                 foreach (string otherPartyName in new[] { "OTHER PARTY", "John Doe", "Jack Sparrow" })
                     foreach (var timestamp in new[] { new DateTime(2025, 01, 20, 18, 39, 12), new DateTime(2022, 12, 26, 06, 52, 37) })
-                        foreach (var category in EnumExtensions.GetAllValues<Category>())
+                        foreach (var labels in new[] { Array.Empty<string>(), new[] { "label0", "i dont wanna be a label"} })
                             yield return (new Transaction
                             {
                                 Amount = amount,
@@ -152,7 +153,7 @@ public class CSVParserTests
                                 OtherPartyName = otherPartyName,
                                 Timestamp = timestamp,
                                 RawData = GenerateRawDataLine(amount.ToString(), currency.ToString(), otherPartyName, timestamp.ToString()),
-                                Category = category,
+                                Labels = labels,
                             });
     }
 

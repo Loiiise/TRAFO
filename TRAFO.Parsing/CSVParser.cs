@@ -47,7 +47,7 @@ public abstract class CSVParser : Parser
             OtherPartyName = items[_configuration.OtherPartyNameIndex],
             Timestamp = timestamp,
             RawData = line,
-            Category = Category.Undefined,
+            Labels = Array.Empty<string>(),
         };
         return true;
     }
