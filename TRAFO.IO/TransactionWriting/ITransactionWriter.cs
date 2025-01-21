@@ -11,4 +11,3 @@ public interface ITransactionWriter
 public interface ITransactionWriterToFile : ITransactionWriter { }
 public interface ITransactionWriterToDatabase : ITransactionWriter { }
 public interface ITransactionWriterToCommandline : ITransactionWriter { }
-
