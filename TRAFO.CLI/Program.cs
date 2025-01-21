@@ -13,7 +13,7 @@ namespace TRAFO.CLI
         }
 
         public static void DummyFlowFunction(
-            ITransactionStringReader reader, 
+            ITransactionStringReader reader,
             IParser parser,
             ICategorizator categorizator,
             ITransactionWriter writer
