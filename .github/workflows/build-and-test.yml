@@ -42,3 +42,7 @@ jobs:
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test 
+
+    # Ensure code is in correct style
+    - name: Format
+      run: dotnet format --verify-no-changes --verbosity diagnostic
