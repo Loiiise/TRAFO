@@ -1,4 +1,4 @@
-name: Windows build and test
+name: Build and Test
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: windows-latest
+    runs-on: [windows-latest, ubuntu-latest, linux]
 
     env:
       Solution_Name: TRAFO.sln
