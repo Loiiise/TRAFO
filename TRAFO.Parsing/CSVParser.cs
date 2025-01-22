@@ -21,7 +21,7 @@ public abstract class CSVParser : Parser
         if (_configuration.OtherPartyNameIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.OtherPartyNameIndex), _configuration.OtherPartyNameIndex, amountOfItems);
         if (_configuration.TimestampIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.TimestampIndex), _configuration.TimestampIndex, amountOfItems);
 
-        if (!int.TryParse(items[_configuration.AmountIndex], out var amount))
+        if (!long.TryParse(items[_configuration.AmountIndex], out var amount))
         {
             exception = new ArgumentException($"{items[_configuration.AmountIndex]} should be the amount, but was not a number.");
         }

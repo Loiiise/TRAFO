@@ -5,7 +5,7 @@ public sealed record Transaction
     /// <summary>
     /// In cents
     /// </summary>
-    public required int Amount { get; init; }
+    public required long Amount { get; init; }
     public required Currency Currency { get; init; }
     public required string OtherPartyName { get; init; }
     public required DateTime Timestamp { get; init; }

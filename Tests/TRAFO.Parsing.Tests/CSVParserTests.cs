@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using System.Numerics;
 using TRAFO.Logic;
 using TRAFO.Logic.Extensions;
 
@@ -67,7 +68,7 @@ public class CSVParserTests
         }
 
         // If amount is a number outside of the Int32 range, the parser throws
-        foreach (var outOfRangeNumberAmount in new[] { ((long)Int32.MaxValue + 1).ToString(), ((long)Int32.MinValue - 1).ToString(), "-99999999999", "99999999999" })
+        foreach (var outOfRangeNumberAmount in new[] { ((BigInteger)long.MaxValue + 1).ToString(), ((BigInteger)long.MinValue - 1).ToString(), "-99999999999999999999", "99999999999999999999" })
         {
             var rawData = GenerateRawDataLine(outOfRangeNumberAmount, legalCurrency, legalOtherPartyName, legalTimestamp);
             var exception = Should.Throw<ArgumentException>(() => parser.Parse(rawData));
