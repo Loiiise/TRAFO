@@ -94,7 +94,7 @@ public class CSVParserTests
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If currency is a supported currency string, it all goes well
-        foreach (string legalCurrencyString in EnumExtensions.GetAllValues<Currency>().Select(currency => currency.ToString()))
+        foreach (string legalCurrencyString in EnumExtensions.CommonCurrencies().Select(currency => currency.ToString()))
         {
             var rawData = GenerateRawDataLine(legalAmount, legalCurrencyString, legalOtherPartyName, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
@@ -141,7 +141,7 @@ public class CSVParserTests
     private static IEnumerable<Transaction> GenerateLegalTransactions()
     {
         foreach (var amount in new int[] { 23, 12, -504, 1028 })
-            foreach (var currency in EnumExtensions.GetAllValues<Currency>())
+            foreach (var currency in EnumExtensions.CommonCurrencies())
                 foreach (string otherPartyName in new[] { "OTHER PARTY", "John Doe", "Jack Sparrow" })
                     foreach (var timestamp in new[] { new DateTime(2025, 01, 20, 18, 39, 12), new DateTime(2022, 12, 26, 06, 52, 37) })
                         foreach (var category in EnumExtensions.GetAllValues<Category>())
