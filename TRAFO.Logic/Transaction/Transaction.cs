@@ -25,28 +25,28 @@ public sealed record Transaction
 
     public required DateTime Timestamp { get; init; }
 
-    public string Description 
-    { 
+    public string? PaymentReference {  get; init; }
+    public string? BIC {  get; init; }
+
+    public string Description
+    {
         get => _description ?? $"Transaction of {Amount} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier}";
         init => _description = value;
     }
-    
+
     public required string RawData { get; init; }
 
-    public string? PrimairyLabel
-    {
-        get => throw new NotImplementedException();
-        init => throw new NotImplementedException();        
-    }
+    public string? PrimairyLabel { get; init; }
 
-    public required string[] Labels 
-    { 
-        get => throw new NotImplementedException();
-        init => throw new NotImplementedException();
+    public required string[] Labels
+    {
+        get => _labels is null ? Array.Empty<string>() : PrimairyLabel is null ? _labels : _labels.Prepend(PrimairyLabel).ToArray()!;
+        init => _labels = value;
     }
 
     private readonly string? _thisPartyName;
     private readonly string? _otherPartyName;
 
     private readonly string? _description;
+    private readonly string[]? _labels;
 }
