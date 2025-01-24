@@ -147,11 +147,18 @@ public class TransactionTests
         transactionWithMultipleUniqueLabels.Labels.Length.ShouldBe(2);
     }
 
+    [Fact]
+    public void IdentifierTests()
+    {
+        throw new NotImplementedException();
+    }
+
     private Transaction GetEmptyTransaction() => new Transaction
     {
         Amount = 0,
         Currency = Currency.EUR,
-        OtherPartyName = string.Empty,
+        ThisPartyIdentifier = string.Empty,
+        OtherPartyIdentifier = string.Empty,
         Timestamp = new DateTime(1970, 01, 01),
         RawData = string.Empty,
         Description = string.Empty,

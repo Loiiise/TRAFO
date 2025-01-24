@@ -18,7 +18,8 @@ public abstract class CSVParser : Parser
 
         if (_configuration.AmountIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.AmountIndex), _configuration.AmountIndex, amountOfItems);
         if (_configuration.CurrencyIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.CurrencyIndex), _configuration.CurrencyIndex, amountOfItems);
-        if (_configuration.OtherPartyNameIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.OtherPartyNameIndex), _configuration.OtherPartyNameIndex, amountOfItems);
+        if (_configuration.ThisPartyIdentifierIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.ThisPartyIdentifierIndex), _configuration.ThisPartyIdentifierIndex, amountOfItems);
+        if (_configuration.OtherPartyIdentifierIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.OtherPartyIdentifierIndex), _configuration.OtherPartyIdentifierIndex, amountOfItems);
         if (_configuration.TimestampIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.TimestampIndex), _configuration.TimestampIndex, amountOfItems);
 
         if (!long.TryParse(items[_configuration.AmountIndex], out var amount))
@@ -44,7 +45,8 @@ public abstract class CSVParser : Parser
         {
             Amount = amount,
             Currency = currency,
-            OtherPartyName = items[_configuration.OtherPartyNameIndex],
+            ThisPartyIdentifier = items[_configuration.ThisPartyIdentifierIndex],
+            OtherPartyIdentifier = items[_configuration.OtherPartyIdentifierIndex],
             Timestamp = timestamp,
             RawData = line,
             Labels = Array.Empty<string>(),
@@ -61,8 +63,12 @@ public abstract class CSVParser : Parser
     {
         public int AmountIndex { get; init; }
         public int CurrencyIndex { get; init; }
-        public int OtherPartyNameIndex { get; init; }
+        public int ThisPartyIdentifierIndex { get; init; }
+        public int? ThisPartyNameIndex { get; init; }
+        public int OtherPartyIdentifierIndex { get; init; }
+        public int? OtherPartyNameIndex { get; init; }
         public int TimestampIndex { get; init; }
+        public int? DescriptionIndex { get; init; }
         public required string Separator { get; init; }
     }
 }
