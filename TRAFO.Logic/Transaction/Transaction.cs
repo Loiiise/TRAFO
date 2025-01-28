@@ -1,4 +1,4 @@
-﻿namespace TRAFO.Logic;
+namespace TRAFO.Logic;
 
 public sealed record Transaction
 {
@@ -25,8 +25,8 @@ public sealed record Transaction
 
     public required DateTime Timestamp { get; init; }
 
-    public string? PaymentReference {  get; init; }
-    public string? BIC {  get; init; }
+    public string? PaymentReference { get; init; }
+    public string? BIC { get; init; }
 
     public string Description
     {
