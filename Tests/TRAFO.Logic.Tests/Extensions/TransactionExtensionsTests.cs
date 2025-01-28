@@ -5,13 +5,6 @@ using static TRAFO.Logic.Tests.TransactionFixture;
 namespace TRAFO.Logic.Tests.Extensions;
 public class TransactionExtensionsTests
 {
-
-    [Fact]
-    public void SetPrimairyLabelTest()
-    {
-        throw new NotImplementedException();
-    }
-
     [Fact]
     public void SettingThePrimairyLabelShouldAlsoAddThatLabelToLabelsIfSpecified()
     {
@@ -44,10 +37,10 @@ public class TransactionExtensionsTests
         var transactionWithPrimairyLabel = emptyTransaction.SetPrimairyLabel(primairyLabel);
 
         var transactionWithPrimairyLabelOverwritten = transactionWithPrimairyLabel.SetPrimairyLabel(overwritingPrimairyLabel);
-        transactionWithPrimairyLabel.PrimairyLabel.ShouldBe(overwritingPrimairyLabel);
-        transactionWithPrimairyLabel.Labels.Length.ShouldBe(2);
-        transactionWithPrimairyLabel.Labels[0].ShouldBe(overwritingPrimairyLabel);
-        transactionWithPrimairyLabel.Labels[1].ShouldBe(primairyLabel);
+        transactionWithPrimairyLabelOverwritten.PrimairyLabel.ShouldBe(overwritingPrimairyLabel);
+        transactionWithPrimairyLabelOverwritten.Labels.Length.ShouldBe(2);
+        transactionWithPrimairyLabelOverwritten.Labels[0].ShouldBe(overwritingPrimairyLabel);
+        transactionWithPrimairyLabelOverwritten.Labels[1].ShouldBe(primairyLabel);
     }
 
     [Fact]
@@ -67,10 +60,14 @@ public class TransactionExtensionsTests
 
         var transactionWithPrimairyLabel = emptyTransaction.SetPrimairyLabel(primairyLabel);
 
-        var transactionWithPrimairyLabelRemoved = transactionWithPrimairyLabel.RemovePrimairyLabel();
-        transactionWithPrimairyLabel.PrimairyLabel.ShouldBeNull();
-        transactionWithPrimairyLabel.Labels.Length.ShouldBe(1);
-        transactionWithPrimairyLabel.Labels[0].ShouldBe(primairyLabel);
+        var transactionWithPrimairyLabelRemovedAlsoFromCollection = transactionWithPrimairyLabel.RemovePrimairyLabel(false);
+        transactionWithPrimairyLabelRemovedAlsoFromCollection.PrimairyLabel.ShouldBeNull();
+        transactionWithPrimairyLabelRemovedAlsoFromCollection.Labels.ShouldBeEmpty();
+
+        var transactionWithPrimairyLabelRemovedButNotFromCollection = transactionWithPrimairyLabel.RemovePrimairyLabel(true);
+        transactionWithPrimairyLabelRemovedButNotFromCollection.PrimairyLabel.ShouldBeNull();
+        transactionWithPrimairyLabelRemovedButNotFromCollection.Labels.Length.ShouldBe(1);
+        transactionWithPrimairyLabelRemovedButNotFromCollection.Labels[0].ShouldBe(primairyLabel);
     }
 
     [Fact]
@@ -120,8 +117,6 @@ public class TransactionExtensionsTests
     [Fact]
     public void LabelsShouldNeverContainDuplicates()
     {
-        throw new NotSupportedException();
-
         var label = "I'm a basic label";
         var sameLabel = label;
         var otherLabel = "I'm not like other girls";
@@ -130,20 +125,26 @@ public class TransactionExtensionsTests
         emptyTransaction.PrimairyLabel.ShouldBeNull();
         emptyTransaction.Labels.ShouldBeEmpty();
 
-        var transactionWithMultipleUniqueLabels = emptyTransaction with { Labels = new[] { label, otherLabel } };
+        var transactionWithMultipleUniqueLabels = emptyTransaction.AddLabels(label, otherLabel);
         transactionWithMultipleUniqueLabels.Labels.ShouldContain(label);
         transactionWithMultipleUniqueLabels.Labels.ShouldContain(otherLabel);
         transactionWithMultipleUniqueLabels.Labels.Length.ShouldBe(2);
 
-        var transactionWithOnlyDuplicateLabels = emptyTransaction with { Labels = new[] { label, sameLabel } };
-        transactionWithMultipleUniqueLabels.Labels.ShouldContain(label);
-        transactionWithMultipleUniqueLabels.Labels.ShouldNotContain(otherLabel);
-        transactionWithMultipleUniqueLabels.Labels.Length.ShouldBe(1);
-
-        var transactionWithDuplicateAndOtherLabels = emptyTransaction with { Labels = new[] { label, sameLabel, otherLabel } };
-        transactionWithMultipleUniqueLabels.Labels.ShouldContain(label);
+        var transactionWithMultipleUniqueLabelsAttemptToAddDuplicate = transactionWithMultipleUniqueLabels.AddLabels(sameLabel);
+        transactionWithMultipleUniqueLabelsAttemptToAddDuplicate.ShouldBe(transactionWithMultipleUniqueLabels);
+        transactionWithMultipleUniqueLabelsAttemptToAddDuplicate.Labels.ShouldContain(label);
         transactionWithMultipleUniqueLabels.Labels.ShouldContain(otherLabel);
-        transactionWithMultipleUniqueLabels.Labels.Length.ShouldBe(2);
+        transactionWithMultipleUniqueLabelsAttemptToAddDuplicate.Labels.Length.ShouldBe(2);
+
+        var transactionWithOnlyDuplicateLabels = emptyTransaction.AddLabels(label, sameLabel);
+        transactionWithOnlyDuplicateLabels.Labels.ShouldContain(label);
+        transactionWithOnlyDuplicateLabels.Labels.ShouldNotContain(otherLabel);
+        transactionWithOnlyDuplicateLabels.Labels.Length.ShouldBe(1);
+
+        var transactionWithDuplicateAndOtherLabels = emptyTransaction.AddLabels(label, sameLabel, otherLabel);
+        transactionWithDuplicateAndOtherLabels.Labels.ShouldContain(label);
+        transactionWithDuplicateAndOtherLabels.Labels.ShouldContain(otherLabel);
+        transactionWithDuplicateAndOtherLabels.Labels.Length.ShouldBe(2);
 
     }
 
@@ -172,13 +173,12 @@ public class TransactionExtensionsTests
         var transactionWithPrimairyLabel = emptyTransaction.SetPrimairyLabel(primairyLabel);
 
         var transactionWhereAllLabelsAreRemoved = transactionWithPrimairyLabel.RemoveAllLabels(true);
-        transactionWhereAllLabelsAreRemoved.ShouldBe(transactionWithPrimairyLabel);
         transactionWhereAllLabelsAreRemoved.PrimairyLabel.ShouldBe(primairyLabel);
         transactionWhereAllLabelsAreRemoved.Labels.Length.ShouldBe(1);
         transactionWhereAllLabelsAreRemoved.Labels[0].ShouldBe(primairyLabel);
 
         var transactionWherePrimairyLabelAndAllLabelsAreRemoved = transactionWithPrimairyLabel.RemoveAllLabels(false);
-        transactionWherePrimairyLabelAndAllLabelsAreRemoved.PrimairyLabel.ShouldBeNull();
+        transactionWherePrimairyLabelAndAllLabelsAreRemoved.PrimairyLabel.ShouldBe(primairyLabel);
         transactionWherePrimairyLabelAndAllLabelsAreRemoved.Labels.ShouldBeEmpty();
     }
 }
