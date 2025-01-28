@@ -1,4 +1,4 @@
-namespace TRAFO.Logic;
+﻿namespace TRAFO.Logic;
 
 public sealed record Transaction
 {
@@ -37,16 +37,10 @@ public sealed record Transaction
     public required string RawData { get; init; }
 
     public string? PrimairyLabel { get; init; }
-
-    public required string[] Labels
-    {
-        get => _labels is null ? Array.Empty<string>() : PrimairyLabel is null ? _labels : _labels.Prepend(PrimairyLabel).ToArray()!;
-        init => _labels = value;
-    }
+    public required string[] Labels { get; init; }
 
     private readonly string? _thisPartyName;
     private readonly string? _otherPartyName;
 
     private readonly string? _description;
-    private readonly string[]? _labels;
 }
