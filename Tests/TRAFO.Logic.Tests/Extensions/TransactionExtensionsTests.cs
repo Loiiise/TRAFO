@@ -44,12 +44,6 @@ public class TransactionExtensionsTests
     }
 
     [Fact]
-    public void RemovePrimairyLabelTest()
-    {
-        throw new NotImplementedException();
-    }
-
-    [Fact]
     public void SettingPrimairyLabelToNullShouldNotRemoveItFromLabels()
     {
         var primairyLabel = "This is such a superior label";
@@ -71,9 +65,22 @@ public class TransactionExtensionsTests
     }
 
     [Fact]
-    public void AddLabelTest()
+    public void ALotOfUniqueLabelsCanBeAdded()
     {
-        throw new NotImplementedException();
+        var transaction = GetEmptyTransaction();
+        transaction.PrimairyLabel.ShouldBeNull();
+        transaction.Labels.ShouldBeEmpty();
+
+        for (int i = 0; i <= 1_000; i++)
+        {
+            transaction.Labels.Length.ShouldBe(i);
+
+            var label = "This is label #" + i;
+            transaction = transaction.AddLabel(label);
+
+            transaction.Labels.Length.ShouldBe(i + 1);
+            transaction.Labels[i].ShouldBe(label);
+        }
     }
 
     [Fact]
@@ -151,15 +158,74 @@ public class TransactionExtensionsTests
     [Fact]
     public void RemoveLabelTest()
     {
-        throw new NotImplementedException();
+        var label = "This is a label";
+        var otherLabel = "This is another label";
+
+        var transaction = GetEmptyTransaction()
+            .AddLabel(label)
+            .AddLabel(otherLabel);
+
+        transaction.Labels.Length.ShouldBe(2);
+        transaction.Labels.ShouldContain(label);
+        transaction.Labels.ShouldContain(otherLabel);
+
+        transaction = transaction.RemoveLabel(label);
+        transaction.Labels.Length.ShouldBe(1);
+        transaction.Labels.ShouldNotContain(label);
+        transaction.Labels.ShouldContain(otherLabel);
+
+        for (var i = 0; i < 100; i++)
+        {
+            transaction = transaction.RemoveLabel(label);
+            transaction.Labels.Length.ShouldBe(1);
+            transaction.Labels.ShouldNotContain(label);
+            transaction.Labels.ShouldContain(otherLabel);
+        }
+
+        transaction = transaction.RemoveLabel(otherLabel);
+        transaction.Labels.Length.ShouldBe(0);
+        transaction.Labels.ShouldNotContain(label);
+        transaction.Labels.ShouldNotContain(otherLabel);
+
+        for (var i = 0; i < 100; i++)
+        {
+            transaction = transaction.RemoveLabel(label);
+            transaction = transaction.RemoveLabel(otherLabel);
+            transaction.Labels.Length.ShouldBe(0);
+            transaction.Labels.ShouldNotContain(label);
+            transaction.Labels.ShouldNotContain(otherLabel);
+        }
     }
 
     [Fact]
-    public void RemoveAllLabels()
+    public void RemoveAllLabelsShouldRemoveThemAll()
     {
-        throw new NotImplementedException();
-    }
+        var primairyLabel = "This is such a superior label";
+        var basicLabel = "This is a label";
+        var otherLabel = "This is another label";
 
+        var transactionWithLabels = GetEmptyTransaction()
+            .SetPrimairyLabel(primairyLabel)
+            .AddLabel(basicLabel)
+            .AddLabel(otherLabel);
+
+        transactionWithLabels.Labels.Length.ShouldBe(3);
+        transactionWithLabels.Labels.ShouldContain(primairyLabel);
+        transactionWithLabels.Labels.ShouldContain(basicLabel);
+        transactionWithLabels.Labels.ShouldContain(otherLabel);
+
+        var transactionWithOnlyPrimairyLabel = transactionWithLabels.RemoveAllLabels(true);
+        transactionWithOnlyPrimairyLabel.Labels.Length.ShouldBe(1);
+        transactionWithOnlyPrimairyLabel.Labels.ShouldContain(primairyLabel);
+        transactionWithOnlyPrimairyLabel.Labels.ShouldNotContain(basicLabel);
+        transactionWithOnlyPrimairyLabel.Labels.ShouldNotContain(otherLabel);
+
+        var transactionWithoutAnyLabels = transactionWithLabels.RemoveAllLabels(false);
+        transactionWithoutAnyLabels.Labels.Length.ShouldBe(0);
+        transactionWithoutAnyLabels.Labels.ShouldNotContain(primairyLabel);
+        transactionWithoutAnyLabels.Labels.ShouldNotContain(basicLabel);
+        transactionWithoutAnyLabels.Labels.ShouldNotContain(otherLabel);
+    }
 
     [Fact]
     public void PrimairyLabelShouldAlwaysBePresentInLabels()

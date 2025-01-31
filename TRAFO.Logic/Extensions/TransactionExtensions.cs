@@ -38,5 +38,4 @@ public static class TransactionExtensions
         => keepPrimairyLabel && transaction.PrimairyLabel != null
         ? transaction with { Labels = new string[] { transaction.PrimairyLabel } }
         : transaction with { Labels = Array.Empty<string>() };
-
 }

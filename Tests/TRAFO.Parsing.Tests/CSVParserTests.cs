@@ -152,25 +152,6 @@ public class CSVParserTests
         => GenerateLegalTransactions().Select(transaction => new object[] { transaction });
     public static IEnumerable<object[]> GenerateLegalStringAndTransactionObjects()
         => GenerateLegalTransactions().Select(transaction => new object[] { transaction.RawData, transaction });
-    private static IEnumerable<Transaction> GenerateLegalTransactions()
-    {
-        foreach (var amount in new int[] { 23, 12, -504, 1028 })
-            foreach (var currency in EnumExtensions.GetAllValues<Currency>())
-                foreach (string thisPartyIdentifier in new[] { "THIS PARTY", "me", "myself", "I" })
-                    foreach (string otherPartyIdentifier in new[] { "OTHER PARTY", "John Doe", "Jack Sparrow" })
-                        foreach (var timestamp in new[] { new DateTime(2025, 01, 20, 18, 39, 12), new DateTime(2022, 12, 26, 06, 52, 37) })
-                            foreach (var labels in new[] { Array.Empty<string>(), new[] { "label0", "i dont wanna be a label" } })
-                                yield return new Transaction
-                                {
-                                    Amount = amount,
-                                    Currency = currency,
-                                    ThisPartyIdentifier = otherPartyIdentifier,
-                                    OtherPartyIdentifier = otherPartyIdentifier,
-                                    Timestamp = timestamp,
-                                    RawData = GenerateRawDataLine(amount.ToString(), currency.ToString(), otherPartyIdentifier, timestamp.ToString()),
-                                    Labels = labels,
-                                };
-    }
 
     private static string GenerateRawDataLine(string amount, string currency, string otherPartyName, string timestamp, string separator = MockCSVParser.DefaultSeparator)
         => $"{amount}{separator}{currency}{separator}{otherPartyName}{separator}{timestamp}";
