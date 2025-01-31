@@ -30,7 +30,7 @@ public static class TransactionFixture
                                 {
                                     Amount = amount,
                                     Currency = currency,
-                                    ThisPartyIdentifier = otherPartyIdentifier,
+                                    ThisPartyIdentifier = thisPartyIdentifier,
                                     OtherPartyIdentifier = otherPartyIdentifier,
                                     Timestamp = timestamp,
                                     RawData = generateRawDataLine(amount, currency, thisPartyIdentifier, otherPartyIdentifier, timestamp),

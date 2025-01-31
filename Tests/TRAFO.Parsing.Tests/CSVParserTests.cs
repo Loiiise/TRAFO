@@ -32,19 +32,22 @@ public class CSVParserTests
     public void AllIndicesShouldBeInRange(string transactionLine, Transaction transaction)
     {
         // Default parser, only legal values
-        var parser = new MockCSVParser(0, 1, 2, 3);
+        var parser = new MockCSVParser(0, 1, 2, 3, 4);
         Should.NotThrow(() => parser.Parse(transactionLine));
+
         // Labels are not set in the parser, so the collection will always be empty
-        parser.Parse(transactionLine).ShouldBe(transaction with { Labels = Array.Empty<string>() });
+        var parserResult = parser.Parse(transactionLine);
+        parserResult.ShouldBe(transaction with { Labels = Array.Empty<string>() });
 
         // Any index out of range should throw
         foreach (var throwingParser in new[]
             {
-                new MockCSVParser(99, 1, 2, 3),
-                new MockCSVParser(0, 99, 2, 3),
-                new MockCSVParser(0, 1, 99, 3),
-                new MockCSVParser(0, 1, 2, 99),
-                new MockCSVParser(99,99,99,99),
+                new MockCSVParser(99, 1, 2, 3, 4),
+                new MockCSVParser( 0,99, 2, 3, 4),
+                new MockCSVParser( 0, 1,99, 3, 4),
+                new MockCSVParser( 0, 1, 2,99, 4),
+                new MockCSVParser( 0, 1, 2, 3,99),
+                new MockCSVParser(99,99,99,99,99),
             })
         {
             Should.Throw<IndexOutOfRangeException>(() => throwingParser.Parse(transactionLine));

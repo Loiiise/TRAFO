@@ -61,13 +61,15 @@ public abstract class CSVParser : Parser
 
     protected record CSVParserConfiguration
     {
-        public int AmountIndex { get; init; }
-        public int CurrencyIndex { get; init; }
-        public int ThisPartyIdentifierIndex { get; init; }
+        public required int AmountIndex { get; init; }
+        public required int CurrencyIndex { get; init; }
+        public required int ThisPartyIdentifierIndex { get; init; }
         public int? ThisPartyNameIndex { get; init; }
-        public int OtherPartyIdentifierIndex { get; init; }
+        public required int OtherPartyIdentifierIndex { get; init; }
         public int? OtherPartyNameIndex { get; init; }
-        public int TimestampIndex { get; init; }
+        public required int TimestampIndex { get; init; }
+        public int? PaymentReferenceIndex { get; init; }
+        public int? BICIndex { get; init; }
         public int? DescriptionIndex { get; init; }
         public required string Separator { get; init; }
     }
