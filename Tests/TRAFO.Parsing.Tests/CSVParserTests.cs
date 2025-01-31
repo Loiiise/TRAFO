@@ -150,8 +150,38 @@ public class CSVParserTests
         throw new NotImplementedException();
     }
 
+    //[Theory, CombinatorialData]
+    [Theory, MemberData(nameof(GenerateLegalTransactionObjects))]
+
+    public void ParseOptionValuesTests(Transaction transaction)
+    {
+        string description = "blablabla";
+
+        ParseRawDataWithOptionalFieldTestHelper(
+            MockCSVParser.GetBasicCSVParserWithDescriptionIndex(),
+            transaction,
+            description,
+            parseResult => parseResult.Description.ShouldBe(description));
+    }
+
+    private void ParseRawDataWithOptionalFieldTestHelper(MockCSVParser parser, Transaction transaction, string optionalValue, Action<Transaction> checkParseResult)
+    {
+        // Get legal values for all other fields
+        string
+            legalAmount = transaction.Amount.ToString(),
+            legalCurrency = transaction.Currency.ToString(),
+            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalTimestamp = transaction.Timestamp.ToString();
+
+        var rawData = GenerateBasicRawDataLineWithOptionalField(legalAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp, optionalValue);
+
+        var parseResult = parser.Parse(rawData);
+        checkParseResult(parseResult);
+    }
+
     [Fact]
-    public void ParseOptionValuesTests()
+    public void OtherSeparatoriueshtiuesh()
     {
         throw new NotImplementedException();
     }
@@ -166,4 +196,6 @@ public class CSVParserTests
 
     private static string GenerateBasicRawDataLine(string amount, string currency, string thisPartyIdentifier, string otherPartyIdentifier, string timestamp, string separator = MockCSVParser.DefaultSeparator)
         => $"{amount}{separator}{currency}{separator}{thisPartyIdentifier}{separator}{otherPartyIdentifier}{separator}{timestamp}";
+    private static string GenerateBasicRawDataLineWithOptionalField(string amount, string currency, string thisPartyIdentifier, string otherPartyIdentifier, string timestamp, string optionalFieldValue, string separator = MockCSVParser.DefaultSeparator)
+        => GenerateBasicRawDataLine(amount, currency, thisPartyIdentifier, otherPartyIdentifier, timestamp, separator) + $"{separator}{optionalFieldValue}";
 }

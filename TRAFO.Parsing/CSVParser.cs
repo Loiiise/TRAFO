@@ -51,6 +51,13 @@ public abstract class CSVParser : Parser
             RawData = line,
             Labels = Array.Empty<string>(),
         };
+
+        // Description is not nullable, but is optional to set
+        if (_configuration.DescriptionIndex is not null && _configuration.DescriptionIndex < amountOfItems)
+        {
+            transaction = transaction with { Description = items[(int)_configuration.DescriptionIndex] };
+        }
+
         return true;
     }
 
@@ -59,7 +66,7 @@ public abstract class CSVParser : Parser
 
     private readonly CSVParserConfiguration _configuration;
 
-    protected record CSVParserConfiguration
+    protected sealed record CSVParserConfiguration
     {
         public required int AmountIndex { get; init; }
         public required int CurrencyIndex { get; init; }
