@@ -15,10 +15,10 @@ public static class TransactionFixture
         Labels = Array.Empty<string>(),
     };
 
-    public static IEnumerable<Transaction> GenerateLegalTransactionsWithoutRawData()
-        => GenerateLegalTransactions(((_, _, _, _, _) => string.Empty));
+    public static IEnumerable<Transaction> GenerateBasicLegalTransactionsWithoutRawData()
+        => GenerateBasicLegalTransactions(((_, _, _, _, _) => string.Empty));
 
-    public static IEnumerable<Transaction> GenerateLegalTransactions(Func<long, Currency, string, string, DateTime, string> generateRawDataLine)
+    public static IEnumerable<Transaction> GenerateBasicLegalTransactions(Func<long, Currency, string, string, DateTime, string> generateRawDataLine)
     {
         foreach (var amount in new long[] { 23, 12, -504, 1028 })
             foreach (var currency in EnumExtensions.GetAllValues<Currency>())

@@ -44,7 +44,7 @@ public class TransactionTests
     {
         var customDescription = "Not so descriptive";
 
-        foreach (var transaction in GenerateLegalTransactionsWithoutRawData())
+        foreach (var transaction in GenerateBasicLegalTransactionsWithoutRawData())
         {
             transaction.Description.ShouldContain(transaction.Amount.ToString());
             transaction.Description.ShouldContain(transaction.Currency.ToString());

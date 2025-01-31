@@ -2,6 +2,7 @@
 using System.Numerics;
 using TRAFO.Logic;
 using TRAFO.Logic.Extensions;
+using static TRAFO.Logic.Tests.TransactionFixture;
 
 namespace TRAFO.Parsing.Tests;
 
@@ -17,7 +18,8 @@ public class CSVParserTests
         result.ShouldNotBeNull();
         result.Amount.ShouldBe(transaction.Amount);
         result.Currency.ShouldBe(transaction.Currency);
-        result.OtherPartyName.ShouldBe(transaction.OtherPartyName);
+        result.ThisPartyIdentifier.ShouldBe(transaction.ThisPartyIdentifier);
+        result.OtherPartyIdentifier.ShouldBe(transaction.OtherPartyIdentifier);
         result.Timestamp.ShouldBe(transaction.Timestamp);
         result.RawData.ShouldBe(transaction.RawData);
         // Labels are not set in the parser, so the collection will always be empty
@@ -57,20 +59,21 @@ public class CSVParserTests
         // Get legal values for all other fields
         string
             legalCurrency = transaction.Currency.ToString(),
-            legalOtherPartyName = transaction.OtherPartyName,
+            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If amount is a Int32 string, it all goes well
         foreach (var legalNumberAmount in new[] { "1", "69", "987654321", "-123456789", "420", "0", "-45781", Int32.MinValue.ToString(), Int32.MaxValue.ToString() })
         {
-            var rawData = GenerateRawDataLine(legalNumberAmount, legalCurrency, legalOtherPartyName, legalTimestamp);
+            var rawData = GenerateBasicRawDataLine(legalNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
         }
 
         // If amount is a number outside of the Int32 range, the parser throws
         foreach (var outOfRangeNumberAmount in new[] { ((BigInteger)long.MaxValue + 1).ToString(), ((BigInteger)long.MinValue - 1).ToString(), "-99999999999999999999", "99999999999999999999" })
         {
-            var rawData = GenerateRawDataLine(outOfRangeNumberAmount, legalCurrency, legalOtherPartyName, legalTimestamp);
+            var rawData = GenerateBasicRawDataLine(outOfRangeNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             var exception = Should.Throw<ArgumentException>(() => parser.Parse(rawData));
             exception.Message.ShouldContain(outOfRangeNumberAmount.ToString());
         }
@@ -78,7 +81,7 @@ public class CSVParserTests
         // If amount is a not a number at all, the parser throws
         foreach (var notANumberAmount in new[] { "one", "notARealNumber", "John Doe", "throw new ArgumentException()" })
         {
-            var rawData = GenerateRawDataLine(notANumberAmount, legalCurrency, legalOtherPartyName, legalTimestamp);
+            var rawData = GenerateBasicRawDataLine(notANumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             var exception = Should.Throw<ArgumentException>(() => parser.Parse(rawData));
             exception.Message.ShouldContain(notANumberAmount);
         }
@@ -92,20 +95,21 @@ public class CSVParserTests
         // Get legal values for all other fields
         string
             legalAmount = transaction.Amount.ToString(),
-            legalOtherPartyName = transaction.OtherPartyName,
+            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If currency is a supported currency string, it all goes well
         foreach (string legalCurrencyString in EnumExtensions.GetAllValues<Currency>().Select(currency => currency.ToString()))
         {
-            var rawData = GenerateRawDataLine(legalAmount, legalCurrencyString, legalOtherPartyName, legalTimestamp);
+            var rawData = GenerateBasicRawDataLine(legalAmount, legalCurrencyString, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
         }
 
         // If currency is a not a currency at all, the parser throws
         foreach (var notACurrencyString in new[] { "NoCurrency", "No money, no problems", "EURALALALA", "I need a dollar" })
         {
-            var rawData = GenerateRawDataLine(legalAmount, notACurrencyString, legalOtherPartyName, legalTimestamp);
+            var rawData = GenerateBasicRawDataLine(legalAmount, notACurrencyString, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.Throw<ArgumentException>(() => parser.Parse(rawData));
         }
     }
@@ -119,19 +123,20 @@ public class CSVParserTests
         string
             legalAmount = transaction.Amount.ToString(),
             legalCurrency = transaction.Currency.ToString(),
-            legalOtherPartyName = transaction.OtherPartyName;
+            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier;
 
         // If timestamp is a DateTime string, it all goes well
         foreach (var legalDateTimeString in new[] { "2025-01-15T15:15:12", "2024-10-06T10:30:45", "2024-11-12T01:02:03" })
         {
-            var rawData = GenerateRawDataLine(legalAmount, legalCurrency, legalOtherPartyName, legalDateTimeString);
+            var rawData = GenerateBasicRawDataLine(legalAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalDateTimeString);
             Should.NotThrow(() => parser.Parse(rawData));
         }
 
         // If amount is a not a number at all, the parser throws
         foreach (var notADateTimeString in new[] { "new DateTime()", "Also not a date time string", "John Doe", "throw new ArgumentException()" })
         {
-            var rawData = GenerateRawDataLine(legalAmount, legalCurrency, legalOtherPartyName, notADateTimeString);
+            var rawData = GenerateBasicRawDataLine(legalAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, notADateTimeString);
             Should.Throw<ArgumentException>(() => parser.Parse(rawData));
         }
     }
@@ -149,10 +154,13 @@ public class CSVParserTests
     }
 
     public static IEnumerable<object[]> GenerateLegalTransactionObjects()
-        => GenerateLegalTransactions().Select(transaction => new object[] { transaction });
+        => GenerateLegalTransactionsWithCSVRawData().Select(transaction => new object[] { transaction });
     public static IEnumerable<object[]> GenerateLegalStringAndTransactionObjects()
-        => GenerateLegalTransactions().Select(transaction => new object[] { transaction.RawData, transaction });
+        => GenerateLegalTransactionsWithCSVRawData().Select(transaction => new object[] { transaction.RawData, transaction });
 
-    private static string GenerateRawDataLine(string amount, string currency, string otherPartyName, string timestamp, string separator = MockCSVParser.DefaultSeparator)
-        => $"{amount}{separator}{currency}{separator}{otherPartyName}{separator}{timestamp}";
+    private static IEnumerable<Transaction> GenerateLegalTransactionsWithCSVRawData()
+        => GenerateBasicLegalTransactions((amount, currency, thisPartyIdentifier, otherPartyIdentifier, timestamp) => GenerateBasicRawDataLine(amount.ToString(), currency.ToString(), thisPartyIdentifier, otherPartyIdentifier, timestamp.ToString()));
+
+    private static string GenerateBasicRawDataLine(string amount, string currency, string thisPartyIdentifier, string otherPartyIdentifier, string timestamp, string separator = MockCSVParser.DefaultSeparator)
+        => $"{amount}{separator}{currency}{separator}{thisPartyIdentifier}{separator}{otherPartyIdentifier}{separator}{timestamp}";
 }
