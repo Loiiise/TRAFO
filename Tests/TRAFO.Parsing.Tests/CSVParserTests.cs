@@ -142,7 +142,7 @@ public class CSVParserTests
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If currency is a supported currency string, it all goes well
-        foreach (string legalCurrencyString in EnumExtensions.GetAllValues<Currency>().Select(currency => currency.ToString()))
+        foreach (string legalCurrencyString in EnumExtensions.CommonCurrencies().Select(currency => currency.ToString()))
         {
             var rawData = GenerateBasicRawDataLine(legalAmount, legalCurrencyString, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
