@@ -23,6 +23,13 @@ public abstract class CSVParser : Parser
         if (_configuration.OtherPartyIdentifierIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.OtherPartyIdentifierIndex), _configuration.OtherPartyIdentifierIndex, amountOfItems);
         if (_configuration.TimestampIndex >= amountOfItems) exception = CSVParserConfigurationIndexOutOfRange(nameof(_configuration.TimestampIndex), _configuration.TimestampIndex, amountOfItems);
 
+        // Stop if anything went wrong
+        if (exception != null)
+        {
+            transaction = null;
+            return false;
+        }
+
         // Parse mandatory non string fields
         if (!long.TryParse(items[_configuration.AmountIndex], out var amount))
         {

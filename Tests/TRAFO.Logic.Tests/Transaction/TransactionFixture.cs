@@ -15,9 +15,10 @@ public static class TransactionFixture
         Labels = Array.Empty<string>(),
     };
 
-    public static IEnumerable<Transaction> GenerateBasicLegalTransactionsWithoutRawData()
-        => GenerateBasicLegalTransactions(((_) => string.Empty));
+    public static Transaction GenerateOneBasicLegalTransactionWithoutRawData() => GenerateOneBasicLegalTransaction(_ => string.Empty);
+    public static Transaction GenerateOneBasicLegalTransaction(Func<Transaction, string> generateRawData) => GenerateBasicLegalTransactions(generateRawData).First();
 
+    public static IEnumerable<Transaction> GenerateBasicLegalTransactionsWithoutRawData() => GenerateBasicLegalTransactions(_ => string.Empty);
     public static IEnumerable<Transaction> GenerateBasicLegalTransactions(Func<Transaction, string> generateRawData)
     {
         foreach (var amount in new long[] { 23, 12, -504, 1028 })
@@ -44,24 +45,25 @@ public static class TransactionFixture
 
     public static IEnumerable<Transaction> GenerateAllFieldsLegalTransactions(Func<Transaction, string> generateRawData)
     {
-        foreach (var transactionWithMandatoryFields in GenerateBasicLegalTransactionsWithoutRawData().Take(1))
-            foreach (var thisPartyName in ThisPartyNameExamples())
-                foreach (var otherPartyName in OtherPartyNameExamples())
-                    foreach (var paymentReference in PaymentReferenceExamples())
-                        foreach (var bic in BICExamples())
-                            foreach (var description in DescriptionExamples())
-                            {
-                                var transactionWithAllFields = transactionWithMandatoryFields with
-                                {
-                                    ThisPartyName = thisPartyName,
-                                    OtherPartyName = otherPartyName,
-                                    PaymentReference = paymentReference,
-                                    BIC = bic,
-                                    Description = description,
-                                };
+        var transactionWithMandatoryFields = GenerateOneBasicLegalTransactionWithoutRawData();
 
-                                yield return transactionWithAllFields with { RawData = generateRawData(transactionWithAllFields) };
-                            }
+        foreach (var thisPartyName in ThisPartyNameExamples())
+            foreach (var otherPartyName in OtherPartyNameExamples())
+                foreach (var paymentReference in PaymentReferenceExamples())
+                    foreach (var bic in BICExamples())
+                        foreach (var description in DescriptionExamples())
+                        {
+                            var transactionWithAllFields = transactionWithMandatoryFields with
+                            {
+                                ThisPartyName = thisPartyName,
+                                OtherPartyName = otherPartyName,
+                                PaymentReference = paymentReference,
+                                BIC = bic,
+                                Description = description,
+                            };
+
+                            yield return transactionWithAllFields with { RawData = generateRawData(transactionWithAllFields) };
+                        }
     }
 
     public static string[] ThisPartyNameExamples() => new[] { "it is I", "we da party" };
