@@ -150,19 +150,55 @@ public class CSVParserTests
         throw new NotImplementedException();
     }
 
-    //[Theory, CombinatorialData]
-    [Theory, MemberData(nameof(GenerateLegalTransactionObjects))]
+    [Theory, CombinatorialData]
+    public void TransactionWitThisPartyNameCanBeParsed(
+        [CombinatorialMemberData(nameof(GenerateLegalTransactionObjects))] Transaction transaction,
+        [CombinatorialValues("it is I", "we da party")] string thisPartyName)
+        => ParseRawDataWithOptionalFieldTestHelper(
+            MockCSVParser.GetBasicCSVParserWithThisPartyNameIndex(),
+            transaction,
+            thisPartyName,
+            parseResult => parseResult.ThisPartyName.ShouldBe(thisPartyName));
 
-    public void ParseOptionValuesTests(Transaction transaction)
-    {
-        string description = "blablabla";
+    [Theory, CombinatorialData]
+    public void TransactionWithOtherPartyNameCanBeParsed(
+        [CombinatorialMemberData(nameof(GenerateLegalTransactionObjects))] Transaction transaction,
+        [CombinatorialValues("opponents", "the others", "they/them")] string otherPartyName)
+        => ParseRawDataWithOptionalFieldTestHelper(
+            MockCSVParser.GetBasicCSVParserWithOtherPartyNameIndex(),
+            transaction,
+            otherPartyName,
+            parseResult => parseResult.OtherPartyName.ShouldBe(otherPartyName));
 
-        ParseRawDataWithOptionalFieldTestHelper(
+    [Theory, CombinatorialData]
+    public void TransactionWithPaymentReferenceCanBeParsed(
+        [CombinatorialMemberData(nameof(GenerateLegalTransactionObjects))] Transaction transaction,
+        [CombinatorialValues("Invoice 202500000001", "Order 69420")] string paymentReference)
+        => ParseRawDataWithOptionalFieldTestHelper(
+            MockCSVParser.GetBasicCSVParserWithPaymentReferenceIndex(),
+            transaction,
+            paymentReference,
+            parseResult => parseResult.PaymentReference.ShouldBe(paymentReference));
+
+    [Theory, CombinatorialData]
+    public void TransactionWithBICCanBeParsed(
+        [CombinatorialMemberData(nameof(GenerateLegalTransactionObjects))] Transaction transaction,
+        [CombinatorialValues("HBMBNL69", "ABCDCC00111")] string bic)
+        => ParseRawDataWithOptionalFieldTestHelper(
+            MockCSVParser.GetBasicCSVParserWithBICIndex(),
+            transaction,
+            bic,
+            parseResult => parseResult.BIC.ShouldBe(bic));
+
+    [Theory, CombinatorialData]
+    public void TransactionWithDescriptionCanBeParsed(
+        [CombinatorialMemberData(nameof(GenerateLegalTransactionObjects))] Transaction transaction,
+        [CombinatorialValues("blablabla", "I describe", "The Boons and the Banes")] string description)
+        => ParseRawDataWithOptionalFieldTestHelper(
             MockCSVParser.GetBasicCSVParserWithDescriptionIndex(),
             transaction,
             description,
             parseResult => parseResult.Description.ShouldBe(description));
-    }
 
     private void ParseRawDataWithOptionalFieldTestHelper(MockCSVParser parser, Transaction transaction, string optionalValue, Action<Transaction> checkParseResult)
     {

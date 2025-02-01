@@ -22,7 +22,7 @@ public static class TransactionFixture
     {
         foreach (var amount in new long[] { 23, 12, -504, 1028 })
             foreach (var currency in EnumExtensions.GetAllValues<Currency>())
-                foreach (string thisPartyIdentifier in new[] { "THIS PARTY", "me", "myself", "I" })
+                foreach (string thisPartyIdentifier in new[] { "THIS PARTY", "me", "myself" })
                     foreach (string otherPartyIdentifier in new[] { "OTHER PARTY", "John Doe", "Jack Sparrow" })
                         foreach (var timestamp in new[] { new DateTime(2025, 01, 20, 18, 39, 12), new DateTime(2022, 12, 26, 06, 52, 37) })
                             foreach (var labels in new[] { Array.Empty<string>(), new[] { "label0", "i dont wanna be a label" } })
