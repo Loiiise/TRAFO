@@ -10,6 +10,7 @@ namespace TRAFO.CLI
     {
         static void Main(string[] args)
         {
+            var dummyHardcodedParser = new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\"");
         }
 
         public static void DummyFlowFunction(

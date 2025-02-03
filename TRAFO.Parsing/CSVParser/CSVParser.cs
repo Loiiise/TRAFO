@@ -31,7 +31,7 @@ public abstract class CSVParser : Parser
         }
 
         // Parse mandatory non string fields
-        if (!long.TryParse(items[_configuration.AmountIndex], out var amount))
+        if (!TryParseAmount(items[_configuration.AmountIndex], out var amount))
         {
             exception = new ArgumentException($"{items[_configuration.AmountIndex]} should be the amount, but was not a number.");
         }
@@ -88,6 +88,20 @@ public abstract class CSVParser : Parser
 
     private IndexOutOfRangeException CSVParserConfigurationIndexOutOfRange(string indexName, int indexValue, int upperLimit)
         => new IndexOutOfRangeException($"{nameof(indexName)} was out of range. Was {indexValue}, but should have been smaller than {upperLimit}.");
+
+    private bool TryParseAmount(string s, [MaybeNullWhen(false)] out long result)
+    {
+        var isNegative = s.StartsWith('-');
+        var numbersOnly = new String(s.Where(Char.IsDigit).ToArray());
+
+        if (long.TryParse(numbersOnly, out result))
+        {
+            if (isNegative) result *= -1;
+            return true;
+        }
+
+        return false;
+    }
 
     private readonly CSVParserConfiguration _configuration;
 
