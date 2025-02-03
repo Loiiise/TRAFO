@@ -1,6 +1,4 @@
-﻿using TRAFO.Logic.Extensions;
-
-namespace TRAFO.Logic.Tests;
+﻿namespace TRAFO.Logic.Tests;
 public static class TransactionFixture
 {
     public static Transaction GetEmptyTransaction() => new Transaction
@@ -11,7 +9,6 @@ public static class TransactionFixture
         OtherPartyIdentifier = string.Empty,
         Timestamp = new DateTime(1970, 01, 01),
         RawData = string.Empty,
-        Description = string.Empty,
         Labels = Array.Empty<string>(),
     };
 

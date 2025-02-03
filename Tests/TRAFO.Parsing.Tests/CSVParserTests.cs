@@ -328,7 +328,7 @@ public class CSVParserTests
                                     transaction.Timestamp.ToString(),
                                     transaction.PaymentReference!,
                                     transaction.BIC!,
-                                    transaction.Description))
+                                    transaction.Description!))
                 .Select(transaction => new object[] { transaction.RawData, transaction });
 
     private static IEnumerable<Transaction> GenerateLegalTransactionsWithCSVRawData()

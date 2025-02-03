@@ -27,12 +27,7 @@ public sealed record Transaction
 
     public string? PaymentReference { get; init; }
     public string? BIC { get; init; }
-
-    public string Description
-    {
-        get => _description ?? $"Transaction of {Amount} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier}";
-        init => _description = value;
-    }
+    public string? Description { get; init; }
 
     public required string RawData { get; init; }
 
@@ -42,5 +37,5 @@ public sealed record Transaction
     private readonly string? _thisPartyName;
     private readonly string? _otherPartyName;
 
-    private readonly string? _description;
+    public override string ToString() => $"Transaction of {Amount} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier}";
 }
