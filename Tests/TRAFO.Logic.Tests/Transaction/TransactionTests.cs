@@ -40,27 +40,15 @@ public class TransactionTests
     }
 
     [Fact]
-    public void DescriptionContainsAmountCurrenyTimestampAndPartyIdentifierIfNotSet()
+    public void ToStringContainsAmountCurrenyTimestampAndPartyIdentifiers()
     {
-        var customDescription = "Not so descriptive";
-
         foreach (var transaction in GenerateBasicLegalTransactionsWithoutRawData())
         {
-            transaction.Description.ShouldContain(transaction.Amount.ToString());
-            transaction.Description.ShouldContain(transaction.Currency.ToString());
-            transaction.Description.ShouldContain(transaction.ThisPartyIdentifier);
-            transaction.Description.ShouldContain(transaction.OtherPartyIdentifier);
-            transaction.Description.ShouldContain(transaction.Timestamp.ToString());
-
-            var transactionWithCustomDescription = transaction with { Description = customDescription };
-
-            transactionWithCustomDescription.Description.ShouldNotContain(transactionWithCustomDescription.Amount.ToString());
-            transactionWithCustomDescription.Description.ShouldNotContain(transactionWithCustomDescription.Currency.ToString());
-            transactionWithCustomDescription.Description.ShouldNotContain(transactionWithCustomDescription.ThisPartyIdentifier);
-            transactionWithCustomDescription.Description.ShouldNotContain(transactionWithCustomDescription.OtherPartyIdentifier);
-            transactionWithCustomDescription.Description.ShouldNotContain(transactionWithCustomDescription.Timestamp.ToString());
-
-            transactionWithCustomDescription.Description.ShouldBe(customDescription);
+            transaction.ToString().ShouldContain(transaction.Amount.ToString());
+            transaction.ToString().ShouldContain(transaction.Currency.ToString());
+            transaction.ToString().ShouldContain(transaction.ThisPartyIdentifier);
+            transaction.ToString().ShouldContain(transaction.OtherPartyIdentifier);
+            transaction.ToString().ShouldContain(transaction.Timestamp.ToString());
         }
     }
 }

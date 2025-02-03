@@ -37,7 +37,5 @@ public sealed record Transaction
     private readonly string? _thisPartyName;
     private readonly string? _otherPartyName;
 
-    private readonly string? _description;
-
     public override string ToString() => $"Transaction of {Amount} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier}";
 }
