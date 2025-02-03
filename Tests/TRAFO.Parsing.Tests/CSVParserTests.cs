@@ -130,6 +130,34 @@ public class CSVParserTests
     }
 
     [Theory, MemberData(nameof(GenerateLegalTransactions))]
+    public void AmountCanBeParsedRegardlessOfSeperatorSignsAndOtherIlligalCharacters(Transaction transaction)
+    {
+        var parser = new MockCSVParser();
+
+        // Get legal values for all other fields
+        string
+            legalCurrency = transaction.Currency.ToString(),
+            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalTimestamp = transaction.Timestamp.ToString();
+
+        foreach ((string legalNumberAmount, long expectedAmount) in new[]
+            {
+                ("1,00", 100),
+                ("-35,00", -3500),
+                ("12.34", 1234),
+                ("+3483,34", 348334),
+                ("1,0blablablba3", 103),
+            })
+        {
+            var rawData = GenerateBasicRawDataLine(legalNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
+            
+            var parseResult = parser.Parse(rawData);
+            parseResult.Amount.ShouldBe(expectedAmount);
+        }
+    }
+
+    [Theory, MemberData(nameof(GenerateLegalTransactions))]
     public void CurrencyShouldAlwaysBeACurrency(Transaction transaction)
     {
         var parser = new MockCSVParser();
