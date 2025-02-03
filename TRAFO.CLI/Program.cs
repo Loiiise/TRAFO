@@ -11,6 +11,9 @@ namespace TRAFO.CLI
         static void Main(string[] args)
         {
             var dummyHardcodedParser = new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\"");
+
+            var fileReader = new FileReader();
+            var transactionStrings = fileReader.ReadAllLines("C:\\tmp\\transactionsDummy.csv", true).ToArray();
         }
 
         public static void DummyFlowFunction(
@@ -20,7 +23,7 @@ namespace TRAFO.CLI
             ITransactionWriter writer
             )
         {
-            var stringLines = reader.ReadAllLines();
+            var stringLines = reader.ReadAllLines(string.Empty);
 
             var transactions = parser.Parse(stringLines);
 
