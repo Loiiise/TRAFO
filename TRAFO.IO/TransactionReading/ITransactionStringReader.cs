@@ -2,8 +2,8 @@
 
 public interface ITransactionStringReader
 {
-    public string ReadLine();
-    public IEnumerable<string> ReadAllLines();
+    public string ReadNextLine(string source);
+    public IEnumerable<string> ReadAllLines(string source);
 }
 
 public interface ITransactionStringReaderFromFile : ITransactionStringReader { }
