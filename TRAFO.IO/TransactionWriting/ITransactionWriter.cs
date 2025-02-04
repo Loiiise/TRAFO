@@ -8,6 +8,8 @@ public interface ITransactionWriter
     public void WriteTransactions(IEnumerable<Transaction> transactions);
 }
 
-public interface ITransactionWriterToFile : ITransactionWriter { }
-public interface ITransactionWriterToDatabase : ITransactionWriter { }
-public interface ITransactionWriterToCommandline : ITransactionWriter { }
+public interface ITransactionLabelUpdater
+{
+    public void UpdatePrimairyLabel(Transaction transaction);
+    public void UpdateLabels(Transaction transaction);
+}

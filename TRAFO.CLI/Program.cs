@@ -1,4 +1,5 @@
-﻿using TRAFO.IO.TransactionReading;
+﻿using TRAFO.IO.Database;
+using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
@@ -14,6 +15,16 @@ namespace TRAFO.CLI
 
             var fileReader = new FileReader();
             var transactionStrings = fileReader.ReadAllLines("C:\\tmp\\transactionsDummy.csv", true).ToArray();
+
+            var transaction = dummyHardcodedParser.Parse(transactionStrings.First());
+
+            IDatabase database = new EntityFrameworkDatabase();
+            database.WriteTransaction(transaction);
+            var savedTransactions = database.ReadAllTransactions();
+
+            database.UpdatePrimairyLabel(transaction with { PrimairyLabel = "THIS IS ANOTHER LABEL" });
+
+            savedTransactions = database.ReadAllTransactions();
         }
 
         public static void DummyFlowFunction(
