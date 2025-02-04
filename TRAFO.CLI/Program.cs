@@ -20,8 +20,11 @@ namespace TRAFO.CLI
 
             IDatabase database = new EntityFrameworkDatabase();
             database.WriteTransaction(transaction);
-
             var savedTransactions = database.ReadAllTransactions();
+
+            database.UpdatePrimairyLabel(transaction with { PrimairyLabel = "THIS IS ANOTHER LABEL" });
+
+            savedTransactions = database.ReadAllTransactions();
         }
 
         public static void DummyFlowFunction(
