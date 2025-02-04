@@ -66,7 +66,7 @@ public class EntityFrameworkDatabase : IDatabase
             Timestamp = transaction.Timestamp,
             PaymentReference = transaction.PaymentReference ?? string.Empty,
             BIC = transaction.BIC ?? string.Empty,
-            Description = transaction.Description,
+            Description = transaction.Description ?? string.Empty,
             RawData = transaction.RawData,
             PrimairyLabel = transaction.PrimairyLabel ?? string.Empty,
         };
@@ -85,7 +85,7 @@ public class EntityFrameworkDatabase : IDatabase
             Timestamp = transaction.Timestamp,
             PaymentReference = NullIfEmptyString(transaction.PaymentReference),
             BIC = NullIfEmptyString(transaction.BIC),
-            Description = transaction.Description,
+            Description = NullIfEmptyString(transaction.Description),
             RawData = transaction.RawData,
             PrimairyLabel = NullIfEmptyString(transaction.PrimairyLabel),
             Labels = Array.Empty<string>(),
