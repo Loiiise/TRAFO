@@ -1,4 +1,5 @@
-﻿namespace TRAFO.CLI;
+﻿namespace TRAFO.IO.Command;
+
 internal interface ICommandFactory
 {
     ICommand FromString(string input);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TRAFO.IO.Command;
 
 namespace TRAFO.CLI;
 internal class UserCommandHandler : BackgroundService

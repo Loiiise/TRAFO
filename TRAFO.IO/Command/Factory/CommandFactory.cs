@@ -1,4 +1,4 @@
-﻿namespace TRAFO.CLI;
+﻿namespace TRAFO.IO.Command;
 
 internal class CommandFactory : ICommandFactory
 {
