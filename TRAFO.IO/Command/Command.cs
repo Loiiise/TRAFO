@@ -4,8 +4,12 @@ namespace TRAFO.IO.Command;
 
 public abstract class Command : ICommand
 {
-    public abstract string Name { get; }
-    public abstract string[] Arguments { get; init; }
+    public string[] Arguments { get; init; }
+
+    protected Command(string[] arguments)
+    {
+        Arguments = arguments;
+    }
 
     public bool Validate([MaybeNullWhen(true), NotNullWhen(false)]out Exception exception)
     {

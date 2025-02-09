@@ -17,11 +17,18 @@ internal class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-        builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
-        builder.Services.AddSingleton<IBasicUserInputHandler, ConsoleUserInputHandler>();
-        builder.Services.AddSingleton<IUserCommunicationHandler>(services =>
+        builder.Services.AddSingleton<IUserCommunicationHandler, ConsoleUserInputHandler>();
+        builder.Services.AddSingleton<IBasicUserInputHandler>(services =>
         {
-            if (services.GetService<IBasicUserInputHandler>() is IUserCommunicationHandler userCommunicationHandler)
+            if (services.GetService<IUserCommunicationHandler>() is IBasicUserInputHandler userCommunicationHandler)
+            {
+                return userCommunicationHandler;
+            }
+            throw new NotImplementedException();
+        });
+        builder.Services.AddSingleton<IBasicUserOutputHandler>(services =>
+        {
+            if (services.GetService<IUserCommunicationHandler>() is IBasicUserOutputHandler userCommunicationHandler)
             {
                 return userCommunicationHandler;
             }
@@ -31,6 +38,7 @@ internal class Program
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
         builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
 
+        builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
         builder.Services.AddHostedService(services => new UserCommandHandler(
             services.GetService<ICommandFactory>()!,
             services.GetService<IBasicUserInputHandler>()!,

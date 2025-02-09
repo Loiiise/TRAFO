@@ -1,6 +1,8 @@
-﻿namespace TRAFO.CLI;
+﻿using TRAFO.IO.Command;
 
-internal class ConsoleUserInputHandler : IBasicUserInputHandler, IUserCommunicationHandler
+namespace TRAFO.CLI;
+
+internal class ConsoleUserInputHandler : IBasicUserInputHandler, IBasicUserOutputHandler, IUserCommunicationHandler
 {
     public int GetNumericUserInput(string prompt)
     {
@@ -33,6 +35,8 @@ internal class ConsoleUserInputHandler : IBasicUserInputHandler, IUserCommunicat
         return GetLine();
     }
 
+    public void GiveUserOutput(string output) => ShowLine(output);
+
     public void TerminateTask(string message)
     {
         ShowLine("TASK FAILED");
@@ -49,6 +53,7 @@ internal class ConsoleUserInputHandler : IBasicUserInputHandler, IUserCommunicat
         Console.Write($"{(_promptStack.Any() ? _promptStack.Peek() : string.Empty)}>");
         return Console.ReadLine() ?? string.Empty;
     }
+
 
     private Stack<string> _promptStack = new();
 }

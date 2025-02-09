@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using TRAFO.IO.Command;
 
 namespace TRAFO.CLI;
@@ -41,7 +40,7 @@ internal class UserCommandHandler : BackgroundService
 
     private void ExecuteUserCommand(ICommand command)
     {
-        _userCommunicationHandler.PromptScopeUp(command.Name);
+        _userCommunicationHandler.PromptScopeUp(nameof(command));
 
         if (!command.Validate(out var validationException))
         {

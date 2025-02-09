@@ -1,6 +1,6 @@
-﻿namespace TRAFO.CLI;
+﻿namespace TRAFO.IO.Command;
 
-internal interface IBasicUserInputHandler
+public interface IBasicUserInputHandler
 {
     string GetUserInput(string prompt);
     int GetNumericUserInput(string prompt);
