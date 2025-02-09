@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TRAFO.IO.Command;
 using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
@@ -16,7 +17,6 @@ internal class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-        builder.Services.AddHostedService<UserCommandHandler>();
         builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
         builder.Services.AddSingleton<IBasicUserInputHandler, ConsoleUserInputHandler>();
         builder.Services.AddSingleton<IUserCommunicationHandler>(services =>
@@ -30,6 +30,13 @@ internal class Program
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
         builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
+
+        builder.Services.AddHostedService(services => new UserCommandHandler(
+            services.GetService<ILogger<UserCommandHandler>>()!,
+            services.GetService<ICommandFactory>()!,
+            services.GetService<IUserCommunicationHandler>()!,
+            args
+            ));
 
         using IHost host = builder.Build();
 

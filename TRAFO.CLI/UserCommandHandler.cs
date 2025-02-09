@@ -5,8 +5,13 @@ using TRAFO.IO.Command;
 namespace TRAFO.CLI;
 internal class UserCommandHandler : BackgroundService
 {
-    public UserCommandHandler(ILogger<UserCommandHandler> logger, ICommandFactory commandFactory, IUserCommunicationHandler userCommunicationHandler)
+    public UserCommandHandler(
+        ILogger<UserCommandHandler> logger, 
+        ICommandFactory commandFactory, 
+        IUserCommunicationHandler userCommunicationHandler,
+        string[] initialArguments)
     {
+        _initialArguments = initialArguments;
         _logger = logger;
         _commandFactory = commandFactory;
         _userCommunicationHandler = userCommunicationHandler;
@@ -46,6 +51,8 @@ internal class UserCommandHandler : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _logger.LogInformation($"Handler started with initial arguments: {string.Join(' ', _initialArguments)}");
+
         while (!stoppingToken.IsCancellationRequested)
         {
             _logger.LogInformation("Worker command handler running at: {time}", DateTimeOffset.Now);
@@ -55,6 +62,7 @@ internal class UserCommandHandler : BackgroundService
         }
     }
 
+    private readonly string[] _initialArguments;
     private readonly ILogger<UserCommandHandler> _logger;
     private readonly ICommandFactory _commandFactory;
     private readonly IUserCommunicationHandler _userCommunicationHandler;
