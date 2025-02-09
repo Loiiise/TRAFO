@@ -23,12 +23,12 @@ internal class UserCommandHandler : BackgroundService
         () => (_commandFactory.TryFromArguments(arguments, out var command), command),
         string.Join(' ', arguments));
 
-    private void ExecuteUserCommand(Func<(bool, ICommand)> tryGetCommand, string stringfiedRawObject)
+    private void ExecuteUserCommand(Func<(bool, ICommand?)> tryGetCommand, string stringfiedRawObject)
     {
         _userCommunicationHandler.PromptScopeUp("CommandGenerating");
 
         (var commandReceived, var command) = tryGetCommand();
-        if (commandReceived)
+        if (commandReceived && command is not null)
         {
             _userCommunicationHandler.PromptScopeDown();
             ExecuteUserCommand(command);

@@ -4,8 +4,6 @@ namespace TRAFO.IO.Command;
 
 public class CommandFactory : ICommandFactory
 {
-    private readonly IBasicUserOutputHandler _userOutputHandler;
-
     public CommandFactory(IBasicUserOutputHandler userOutputHandler)
     {
         _userOutputHandler = userOutputHandler;
@@ -21,12 +19,12 @@ public class CommandFactory : ICommandFactory
     public ICommand FromCommandNameAndArguments(string commandName, string[] arguments)
         => FromArguments(arguments.Prepend(commandName).ToArray());
 
-    public bool TryFromString(string input, out ICommand command) => TryFromArguments(input.Split(' ').ToArray(), out command);
+    public bool TryFromString(string input, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command) => TryFromArguments(input.Split(' ').ToArray(), out command);
 
-    public bool TryFromArguments(string[] arguments, out ICommand command)
+    public bool TryFromArguments(string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
         => FromArgumentsSafe(arguments, out command, out var _);
 
-    public bool TryFromCommandNameAndArguments(string commandName, string[] arguments, out ICommand command)
+    public bool TryFromCommandNameAndArguments(string commandName, string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
         => TryFromArguments(arguments.Prepend(commandName).ToArray(), out command);
 
     protected bool FromArgumentsSafe(string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
@@ -38,32 +36,18 @@ public class CommandFactory : ICommandFactory
             return false;
         }
 
-        command = GetCommand(arguments[0]);
+        var commandName = CommandMetaData.GetNameFromTag(arguments[0]);
+
+        command = GetCommand(commandName, arguments.Skip(1).ToArray());
         exception = null;
         return true;
     }
 
-    private ICommand GetCommand(string commandName) => commandName switch
+    private ICommand GetCommand(string commandName, string[] args) => commandName switch
     {
-        nameof(HelpCommand) => new HelpCommand(_userOutputHandler, this),
+        nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
         _ => throw new NotImplementedException(),
     };
 
-    public IEnumerable<string> AllCommandNames()
-    {
-        throw new NotImplementedException();
-    }
-
-
-    public string GetTag(ICommand command) => GetTag(nameof(command));
-    public string GetTag(string commandName)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetDescription(ICommand command) => GetDescription(nameof(command));
-    public string GetDescription(string commandName)
-    {
-        throw new NotImplementedException();
-    }
+    private readonly IBasicUserOutputHandler _userOutputHandler;
 }
