@@ -16,8 +16,8 @@ internal class Program
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
         builder.Services.AddHostedService<UserCommandHandler>();
-        builder.Services.AddSingleton<ICommandFactory, NotImplementedCommandFactory>();
-        builder.Services.AddSingleton<ICLIUserInputHandler, NotImplementedCLIUserInputHandler>();
+        builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
+        builder.Services.AddSingleton<ICLIUserInputHandler, ConsoleUserInputHandler>();
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
         builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
