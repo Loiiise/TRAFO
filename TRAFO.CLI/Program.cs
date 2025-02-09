@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TRAFO.IO.Command;
 using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -17,7 +18,15 @@ internal class Program
 
         builder.Services.AddHostedService<UserCommandHandler>();
         builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
-        builder.Services.AddSingleton<ICLIUserInputHandler, ConsoleUserInputHandler>();
+        builder.Services.AddSingleton<IBasicUserInputHandler, ConsoleUserInputHandler>();
+        builder.Services.AddSingleton<IUserCommunicationHandler>(services =>
+        {
+            if (services.GetService<IBasicUserInputHandler>() is IUserCommunicationHandler userCommunicationHandler)
+            {
+                return userCommunicationHandler;
+            }
+            throw new NotImplementedException();
+        });
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
         builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();

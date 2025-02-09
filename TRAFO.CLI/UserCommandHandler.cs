@@ -5,33 +5,43 @@ using TRAFO.IO.Command;
 namespace TRAFO.CLI;
 internal class UserCommandHandler : BackgroundService
 {
-    public UserCommandHandler(ILogger<UserCommandHandler> logger, ICommandFactory commandFactory, ICLIUserInputHandler userInputHandler)
+    public UserCommandHandler(ILogger<UserCommandHandler> logger, ICommandFactory commandFactory, IUserCommunicationHandler userCommunicationHandler)
     {
         _logger = logger;
         _commandFactory = commandFactory;
-        _userInputHandler = userInputHandler;
+        _userCommunicationHandler = userCommunicationHandler;
     }
 
     public void ExecuteUserCommand(string[] arguments)
     {
+        _userCommunicationHandler.PromptScopeUp("CommandGenerating");
+
         if (_commandFactory.TryFromArguments(arguments, out var command))
         {
+            _userCommunicationHandler.PromptScopeDown();
             ExecuteUserCommand(command);
             return;
         }
 
-        _userInputHandler.TerminateTask($"Failed to parse \"{string.Join(' ', arguments)}\"");
+        _userCommunicationHandler.TerminateTask($"Failed to parse \"{string.Join(' ', arguments)}\"");
     }
 
     public void ExecuteUserCommand(ICommand command)
     {
-        _userInputHandler.PromptScopeUp(command.Name);
+        _userCommunicationHandler.PromptScopeUp(command.Name);
 
-        if (command.Validate() &&
-            command.Execute())
+        if (!command.Validate(out var validationException))
         {
-            _userInputHandler.PromptScopeDown();
+            _userCommunicationHandler.TerminateTask($"Command validation failed: {validationException.Message}");
+            return;
         }
+
+        if (!command.TryExecute(out var executionException))
+        {
+            _userCommunicationHandler.TerminateTask($"Command execution failed: {executionException.Message}");
+        }
+
+        _userCommunicationHandler.PromptScopeDown();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -47,5 +57,5 @@ internal class UserCommandHandler : BackgroundService
 
     private readonly ILogger<UserCommandHandler> _logger;
     private readonly ICommandFactory _commandFactory;
-    private readonly ICLIUserInputHandler _userInputHandler;
+    private readonly IUserCommunicationHandler _userCommunicationHandler;
 }

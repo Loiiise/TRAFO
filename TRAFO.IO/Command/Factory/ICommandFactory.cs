@@ -1,10 +1,12 @@
 ﻿namespace TRAFO.IO.Command;
 
-internal interface ICommandFactory
+public interface ICommandFactory
 {
     ICommand FromString(string input);
     ICommand FromArguments(string[] arguments);
+    ICommand FromCommandNameAndArguments(string commandName, string[] arguments);
 
-    bool TryFromsString(string input, out ICommand command);
+    bool TryFromString(string input, out ICommand command);
     bool TryFromArguments(string[] arguments, out ICommand command);
+    bool TryFromCommandNameAndArguments(string commandName, string[] arguments, out ICommand command);
 }

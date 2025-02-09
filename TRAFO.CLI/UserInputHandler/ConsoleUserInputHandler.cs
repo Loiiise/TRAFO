@@ -1,6 +1,6 @@
 ﻿namespace TRAFO.CLI;
 
-internal class ConsoleUserInputHandler : ICLIUserInputHandler
+internal class ConsoleUserInputHandler : IBasicUserInputHandler, IUserCommunicationHandler
 {
     public int GetNumericUserInput(string prompt)
     {
