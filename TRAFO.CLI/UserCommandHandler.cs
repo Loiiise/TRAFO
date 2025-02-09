@@ -4,16 +4,16 @@ using Microsoft.Extensions.Logging;
 namespace TRAFO.CLI;
 internal class UserCommandHandler : BackgroundService
 {
-    public UserCommandHandler(ILogger<UserCommandHandler> logger, ICommandFactory commandParser, ICLIUserInputHandler userInputHandler)
+    public UserCommandHandler(ILogger<UserCommandHandler> logger, ICommandFactory commandFactory, ICLIUserInputHandler userInputHandler)
     {
         _logger = logger;
-        _commandParser = commandParser;
+        _commandFactory = commandFactory;
         _userInputHandler = userInputHandler;
     }
 
     public void ExecuteUserCommand(string[] arguments)
     {
-        if (_commandParser.TryParse(arguments, out var command))
+        if (_commandFactory.TryFromArguments(arguments, out var command))
         {
             ExecuteUserCommand(command);
             return;
@@ -45,6 +45,6 @@ internal class UserCommandHandler : BackgroundService
     }
 
     private readonly ILogger<UserCommandHandler> _logger;
-    private readonly ICommandFactory _commandParser;
+    private readonly ICommandFactory _commandFactory;
     private readonly ICLIUserInputHandler _userInputHandler;
 }
