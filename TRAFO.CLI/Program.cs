@@ -32,8 +32,8 @@ internal class Program
         builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
 
         builder.Services.AddHostedService(services => new UserCommandHandler(
-            services.GetService<ILogger<UserCommandHandler>>()!,
             services.GetService<ICommandFactory>()!,
+            services.GetService<IBasicUserInputHandler>()!,
             services.GetService<IUserCommunicationHandler>()!,
             args
             ));

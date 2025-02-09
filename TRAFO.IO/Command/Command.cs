@@ -2,7 +2,7 @@
 
 namespace TRAFO.IO.Command;
 
-internal abstract class Command : ICommand
+public abstract class Command : ICommand
 {
     public abstract string Name { get; }
     public abstract string[] Arguments { get; init; }
