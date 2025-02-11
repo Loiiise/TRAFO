@@ -11,7 +11,7 @@ public abstract class Command : ICommand
         Arguments = arguments;
     }
 
-    public bool Validate([MaybeNullWhen(true), NotNullWhen(false)]out Exception exception)
+    public bool Validate([MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
     {
         if (Arguments.Length != _expectedAmountOfArguments)
         {
@@ -32,7 +32,7 @@ public abstract class Command : ICommand
         exception = null;
         return true;
     }
-    internal abstract void ValidateInternally();
+    protected abstract void ValidateInternally();
 
     public abstract void Execute();
     public bool TryExecute([MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
@@ -43,13 +43,13 @@ public abstract class Command : ICommand
         }
         catch (Exception internalException)
         {
-            exception= internalException;
+            exception = internalException;
             return false;
         }
 
-        exception= null;
+        exception = null;
         return true;
     }
 
-    internal abstract int _expectedAmountOfArguments { get; }
+    protected abstract int _expectedAmountOfArguments { get; }
 }

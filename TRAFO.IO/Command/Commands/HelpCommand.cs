@@ -1,6 +1,4 @@
-﻿using TRAFO.IO.Command.Commands;
-
-namespace TRAFO.IO.Command;
+﻿namespace TRAFO.IO.Command;
 
 public class HelpCommand : NoArgumentCommand
 {
@@ -12,7 +10,7 @@ public class HelpCommand : NoArgumentCommand
     public override void Execute()
     {
         _userOutputHandler.GiveUserOutput("This is TRAFO helper. Below you'll find a list of commands along with their desciption:");
-        
+
         foreach ((var commandTag, var commandDescription) in CommandMetaData.AllCommandTagsAndDescriptions())
         {
             _userOutputHandler.GiveUserOutput($"{commandTag}: {commandDescription}");

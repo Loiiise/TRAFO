@@ -1,9 +1,9 @@
-﻿namespace TRAFO.IO.Command.Commands;
+﻿namespace TRAFO.IO.Command;
 
 public abstract class NoArgumentCommand : Command
 {
     protected NoArgumentCommand() : base(Array.Empty<string>()) { }
 
-    internal override sealed int _expectedAmountOfArguments => 0;
-    internal override sealed void ValidateInternally() { }
+    protected override sealed int _expectedAmountOfArguments => 0;
+    protected override sealed void ValidateInternally() { }
 }
