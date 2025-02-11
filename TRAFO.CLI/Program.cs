@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using TRAFO.IO.Command;
 using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
