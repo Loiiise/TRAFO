@@ -1,46 +1,70 @@
-﻿using TRAFO.IO.Database;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using TRAFO.IO.Command;
+using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
-namespace TRAFO.CLI
+namespace TRAFO.CLI;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+
+        builder.Services.AddSingleton<IUserCommunicationHandler, ConsoleUserInputHandler>();
+        builder.Services.AddSingleton<IBasicUserInputHandler>(services =>
         {
-            var dummyHardcodedParser = new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\"");
-
-            var fileReader = new FileReader();
-            var transactionStrings = fileReader.ReadAllLines("C:\\tmp\\transactionsDummy.csv", true).ToArray();
-
-            var transaction = dummyHardcodedParser.Parse(transactionStrings.First());
-
-            IDatabase database = new EntityFrameworkDatabase();
-            database.WriteTransaction(transaction);
-            var savedTransactions = database.ReadAllTransactions();
-
-            database.UpdatePrimairyLabel(transaction with { PrimairyLabel = "THIS IS ANOTHER LABEL" });
-
-            savedTransactions = database.ReadAllTransactions();
-        }
-
-        public static void DummyFlowFunction(
-            ITransactionStringReader reader,
-            IParser parser,
-            ICategorizator categorizator,
-            ITransactionWriter writer
-            )
+            if (services.GetService<IUserCommunicationHandler>() is IBasicUserInputHandler userCommunicationHandler)
+            {
+                return userCommunicationHandler;
+            }
+            throw new NotImplementedException();
+        });
+        builder.Services.AddSingleton<IBasicUserOutputHandler>(services =>
         {
-            var stringLines = reader.ReadAllLines(string.Empty);
+            if (services.GetService<IUserCommunicationHandler>() is IBasicUserOutputHandler userCommunicationHandler)
+            {
+                return userCommunicationHandler;
+            }
+            throw new NotImplementedException();
+        });
+        builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
+        builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
+        builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
 
-            var transactions = parser.Parse(stringLines);
+        builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
+        builder.Services.AddHostedService(services => new UserCommandHandler(
+            services.GetService<ICommandFactory>()!,
+            services.GetService<IBasicUserInputHandler>()!,
+            services.GetService<IUserCommunicationHandler>()!,
+            args
+            ));
 
-            categorizator.ApplyPredicates(transactions, Array.Empty<Func<Transaction, Transaction>>());
+        using IHost host = builder.Build();
 
-            writer.WriteTransactions(transactions);
-        }
+        host.Run();
     }
+
+    public static void DummyFlowFunction(
+        ITransactionStringReader reader,
+        IParser parser,
+        ICategorizator categorizator,
+        ITransactionWriter writer
+        )
+    {
+        var stringLines = reader.ReadAllLines(string.Empty);
+
+        var transactions = parser.Parse(stringLines);
+
+        categorizator.ApplyPredicates(transactions, Array.Empty<Func<Transaction, Transaction>>());
+
+        writer.WriteTransactions(transactions);
+    }
+
+
 }
