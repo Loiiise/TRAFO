@@ -1,14 +1,15 @@
 ﻿namespace TRAFO.IO.Command;
 
-internal static class CommandMetaData
+public static class CommandMetaData
 {
+    public static IEnumerable<(string, string, string)> AllCommandNamesTagsAndDescriptions() => _commandConfigurations.Select(c => (c.Name, c.Tag, c.Description));
     internal static IEnumerable<(string, string)> AllCommandTagsAndDescriptions() => _commandConfigurations.Select(c => (c.Tag, c.Description));
 
-    internal static string GetNameFromTag(string commandTag) => _commandConfigurations.Single(c => c.Tag == commandTag).Name;
-    internal static string GetTagFromName(string commandName) => _commandConfigurations.Single(c => c.Name == commandName).Tag;
+    public static string GetNameFromTag(string commandTag) => _commandConfigurations.Single(c => c.Tag == commandTag).Name;
+    public static string GetTagFromName(string commandName) => _commandConfigurations.Single(c => c.Name == commandName).Tag;
 
-    internal static string GetDescriptionFromTag(string commandTag) => _commandConfigurations.Single(c => c.Tag == commandTag).Description;
-    internal static string GetDescriptionFromName(string commandName) => _commandConfigurations.Single(c => c.Name == commandName).Description;
+    public static string GetDescriptionFromTag(string commandTag) => _commandConfigurations.Single(c => c.Tag == commandTag).Description;
+    public static string GetDescriptionFromName(string commandName) => _commandConfigurations.Single(c => c.Name == commandName).Description;
 
 
     private static CommandConfiguration[] _commandConfigurations = new[]
