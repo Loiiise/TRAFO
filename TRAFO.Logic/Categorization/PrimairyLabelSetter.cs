@@ -1,4 +1,5 @@
 ﻿
+using TRAFO.Logic.Categorization.Predicates;
 using TRAFO.Logic.Extensions;
 
 namespace TRAFO.Logic.Categorization;

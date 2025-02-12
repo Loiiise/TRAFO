@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using TRAFO.Logic.Categorization;
+using TRAFO.Logic.Categorization.Predicates;
 
 namespace TRAFO.Logic.Tests.Categorization;
 
@@ -9,9 +10,9 @@ public class PrimairyLabelSetterTests
     public void AlwaysTruePredicateIsAlwaysApplied(Transaction transaction)
     {
         var primairyLabel = "I'm always set";
-        var alwaysTruePredicate = new TransactionPredicate()
+        var alwaysTruePredicate = new CustomPredicate()
         {
-            IsValid = _ => true,
+            Predicate = _ => true,
             LabelToSet = primairyLabel,
         };
 
@@ -27,9 +28,9 @@ public class PrimairyLabelSetterTests
     public void AlwaysFalsePredicatesAreNeverApplied(Transaction transaction)
     {
         var primairyLabel = "Don't you dare setting me";
-        var alwaysFalsePredicate = new TransactionPredicate()
+        var alwaysFalsePredicate = new CustomPredicate()
         {
-            IsValid = _ => false,
+            Predicate = _ => false,
             LabelToSet = primairyLabel,
         };
 
@@ -45,16 +46,16 @@ public class PrimairyLabelSetterTests
     public void MultiplePassingPredicatesResultsInTheFirstOneBeingApplied(Transaction transaction)
     {
         var labelZero = "Label 0";
-        var alwaysLabelZeroPredicate = new TransactionPredicate()
+        var alwaysLabelZeroPredicate = new CustomPredicate()
         {
-            IsValid = _ => true,
+            Predicate = _ => true,
             LabelToSet = labelZero,
         };
 
         var labelOne = "Label 1";
-        var alwaysLabelOnePredicate = new TransactionPredicate()
+        var alwaysLabelOnePredicate = new CustomPredicate()
         {
-            IsValid = _ => true,
+            Predicate = _ => true,
             LabelToSet = labelOne,
         };
 
