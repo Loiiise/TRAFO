@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
+using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
 namespace TRAFO.IO.Command;
@@ -9,14 +10,18 @@ public class CommandFactory : ICommandFactory
 {
     public CommandFactory(
         ITransactionStringReader transactionStringReader,
+        ITransactionReader transactionReader,
         ITransactionWriter transactionWriter,
         IParser parser,
+        ICategorizator categorizer,
         IBasicUserInputHandler userInputHandler,
         IBasicUserOutputHandler userOutputHandler)
     {
         _transactionStringReader = transactionStringReader;
+        _transactionReader = transactionReader;
         _transactionWriter = transactionWriter;
         _parser = parser;
+        _categorizer = categorizer;
         _userInputHandler = userInputHandler;
         _userOutputHandler = userOutputHandler;
     }
@@ -58,13 +63,16 @@ public class CommandFactory : ICommandFactory
     private ICommand GetCommand(string commandName, string[] args) => commandName switch
     {
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
-        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, _transactionWriter, args),
+        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
+        nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
         _ => throw new NotImplementedException(),
     };
 
     private readonly ITransactionStringReader _transactionStringReader;
+    private readonly ITransactionReader _transactionReader;
     private readonly ITransactionWriter _transactionWriter;
     private readonly IParser _parser;
+    private readonly ICategorizator _categorizer;
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly IBasicUserOutputHandler _userOutputHandler;
 }

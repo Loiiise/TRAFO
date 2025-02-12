@@ -17,6 +17,7 @@ public static class CommandMetaData
         // todo #44: this is hardcoded for now but will be extracted to a file at some point
         new CommandConfiguration(nameof(HelpCommand), "help", "This is the help command."),
         new CommandConfiguration(nameof(LoadTransactionFileCommand), "load", "Load a file from the specified path to the database."),
+        new CommandConfiguration(nameof(StatusCommand), "status", "Shows the current status of transaction categorization."),
     };
 }
 
