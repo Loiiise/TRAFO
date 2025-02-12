@@ -8,7 +8,7 @@ public class DescriptionContainsPredicateTests
     [Theory, MemberData(nameof(GenerateExampleObjects))]
     public void DescriptionContainsPredicateReturnsTrueIsStringIsSubstring(string transactionDescription, string testString, bool shouldBeInThere)
     {
-        var predicate = new DescriptionContainsPredicate() 
+        var predicate = new ContainsDescriptionPredicate() 
         { 
             LabelToSet = "I am a label",
             ContainedString = testString 
@@ -21,7 +21,7 @@ public class DescriptionContainsPredicateTests
     [Theory, MemberData(nameof(GenerateExampleObjects))]
     public void NullTransactionDescriptionAlwaysReturnsFalse(string _0, string testString, bool _1)
     {
-        var predicate = new DescriptionContainsPredicate()
+        var predicate = new ContainsDescriptionPredicate()
         {
             LabelToSet = "I am a label",
             ContainedString = testString
@@ -46,7 +46,7 @@ public class DescriptionContainsPredicateTests
 
         void CheckConfiguration(string transactionDescription, string testString, bool predicateIsCaseSensitive, bool shouldBeInThere)
         {
-            var predicate = new DescriptionContainsPredicate()
+            var predicate = new ContainsDescriptionPredicate()
             {
                 LabelToSet = "I am a label",
                 ContainedString = testString,
