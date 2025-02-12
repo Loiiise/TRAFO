@@ -1,14 +1,16 @@
 ﻿using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
+using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
 namespace TRAFO.IO.Command;
 public class LoadTransactionFileCommand : Command
 {
-    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ITransactionWriter transactionWriter, string[] arguments) : base(arguments)
+    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, string[] arguments) : base(arguments)
     {
         _transactionStringReader = transactionStringReader;
         _parser = parser;
+        _categorizators = categorizators;
         _transactionWriter = transactionWriter;
     }
 
@@ -18,6 +20,10 @@ public class LoadTransactionFileCommand : Command
     {
         var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0], true);
         var transactions = _parser.Parse(transactionStrings);
+        foreach (var categorizator in _categorizators)
+        {
+            transactions = categorizator.ApplyPredicates(transactions, Categories.GetDefaultPredicates());
+        }
         _transactionWriter.WriteTransactions(transactions);
     }
 
@@ -31,5 +37,6 @@ public class LoadTransactionFileCommand : Command
 
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly IParser _parser;
+    private readonly ICategorizator[] _categorizators;
     private readonly ITransactionWriter _transactionWriter;
 }
