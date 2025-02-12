@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TRAFO.Logic\TRAFO.Logic.csproj" />
+    <ProjectReference Include="..\TRAFO.Parsing\TRAFO.Parsing.csproj" />
   </ItemGroup>
 
 </Project>

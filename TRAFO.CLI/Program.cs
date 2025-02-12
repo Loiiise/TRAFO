@@ -16,28 +16,22 @@ internal class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-        builder.Services.AddSingleton<IUserCommunicationHandler, ConsoleUserInputHandler>();
-        builder.Services.AddSingleton<IBasicUserInputHandler>(services =>
-        {
-            if (services.GetService<IUserCommunicationHandler>() is IBasicUserInputHandler userCommunicationHandler)
-            {
-                return userCommunicationHandler;
-            }
-            throw new NotImplementedException();
-        });
-        builder.Services.AddSingleton<IBasicUserOutputHandler>(services =>
-        {
-            if (services.GetService<IUserCommunicationHandler>() is IBasicUserOutputHandler userCommunicationHandler)
-            {
-                return userCommunicationHandler;
-            }
-            throw new NotImplementedException();
-        });
+        var consoleUserInputHandler = new ConsoleUserInputHandler();
+        builder.Services.AddSingleton<IUserCommunicationHandler>(consoleUserInputHandler);
+        builder.Services.AddSingleton<IBasicUserInputHandler>(consoleUserInputHandler);
+        builder.Services.AddSingleton<IBasicUserOutputHandler>(consoleUserInputHandler);
+
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
-        builder.Services.AddSingleton<IDatabase, EntityFrameworkDatabase>();
+
+        var database = new EntityFrameworkDatabase();
+        builder.Services.AddSingleton<IDatabase>(database);
+        builder.Services.AddSingleton<ITransactionReader>(database);
+        builder.Services.AddSingleton<ITransactionWriter>(database);
+        builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
 
         builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
+        
         builder.Services.AddHostedService(services => new UserCommandHandler(
             services.GetService<ICommandFactory>()!,
             services.GetService<IBasicUserInputHandler>()!,

@@ -15,7 +15,8 @@ public static class CommandMetaData
     private static CommandConfiguration[] _commandConfigurations = new[]
     {
         // todo #44: this is hardcoded for now but will be extracted to a file at some point
-        new CommandConfiguration(nameof(HelpCommand), "help", "This is the help command"),
+        new CommandConfiguration(nameof(HelpCommand), "help", "This is the help command."),
+        new CommandConfiguration(nameof(LoadTransactionFileCommand), "load", "Load a file from the specified path to the database."),
     };
 }
 
