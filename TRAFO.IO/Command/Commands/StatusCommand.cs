@@ -3,15 +3,30 @@
 namespace TRAFO.IO.Command;
 public class StatusCommand : NoArgumentCommand
 {
-    public StatusCommand(ITransactionReader transactionReader)
+    public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler)
     {
         _transactionReader = transactionReader;
+        _userOutputHandler = userOutputHandler;
     }
 
     public override void Execute()
     {
-        throw new NotImplementedException();
+        var transactions = _transactionReader.ReadAllTransactions();
+
+        if (!transactions.Any())
+        {
+            _userOutputHandler.GiveUserOutput("There are no transactions loaded in yet!");
+            return;
+        }
+
+        var transactionCount = transactions.Count();
+        var categorizedTransactionCount = transactions.Where(t => t.PrimairyLabel is not null).Count();
+        var oldestUncategorized = transactions.Where(t => t.PrimairyLabel is null).MinBy(t => t.Timestamp)!;
+        
+        _userOutputHandler.GiveUserOutput($"You categorized {categorizedTransactionCount}/{transactionCount} transactions.");
+        _userOutputHandler.GiveUserOutput($"The oldest uncategorized transaction is from {oldestUncategorized.Timestamp}");
     }
 
     private readonly ITransactionReader _transactionReader;
+    private readonly IBasicUserOutputHandler _userOutputHandler;
 }
