@@ -106,7 +106,7 @@ public class CSVParserTests
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If amount is a Int32 string, it all goes well
-        foreach (var legalNumberAmount in new[] { "1", "69", "987654321", "-123456789", "420", "0", "-45781", Int32.MinValue.ToString(), Int32.MaxValue.ToString() })
+        foreach (var legalNumberAmount in new[] { "1", "69", "987654321", "-123456789", "420", "0", "-45781", int.MinValue.ToString(), int.MaxValue.ToString() })
         {
             var rawData = GenerateBasicRawDataLine(legalNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
@@ -151,7 +151,7 @@ public class CSVParserTests
             })
         {
             var rawData = GenerateBasicRawDataLine(legalNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
-            
+
             var parseResult = parser.Parse(rawData);
             parseResult.Amount.ShouldBe(expectedAmount);
         }
