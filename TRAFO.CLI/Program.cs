@@ -23,6 +23,7 @@ internal class Program
 
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
+        builder.Services.AddSingleton<ICategorizator, PrimairyLabelSetter>();
 
         var database = new EntityFrameworkDatabase();
         builder.Services.AddSingleton<IDatabase>(database);
@@ -55,7 +56,7 @@ internal class Program
 
         var transactions = parser.Parse(stringLines);
 
-        categorizator.ApplyPredicates(transactions, Array.Empty<Func<Transaction, Transaction>>());
+        categorizator.ApplyPredicates(transactions, Array.Empty<TransactionPredicate>());
 
         writer.WriteTransactions(transactions);
     }

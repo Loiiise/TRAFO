@@ -2,8 +2,6 @@
 
 public interface ICategorizator
 {
-    public void ApplyPredicates(IEnumerable<Transaction> transactions, Func<Transaction, Transaction>[] predicates);
+    public Transaction ApplyPredicates(Transaction transaction, TransactionPredicate[] predicates);
+    public IEnumerable<Transaction> ApplyPredicates(IEnumerable<Transaction> transactions, TransactionPredicate[] predicates);
 }
-
-public interface IAutomatedCategorizator : ICategorizator { }
-public interface IUserInputCategorizator : ICategorizator { }
