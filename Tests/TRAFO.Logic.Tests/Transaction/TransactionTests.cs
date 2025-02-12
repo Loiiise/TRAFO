@@ -44,7 +44,10 @@ public class TransactionTests
     {
         foreach (var transaction in GenerateBasicLegalTransactionsWithoutRawData())
         {
-            transaction.ToString().ShouldContain(transaction.Amount.ToString());
+            foreach (var digitOrSign in transaction.Amount.ToString())
+            {
+                transaction.ToString().ShouldContain(digitOrSign);
+            }
             transaction.ToString().ShouldContain(transaction.Currency.ToString());
             transaction.ToString().ShouldContain(transaction.ThisPartyIdentifier);
             transaction.ToString().ShouldContain(transaction.OtherPartyIdentifier);

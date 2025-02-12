@@ -10,17 +10,17 @@ public static class Categories
     public static TransactionPredicate[] GetDefaultPredicates() => new TransactionPredicate[]
     {
         // todo #55: these should not be hardcoded here
-        new DescriptionContainsPredicate()
+        new ContainsOtherPartyNamePredicate()
         {
             ContainedString = "AH TO GO",
             LabelToSet = nameof(Groceries),
         },
-        new DescriptionContainsPredicate()
+        new ContainsOtherPartyNamePredicate()
         {
             ContainedString = "ALBERT HEIJN",
             LabelToSet = nameof(Groceries),
         },
-        new DescriptionContainsPredicate()
+        new ContainsOtherPartyNamePredicate()
         {
             ContainedString = "JUMBO",
             LabelToSet = nameof(Groceries),

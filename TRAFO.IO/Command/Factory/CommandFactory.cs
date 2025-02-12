@@ -64,6 +64,7 @@ public class CommandFactory : ICommandFactory
     {
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
         nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
+        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
         nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
         _ => throw new NotImplementedException(),
     };
