@@ -46,6 +46,6 @@ public sealed record Transaction
     private string GetEuroCentString(long cents) 
         => cents == 0 
         ? "00"
-        : Math.Abs(cents).ToString();
+        : Math.Abs(cents).ToString() + (cents % 10 == 0 ? "0" : string.Empty);
 
 }
