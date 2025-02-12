@@ -56,7 +56,7 @@ internal class Program
 
         var transactions = parser.Parse(stringLines);
 
-        categorizator.ApplyPredicates(transactions, Array.Empty<Predicate>());
+        categorizator.ApplyPredicates(transactions, Array.Empty<TransactionPredicate>());
 
         writer.WriteTransactions(transactions);
     }

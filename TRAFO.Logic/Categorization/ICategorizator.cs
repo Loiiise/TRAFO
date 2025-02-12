@@ -2,5 +2,6 @@
 
 public interface ICategorizator
 {
-    public IEnumerable<Transaction> ApplyPredicates(IEnumerable<Transaction> transactions, Predicate[] predicates);
+    public Transaction ApplyPredicates(Transaction transaction, TransactionPredicate[] predicates);
+    public IEnumerable<Transaction> ApplyPredicates(IEnumerable<Transaction> transactions, TransactionPredicate[] predicates);
 }
