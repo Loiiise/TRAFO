@@ -16,7 +16,7 @@ public class LoadTransactionFileCommand : Command
 
     public override void Execute()
     {
-        var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0]);
+        var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0], true);
         var transactions = _parser.Parse(transactionStrings);
         _transactionWriter.WriteTransactions(transactions);
     }
@@ -25,7 +25,7 @@ public class LoadTransactionFileCommand : Command
     {
         if (!File.Exists(Arguments[0]))
         {
-            throw new FileNotFoundException(Arguments[0]);
+            throw new FileNotFoundException("File not found: " + Arguments[0]);
         }
     }
 
