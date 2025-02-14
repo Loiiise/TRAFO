@@ -51,6 +51,7 @@ internal class UserCommandHandler : BackgroundService
         if (!command.TryExecute(out var executionException))
         {
             _userCommunicationHandler.TerminateTask($"Command execution failed: {executionException.Message}");
+            return;
         }
 
         _userCommunicationHandler.PromptScopeDown();
@@ -64,8 +65,11 @@ internal class UserCommandHandler : BackgroundService
         }
         else
         {
-            var userInput = _basicUserInputHandler.GetUserInput("What do you want to do? Use the \"help\" command if you're not sure!");
-            ExecuteUserCommand(userInput);
+            while (true)
+            {
+                var userInput = _basicUserInputHandler.GetUserInput("What do you want to do? Use the \"help\" command if you're not sure!");
+                ExecuteUserCommand(userInput);
+            }
         }
     });
 
