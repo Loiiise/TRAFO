@@ -10,6 +10,7 @@ public interface ITransactionWriter
 
 public interface ITransactionLabelUpdater
 {
+    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel);
     public void UpdatePrimairyLabel(Transaction transaction);
     public void UpdateLabels(Transaction transaction);
 }

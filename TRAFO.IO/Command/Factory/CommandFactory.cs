@@ -12,6 +12,7 @@ public class CommandFactory : ICommandFactory
         ITransactionStringReader transactionStringReader,
         ITransactionReader transactionReader,
         ITransactionWriter transactionWriter,
+        ITransactionLabelUpdater transactionLabelUpdater,
         IParser parser,
         ICategorizator categorizer,
         IBasicUserInputHandler userInputHandler,
@@ -20,6 +21,7 @@ public class CommandFactory : ICommandFactory
         _transactionStringReader = transactionStringReader;
         _transactionReader = transactionReader;
         _transactionWriter = transactionWriter;
+        _transactionLabelUpdater = transactionLabelUpdater;
         _parser = parser;
         _categorizer = categorizer;
         _userInputHandler = userInputHandler;
@@ -64,7 +66,8 @@ public class CommandFactory : ICommandFactory
     {
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
         nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
-        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
+        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler,_userOutputHandler, _transactionReader, _transactionLabelUpdater),
+        nameof (ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
         nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
         _ => throw new NotImplementedException(),
     };
@@ -72,6 +75,7 @@ public class CommandFactory : ICommandFactory
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly ITransactionReader _transactionReader;
     private readonly ITransactionWriter _transactionWriter;
+    private readonly ITransactionLabelUpdater _transactionLabelUpdater;
     private readonly IParser _parser;
     private readonly ICategorizator _categorizer;
     private readonly IBasicUserInputHandler _userInputHandler;

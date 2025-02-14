@@ -29,6 +29,7 @@ public class EntityFrameworkDatabase : IDatabase
         _context.SaveChanges();
     }
 
+    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
     public void UpdatePrimairyLabel(Transaction transaction)
     {
         if (transaction.PrimairyLabel is null) return;
