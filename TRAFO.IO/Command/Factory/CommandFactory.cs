@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
@@ -57,7 +58,7 @@ public class CommandFactory : ICommandFactory
             return false;
         }
 
-        var commandName = CommandMetaData.GetNameFromTag(arguments[0]);
+        var commandName = _commandMetaData.GetNameFromTag(arguments[0]);
 
         command = GetCommand(commandName, arguments.Skip(1).ToArray());
         exception = null;
@@ -83,4 +84,7 @@ public class CommandFactory : ICommandFactory
     private readonly ICategorizator _categorizer;
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly IBasicUserOutputHandler _userOutputHandler;
+
+    private readonly ICommandMetaData _commandMetaData = new CommandMetaData();
+    private readonly IFlagMetaData _flagMetaData = new FlagMetaData();
 }

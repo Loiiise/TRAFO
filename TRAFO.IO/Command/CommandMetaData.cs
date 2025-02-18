@@ -1,6 +1,6 @@
 ﻿namespace TRAFO.IO.Command;
 
-internal class CommandMetaData : MetaData<CommandConfiguration>, IMetaDataCommandConfiguration
+internal class CommandMetaData : MetaData<CommandConfiguration>, ICommandMetaData
 {
     protected override CommandConfiguration[] _commandConfigurations => new[]
     {

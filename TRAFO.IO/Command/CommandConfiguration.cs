@@ -21,8 +21,8 @@ public interface IMetaData<T> : IMetaData
     where T : CommandOrFlagConfiguration
 { }
 
-public interface IMetaDataCommandConfiguration : IMetaData<CommandConfiguration> { }
-public interface IMetaDataFlagConfiguration : IMetaData<FlagConfiguration> { }
+public interface ICommandMetaData : IMetaData<CommandConfiguration> { }
+public interface IFlagMetaData : IMetaData<FlagConfiguration> { }
 
 internal abstract class MetaData<T> : IMetaData<T>
     where T : CommandOrFlagConfiguration
