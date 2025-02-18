@@ -1,11 +1,11 @@
-﻿using System.Text;
+using System.Text;
 using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 
 namespace TRAFO.IO.Command;
 
-public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
+public class ProcessUncategorizedTransactionsCommand : FromTillNoArgumentCommand
 {
     public ProcessUncategorizedTransactionsCommand(
         IBasicUserInputHandler userInputHandler,
@@ -48,11 +48,6 @@ public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
                 _transactionLabelUpdater.UpdatePrimairyLabel(uncategorizedTransaction, _indexToCategory[categoryIndex]);
             }
         }
-    }
-
-    protected override bool IsSupported(ICommandFlag flag)
-    {
-        throw new NotImplementedException();
     }
 
     private readonly IBasicUserInputHandler _userInputHandler;

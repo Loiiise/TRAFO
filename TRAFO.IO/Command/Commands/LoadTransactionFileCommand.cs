@@ -5,7 +5,7 @@ using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
 namespace TRAFO.IO.Command;
-public class LoadTransactionFileCommand : Command
+public class LoadTransactionFileCommand : FromTillCommand
 {
     public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, string[] arguments, ICommandFlag[] flags) : base(arguments, flags)
     {
@@ -34,11 +34,6 @@ public class LoadTransactionFileCommand : Command
         {
             throw new FileNotFoundException("File not found: " + Arguments[0]);
         }
-    }
-
-    protected override bool IsSupported(ICommandFlag flag)
-    {
-        throw new NotImplementedException();
     }
 
     private readonly ITransactionStringReader _transactionStringReader;
