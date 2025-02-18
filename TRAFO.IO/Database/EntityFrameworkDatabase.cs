@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TRAFO.Logic;
+using TRAFO.Logic.Categorization;
 
 namespace TRAFO.IO.Database;
 
@@ -11,6 +12,8 @@ public class EntityFrameworkDatabase : IDatabase
     {
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
+
+    public IEnumerable<string> GetAllCategories() => Categories.GetAllCategories();
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {

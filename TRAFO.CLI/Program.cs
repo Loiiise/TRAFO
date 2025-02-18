@@ -29,6 +29,7 @@ internal class Program
         var database = new EntityFrameworkDatabase();
         builder.Services.AddSingleton<IDatabase>(database);
         builder.Services.AddSingleton<ITransactionReader>(database);
+        builder.Services.AddSingleton<ICategoryReader>(database);
         builder.Services.AddSingleton<ITransactionWriter>(database);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
 

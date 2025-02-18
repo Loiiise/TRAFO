@@ -7,6 +7,13 @@ public static class Categories
     public const string Groceries = nameof(Groceries);
     public const string Rent = nameof(Rent);
 
+
+    public static IEnumerable<string> GetAllCategories() => new string[]
+    {
+        Groceries,
+        Rent,
+    };
+
     public static TransactionPredicate[] GetDefaultPredicates() => new TransactionPredicate[]
     {
         // todo #55: these should not be hardcoded here

@@ -2,6 +2,10 @@
 using TRAFO.IO.TransactionWriting;
 
 namespace TRAFO.IO.Database;
-public interface IDatabase : ITransactionReader, ITransactionWriter, ITransactionLabelUpdater
+public interface IDatabase :
+    ICategoryReader,
+    ITransactionReader,
+    ITransactionWriter,
+    ITransactionLabelUpdater
 {
 }

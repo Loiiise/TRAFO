@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
@@ -11,6 +11,7 @@ public class CommandFactory : ICommandFactory
     public CommandFactory(
         ITransactionStringReader transactionStringReader,
         ITransactionReader transactionReader,
+        ICategoryReader categoryReader,
         ITransactionWriter transactionWriter,
         ITransactionLabelUpdater transactionLabelUpdater,
         IParser parser,
@@ -20,6 +21,7 @@ public class CommandFactory : ICommandFactory
     {
         _transactionStringReader = transactionStringReader;
         _transactionReader = transactionReader;
+        _categoryReader = categoryReader;
         _transactionWriter = transactionWriter;
         _transactionLabelUpdater = transactionLabelUpdater;
         _parser = parser;
@@ -74,6 +76,7 @@ public class CommandFactory : ICommandFactory
 
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly ITransactionReader _transactionReader;
+    private readonly ICategoryReader _categoryReader;
     private readonly ITransactionWriter _transactionWriter;
     private readonly ITransactionLabelUpdater _transactionLabelUpdater;
     private readonly IParser _parser;
