@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TRAFO.Logic;
+using TRAFO.Logic.Categorization;
 
 namespace TRAFO.IO.Database;
 
@@ -11,6 +12,8 @@ public class EntityFrameworkDatabase : IDatabase
     {
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
+
+    public IEnumerable<string> GetAllCategories() => Categories.GetAllCategories();
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {
@@ -29,6 +32,7 @@ public class EntityFrameworkDatabase : IDatabase
         _context.SaveChanges();
     }
 
+    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
     public void UpdatePrimairyLabel(Transaction transaction)
     {
         if (transaction.PrimairyLabel is null) return;
