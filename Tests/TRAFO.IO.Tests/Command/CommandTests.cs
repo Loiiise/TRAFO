@@ -7,9 +7,9 @@ public class CommandTests
     [Fact]
     public void CommandValidationFailsIfTheAmountOfArgumentsDoesntMatchExpected()
     {
-        var twoArguments = new string[] { "I'm one argument", "No, you're wrong"};
+        var twoArguments = new string[] { "I'm one argument", "No, you're wrong" };
         int expectedArguments = 2;
-        
+
         new MockDoNothingCommand(twoArguments, expectedArguments).Validate(out var notAnException).ShouldBeTrue();
         notAnException.ShouldBeNull();
 
@@ -20,5 +20,11 @@ public class CommandTests
         exception.ShouldBeOfType<ArgumentException>();
         exception.Message.ShouldContain(expectedArguments.ToString());
         exception.Message.ShouldContain(twoArguments.Length.ToString());
+    }
+
+    [Fact]
+    public void CommandValidationFailsIfAnUnsupportedFlagIsProvided()
+    {
+        throw new NotImplementedException();
     }
 }
