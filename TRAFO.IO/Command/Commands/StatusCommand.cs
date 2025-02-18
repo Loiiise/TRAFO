@@ -1,4 +1,4 @@
-using TRAFO.IO.Command.Flags;
+﻿using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
@@ -12,7 +12,7 @@ public class StatusCommand : FromTillNoArgumentCommand
 
     public override void Execute()
     {
-        var transactions = _transactionReader.ReadAllTransactions();
+        var transactions = _transactionReader.ReadTransactionsInRange(_from, _till);
 
         if (!transactions.Any())
         {

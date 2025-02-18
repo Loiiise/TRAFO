@@ -1,7 +1,10 @@
 ﻿namespace TRAFO.IO.Command.Flags;
 
 public interface ICommandFlag { }
-public abstract record CommandFlag<T> : ICommandFlag { }
+public abstract record CommandFlag<T> : ICommandFlag 
+{
+    public required T Value { get; init; }
+}
 public abstract record DateFlag : CommandFlag<DateTime> { }
 
 public record FromFlag : DateFlag { }

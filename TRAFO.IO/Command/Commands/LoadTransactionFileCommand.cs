@@ -21,6 +21,10 @@ public class LoadTransactionFileCommand : FromTillCommand
     {
         var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0], true);
         var transactions = _parser.Parse(transactionStrings);
+            
+        if (_from is not null) transactions = transactions.Where(t => t.Timestamp >= _from);
+        if (_till is not null) transactions = transactions.Where(t => t.Timestamp <= _till);        
+
         foreach (var categorizator in _categorizators)
         {
             transactions = categorizator.ApplyPredicates(transactions, Categories.GetDefaultPredicates());

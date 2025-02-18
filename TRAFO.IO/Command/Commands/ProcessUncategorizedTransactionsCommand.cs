@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -32,7 +32,7 @@ public class ProcessUncategorizedTransactionsCommand : FromTillNoArgumentCommand
 
     public override void Execute()
     {
-        var uncategorizedTransactions = _transactionReader.ReadAllTransactions().Where(t => t.PrimairyLabel == null);
+        var uncategorizedTransactions = _transactionReader.ReadTransactionsInRange(_from, _till).Where(t => t.PrimairyLabel == null);        
 
         foreach (var uncategorizedTransaction in uncategorizedTransactions)
         {

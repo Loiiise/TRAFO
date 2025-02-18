@@ -1,4 +1,4 @@
-using TRAFO.IO.Command.Flags;
+﻿using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
@@ -14,7 +14,7 @@ public class ShowUncategorizedTransactionsCommand : FromTillNoArgumentCommand
     public override void Execute()
     {
         var uncategorizedTransactions = _transactionReader
-            .ReadAllTransactions()
+            .ReadTransactionsInRange(_from, _till)
             .Where(t => t.PrimairyLabel is null)
             .ToArray();
 
