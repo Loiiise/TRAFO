@@ -24,7 +24,7 @@ public interface IMetaData<T> : IMetaData
 public interface ICommandMetaData : IMetaData<CommandConfiguration> { }
 public interface IFlagMetaData : IMetaData<FlagConfiguration> { }
 
-internal abstract class MetaData<T> : IMetaData<T>
+public abstract class MetaData<T> : IMetaData<T>
     where T : CommandOrFlagConfiguration
 {
     public IEnumerable<(string, string, string)> AllNamesTagsAndDescriptions() => _commandConfigurations.Select(c => (c.Name, c.Tag, c.Description));
