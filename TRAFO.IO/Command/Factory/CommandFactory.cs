@@ -67,7 +67,7 @@ public class CommandFactory : ICommandFactory
 
     private ICommand GetCommand(string commandName, string[] args) => commandName switch
     {
-        nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
+        nameof(HelpCommand) => new HelpCommand(_userOutputHandler, _commandMetaData),
         nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
         nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater),
         nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),

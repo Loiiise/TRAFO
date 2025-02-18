@@ -3,7 +3,7 @@
 namespace TRAFO.IO.Tests.Command;
 internal record MockConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description);
 
-internal class MockMetaData : MetaData<MockConfiguration>
+internal class MockMetaData : MetaData<MockConfiguration>, ICommandMetaData, IFlagMetaData
 {
     protected override MockConfiguration[] _commandConfigurations => new[]
     {
