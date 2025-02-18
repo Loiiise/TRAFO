@@ -6,8 +6,11 @@ public abstract class FromTillCommand : Command
 {
     protected FromTillCommand(string[] arguments, ICommandFlag[] flags) : base(arguments, flags)
     {
-        _from = ((FromFlag) flags.First(f => f is FromFlag)).Value;
-        _till = ((TillFlag) flags.First(f => f is TillFlag)).Value;
+        var fromFlags = flags.Where(f => f is FromFlag).Cast<FromFlag>();
+        var tillFlags = flags.Where(f => f is TillFlag).Cast<TillFlag>();
+
+        _from = fromFlags.Any() ? fromFlags.First().Value : null;
+        _till = tillFlags.Any() ? tillFlags.First().Value : null;
     }
 
     protected override sealed bool IsSupported(ICommandFlag flag) => flag is FromFlag or TillFlag;
