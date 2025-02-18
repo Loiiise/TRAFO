@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
@@ -68,8 +68,8 @@ public class CommandFactory : ICommandFactory
     {
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
         nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
-        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler,_userOutputHandler, _transactionReader, _transactionLabelUpdater),
-        nameof (ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
+        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater),
+        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
         nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
         _ => throw new NotImplementedException(),
     };
