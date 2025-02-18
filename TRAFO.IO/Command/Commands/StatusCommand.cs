@@ -1,9 +1,10 @@
-﻿using TRAFO.IO.TransactionReading;
+﻿using TRAFO.IO.Command.Flags;
+using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
 public class StatusCommand : NoArgumentCommand
 {
-    public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler)
+    public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler, ICommandFlag[] flags) : base(flags)
     {
         _transactionReader = transactionReader;
         _userOutputHandler = userOutputHandler;
@@ -25,6 +26,11 @@ public class StatusCommand : NoArgumentCommand
         
         _userOutputHandler.GiveUserOutput($"You categorized {categorizedTransactionCount}/{transactionCount} transactions.");
         _userOutputHandler.GiveUserOutput($"The oldest uncategorized transaction is from {oldestUncategorized.Timestamp}");
+    }
+
+    protected override bool IsSupported(ICommandFlag flag)
+    {
+        throw new NotImplementedException();
     }
 
     private readonly ITransactionReader _transactionReader;

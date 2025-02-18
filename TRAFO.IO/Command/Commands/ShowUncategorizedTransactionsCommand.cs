@@ -1,10 +1,11 @@
-﻿using TRAFO.IO.TransactionReading;
+﻿using TRAFO.IO.Command.Flags;
+using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
 
 public class ShowUncategorizedTransactionsCommand : NoArgumentCommand
 {
-    public ShowUncategorizedTransactionsCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler)
+    public ShowUncategorizedTransactionsCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler, ICommandFlag[] flags) : base(flags)
     {
         _transactionReader = transactionReader;
         _userOutputHandler = userOutputHandler;
@@ -29,6 +30,11 @@ public class ShowUncategorizedTransactionsCommand : NoArgumentCommand
         {
             _userOutputHandler.GiveUserOutput($"({i}/{totalCount}) - {uncategorizedTransactions[i].ToString()}");
         }
+    }
+
+    protected override bool IsSupported(ICommandFlag flag)
+    {
+        throw new NotImplementedException();
     }
 
     private readonly ITransactionReader _transactionReader;

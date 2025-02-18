@@ -1,9 +1,11 @@
-﻿namespace TRAFO.IO.Command;
+﻿using TRAFO.IO.Command.Flags;
+
+namespace TRAFO.IO.Command;
 
 public abstract class NoArgumentCommand : Command
 {
-    protected NoArgumentCommand() : base(Array.Empty<string>()) { }
+    protected NoArgumentCommand(ICommandFlag[] flags) : base(Array.Empty<string>(), flags) { }
 
     protected override sealed int _expectedAmountOfArguments => 0;
-    protected override sealed void ValidateInternally() { }
+    protected override void ValidateInternally() { }
 }

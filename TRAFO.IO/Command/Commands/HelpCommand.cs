@@ -1,6 +1,6 @@
 ﻿namespace TRAFO.IO.Command;
 
-public class HelpCommand : NoArgumentCommand
+public class HelpCommand : NoArgumentAndNoFlagCommand
 {
     public HelpCommand(IBasicUserOutputHandler userOutputHandler, ICommandMetaData commandMetaData)
     {

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 
@@ -10,7 +11,8 @@ public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
         IBasicUserInputHandler userInputHandler,
         ICategoryReader categoryReader,
         ITransactionReader transactionReader,
-        ITransactionLabelUpdater transactionLabelUpdater)
+        ITransactionLabelUpdater transactionLabelUpdater,
+        ICommandFlag[] flags) : base(flags)
     {
         _userInputHandler = userInputHandler;
         _categoryReader = categoryReader;
@@ -46,6 +48,11 @@ public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
                 _transactionLabelUpdater.UpdatePrimairyLabel(uncategorizedTransaction, _indexToCategory[categoryIndex]);
             }
         }
+    }
+
+    protected override bool IsSupported(ICommandFlag flag)
+    {
+        throw new NotImplementedException();
     }
 
     private readonly IBasicUserInputHandler _userInputHandler;

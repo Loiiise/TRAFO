@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -60,18 +60,18 @@ public class CommandFactory : ICommandFactory
 
         var commandName = _commandMetaData.GetNameFromTag(arguments[0]);
 
-        command = GetCommand(commandName, arguments.Skip(1).ToArray());
+        command = GetCommand(commandName, arguments.Skip(1).ToArray(), Array.Empty<ICommandFlag>());
         exception = null;
         return true;
     }
 
-    private ICommand GetCommand(string commandName, string[] args) => commandName switch
+    private ICommand GetCommand(string commandName, string[] args, ICommandFlag[] flags) => commandName switch
     {
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler, _commandMetaData),
-        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
-        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater),
-        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
-        nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
+        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args, flags),
+        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater, flags),
+        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler, flags),
+        nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler, flags),
         _ => throw new NotImplementedException(),
     };
 
