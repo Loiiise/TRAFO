@@ -70,7 +70,7 @@ public class CommandFactory : ICommandFactory
             args.Add(arguments[i++]);
         }
 
-        var flags = _commandFlagFactory.AllFromStrings(arguments[i..arguments.Length]);
+        var flags = _commandFlagFactory.AllFromStrings(arguments[i..]);
 
         command = GetCommand(commandName, args.ToArray(), flags);
         exception = null;
