@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -10,6 +10,7 @@ namespace TRAFO.IO.Command;
 public class CommandFactory : ICommandFactory
 {
     public CommandFactory(
+        ICommandFlagFactory commandFlagFactory,
         ITransactionStringReader transactionStringReader,
         ITransactionReader transactionReader,
         ICategoryReader categoryReader,
@@ -20,6 +21,7 @@ public class CommandFactory : ICommandFactory
         IBasicUserInputHandler userInputHandler,
         IBasicUserOutputHandler userOutputHandler)
     {
+        _commandFlagFactory = commandFlagFactory;
         _transactionStringReader = transactionStringReader;
         _transactionReader = transactionReader;
         _categoryReader = categoryReader;
@@ -60,7 +62,17 @@ public class CommandFactory : ICommandFactory
 
         var commandName = _commandMetaData.GetNameFromTag(arguments[0]);
 
-        command = GetCommand(commandName, arguments.Skip(1).ToArray(), Array.Empty<ICommandFlag>());
+        int i = 1;
+
+        List<string> args = new();
+        while (!arguments[i].StartsWith(_commandFlagFactory.FlagIndicator))
+        {
+            args.Add(arguments[i++]);
+        }
+
+        var flags = _commandFlagFactory.AllFromStrings(arguments[i..arguments.Length]);
+
+        command = GetCommand(commandName, args.ToArray(), flags);
         exception = null;
         return true;
     }
@@ -75,6 +87,8 @@ public class CommandFactory : ICommandFactory
         nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler, flags),
         _ => throw new NotImplementedException(),
     };
+
+    private readonly ICommandFlagFactory _commandFlagFactory;
 
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly ITransactionReader _transactionReader;
