@@ -39,13 +39,14 @@ public sealed record Transaction
 
     public override string ToString() => $"Transaction of {ShowAmount()} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier} with description {Description}";
 
-    private string ShowAmount() => Currency is Currency.EUR
-        ? $"{Amount / 100},{GetEuroCentString(Amount % 100)}"
-        : Amount.ToString();
+    private string ShowAmount() => ShowAmount(Amount, Currency);
+    public static string ShowAmount(long amount, Currency currency)
+        => currency is Currency.EUR
+            ? $"{amount / 100},{GetEuroCentString(amount % 100)}"
+            : amount.ToString();
 
-    private string GetEuroCentString(long cents) 
-        => cents == 0 
+    private static string GetEuroCentString(long cents)
+        => cents == 0
         ? "00"
         : Math.Abs(cents).ToString();
-
 }

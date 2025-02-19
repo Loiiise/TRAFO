@@ -1,16 +1,18 @@
 ﻿using System.Text;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 
 namespace TRAFO.IO.Command;
 
-public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
+public class ProcessUncategorizedTransactionsCommand : FromTillNoArgumentCommand
 {
     public ProcessUncategorizedTransactionsCommand(
         IBasicUserInputHandler userInputHandler,
         ICategoryReader categoryReader,
         ITransactionReader transactionReader,
-        ITransactionLabelUpdater transactionLabelUpdater)
+        ITransactionLabelUpdater transactionLabelUpdater,
+        ICommandFlag[] flags) : base(flags)
     {
         _userInputHandler = userInputHandler;
         _categoryReader = categoryReader;
@@ -30,7 +32,7 @@ public class ProcessUncategorizedTransactionsCommand : NoArgumentCommand
 
     public override void Execute()
     {
-        var uncategorizedTransactions = _transactionReader.ReadAllTransactions().Where(t => t.PrimairyLabel == null);
+        var uncategorizedTransactions = _transactionReader.ReadTransactionsInRange(_from, _till).Where(t => t.PrimairyLabel == null);        
 
         foreach (var uncategorizedTransaction in uncategorizedTransactions)
         {

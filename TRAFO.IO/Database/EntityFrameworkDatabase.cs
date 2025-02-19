@@ -20,6 +20,16 @@ public class EntityFrameworkDatabase : IDatabase
         return _context.Transactions.Select(FromDatabaseEntry);
     }
 
+    public IEnumerable<Transaction> ReadTransactionsInRange(DateTime? from, DateTime? till)
+    { 
+        var transactions = ReadAllTransactions();
+
+        if (from is not null) transactions = transactions.Where(t => t.Timestamp >= from);
+        if (till is not null) transactions = transactions.Where(t => t.Timestamp <= till);
+
+        return transactions;
+    }
+
     public void WriteTransaction(Transaction transaction)
     {
         _context.Transactions.Add(ToDatabaseEntry(transaction));

@@ -1,12 +1,13 @@
-﻿using TRAFO.IO.TransactionReading;
+﻿using TRAFO.IO.Command.Flags;
+using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
 using TRAFO.Parsing;
 
 namespace TRAFO.IO.Command;
-public class LoadTransactionFileCommand : Command
+public class LoadTransactionFileCommand : FromTillCommand
 {
-    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, string[] arguments) : base(arguments)
+    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, string[] arguments, ICommandFlag[] flags) : base(arguments, flags)
     {
         _transactionStringReader = transactionStringReader;
         _parser = parser;
@@ -20,6 +21,10 @@ public class LoadTransactionFileCommand : Command
     {
         var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0], true);
         var transactions = _parser.Parse(transactionStrings);
+            
+        if (_from is not null) transactions = transactions.Where(t => t.Timestamp >= _from);
+        if (_till is not null) transactions = transactions.Where(t => t.Timestamp <= _till);        
+
         foreach (var categorizator in _categorizators)
         {
             transactions = categorizator.ApplyPredicates(transactions, Categories.GetDefaultPredicates());

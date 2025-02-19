@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
@@ -9,6 +10,7 @@ namespace TRAFO.IO.Command;
 public class CommandFactory : ICommandFactory
 {
     public CommandFactory(
+        ICommandFlagFactory commandFlagFactory,
         ITransactionStringReader transactionStringReader,
         ITransactionReader transactionReader,
         ICategoryReader categoryReader,
@@ -19,6 +21,7 @@ public class CommandFactory : ICommandFactory
         IBasicUserInputHandler userInputHandler,
         IBasicUserOutputHandler userOutputHandler)
     {
+        _commandFlagFactory = commandFlagFactory;
         _transactionStringReader = transactionStringReader;
         _transactionReader = transactionReader;
         _categoryReader = categoryReader;
@@ -57,22 +60,35 @@ public class CommandFactory : ICommandFactory
             return false;
         }
 
-        var commandName = CommandMetaData.GetNameFromTag(arguments[0]);
+        var commandName = _commandMetaData.GetNameFromTag(arguments[0]);
 
-        command = GetCommand(commandName, arguments.Skip(1).ToArray());
+        int i = 1;
+
+        List<string> args = new();
+        while (i < arguments.Length && !arguments[i].StartsWith(_commandFlagFactory.FlagIndicator))
+        {
+            args.Add(arguments[i++]);
+        }
+
+        var flags = _commandFlagFactory.AllFromStrings(arguments[i..]);
+
+        command = GetCommand(commandName, args.ToArray(), flags);
         exception = null;
         return true;
     }
 
-    private ICommand GetCommand(string commandName, string[] args) => commandName switch
+    private ICommand GetCommand(string commandName, string[] args, ICommandFlag[] flags) => commandName switch
     {
-        nameof(HelpCommand) => new HelpCommand(_userOutputHandler),
-        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args),
-        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater),
-        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler),
-        nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler),
+        nameof(HelpCommand) => new HelpCommand(_userOutputHandler, _commandMetaData),
+        nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args, flags),
+        nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater, flags),
+        nameof(ReportCommand) => new ReportCommand(_transactionReader, _userOutputHandler, flags),
+        nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler, flags),
+        nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler, flags),
         _ => throw new NotImplementedException(),
     };
+
+    private readonly ICommandFlagFactory _commandFlagFactory;
 
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly ITransactionReader _transactionReader;
@@ -83,4 +99,7 @@ public class CommandFactory : ICommandFactory
     private readonly ICategorizator _categorizer;
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly IBasicUserOutputHandler _userOutputHandler;
+
+    private readonly ICommandMetaData _commandMetaData = new CommandMetaData();
+    private readonly IFlagMetaData _flagMetaData = new FlagMetaData();
 }

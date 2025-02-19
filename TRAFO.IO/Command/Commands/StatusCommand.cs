@@ -1,9 +1,10 @@
-﻿using TRAFO.IO.TransactionReading;
+﻿using TRAFO.IO.Command.Flags;
+using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
-public class StatusCommand : NoArgumentCommand
+public class StatusCommand : FromTillNoArgumentCommand
 {
-    public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler)
+    public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler, ICommandFlag[] flags) : base(flags)
     {
         _transactionReader = transactionReader;
         _userOutputHandler = userOutputHandler;
@@ -11,7 +12,7 @@ public class StatusCommand : NoArgumentCommand
 
     public override void Execute()
     {
-        var transactions = _transactionReader.ReadAllTransactions();
+        var transactions = _transactionReader.ReadTransactionsInRange(_from, _till);
 
         if (!transactions.Any())
         {

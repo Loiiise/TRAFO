@@ -10,7 +10,8 @@ public class HelpCommandTests
     public void HelpCommandHasOutputWhenExecuted()
     {
         var outputHandler = new MockBasicOutputHandler();
-        var command = new HelpCommand(outputHandler);
+        var commandMetaData = new MockMetaData();
+        var command = new HelpCommand(outputHandler, commandMetaData);
 
         outputHandler.OutputQueue.ShouldBeEmpty();
 
@@ -22,7 +23,8 @@ public class HelpCommandTests
     public void HelpCommandHasTheSameOutputEveryTime()
     {
         var outputHandler = new MockBasicOutputHandler();
-        var command = new HelpCommand(outputHandler);
+        var commandMetaData = new MockMetaData();
+        var command = new HelpCommand(outputHandler, commandMetaData);
 
         outputHandler.OutputQueue.ShouldBeEmpty();
 
