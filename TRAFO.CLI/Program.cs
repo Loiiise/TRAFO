@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TRAFO.IO.Command;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -33,6 +34,9 @@ internal class Program
         builder.Services.AddSingleton<ITransactionWriter>(database);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
 
+        builder.Services.AddSingleton<IFlagMetaData, FlagMetaData>();
+
+        builder.Services.AddSingleton<ICommandFlagFactory, CommandFlagFactory>();
         builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
         
         builder.Services.AddHostedService(services => new UserCommandHandler(

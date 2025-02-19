@@ -28,6 +28,8 @@ public class CommandFlagFactory : ICommandFlagFactory
 
     private bool AllFromStringsSafe(string[] values, [MaybeNullWhen(false), NotNullWhen(true)] out ICommandFlag[] flags, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
     {
+        values = RemoveEmptyValuesAndWhiteSpaces(values);
+
         if (!values.Any())
         {
             exception = null;
@@ -105,4 +107,10 @@ public class CommandFlagFactory : ICommandFlagFactory
         exception = isDateTime ? null : new ArgumentException($"{dateTimeString} could not be parsed as a date.");
         return isDateTime;
     }
+
+    private string[] RemoveEmptyValuesAndWhiteSpaces(string[] array)
+        =>array
+            .Where(s => s != null && s != string.Empty && s != "")
+            .Select(s => s.Trim())
+            .ToArray();    
 }

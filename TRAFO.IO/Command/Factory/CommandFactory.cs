@@ -65,7 +65,7 @@ public class CommandFactory : ICommandFactory
         int i = 1;
 
         List<string> args = new();
-        while (!arguments[i].StartsWith(_commandFlagFactory.FlagIndicator))
+        while (i < arguments.Length && !arguments[i].StartsWith(_commandFlagFactory.FlagIndicator))
         {
             args.Add(arguments[i++]);
         }
