@@ -13,7 +13,11 @@ public abstract class FromTillCommand : Command
         _till = tillFlags.Any() ? tillFlags.First().Value : null;
     }
 
-    protected override sealed bool IsSupported(ICommandFlag flag) => flag is FromFlag or TillFlag;
+    protected override sealed bool IsSupported(ICommandFlag flag) => flag is FromFlag or TillFlag || AdditionalSupported();
+    /// <summary>
+    /// If an implementation of <see cref="FromTillCommand"/> has supports other flags too, they can add them here.
+    /// </summary>
+    protected virtual bool AdditionalSupported() => false;
 
     protected DateTime? _from { get; private init; }
     protected DateTime? _till { get; private init; }

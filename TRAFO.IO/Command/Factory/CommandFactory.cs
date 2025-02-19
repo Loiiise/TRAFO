@@ -70,6 +70,7 @@ public class CommandFactory : ICommandFactory
         nameof(HelpCommand) => new HelpCommand(_userOutputHandler, _commandMetaData),
         nameof(LoadTransactionFileCommand) => new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, args, flags),
         nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater, flags),
+        nameof(ReportCommand) => new ReportCommand(_transactionReader, _userOutputHandler, flags),
         nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler, flags),
         nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler, flags),
         _ => throw new NotImplementedException(),
