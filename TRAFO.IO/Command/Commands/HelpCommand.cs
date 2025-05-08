@@ -4,7 +4,7 @@ namespace TRAFO.IO.Command;
 
 public class HelpCommand : Command
 {
-    public HelpCommand(IBasicUserOutputHandler userOutputHandler, ICommandMetaData commandMetaData) : base(Array.Empty<string>(), Array.Empty<ICommandFlag>())
+    public HelpCommand(IBasicUserOutputHandler userOutputHandler, ICommandMetaData commandMetaData) : base(Array.Empty<ICommandFlag>())
     {
         _userOutputHandler = userOutputHandler;
         _commandMetaData = commandMetaData;
@@ -22,7 +22,6 @@ public class HelpCommand : Command
 
     protected override void ValidateInternally() { }
     protected override bool IsSupported(ICommandFlag flag) => false;
-    protected override int _expectedAmountOfArguments =>0;
 
     private readonly IBasicUserOutputHandler _userOutputHandler;
     private readonly ICommandMetaData _commandMetaData;

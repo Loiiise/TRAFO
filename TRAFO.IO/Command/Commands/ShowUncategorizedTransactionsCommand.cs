@@ -3,7 +3,7 @@ using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
 
-public class ShowUncategorizedTransactionsCommand : FromTillNoArgumentCommand
+public class ShowUncategorizedTransactionsCommand : FromTillCommand
 {
     public ShowUncategorizedTransactionsCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler, ICommandFlag[] flags) : base(flags)
     {
@@ -26,11 +26,13 @@ public class ShowUncategorizedTransactionsCommand : FromTillNoArgumentCommand
             return;
         }
 
-        for (int i = 0; i < totalCount; ++i) 
+        for (int i = 0; i < totalCount; ++i)
         {
             _userOutputHandler.GiveUserOutput($"({i}/{totalCount}) - {uncategorizedTransactions[i].ToString()}");
         }
     }
+
+    protected override void ValidateInternally() { }
 
     private readonly ITransactionReader _transactionReader;
     private readonly IBasicUserOutputHandler _userOutputHandler;

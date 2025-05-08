@@ -4,7 +4,7 @@ namespace TRAFO.IO.Command;
 
 public abstract class FromTillCommand : Command
 {
-    protected FromTillCommand(string[] arguments, ICommandFlag[] flags) : base(arguments, flags)
+    protected FromTillCommand(ICommandFlag[] flags) : base(flags)
     {
         var fromFlags = flags.Where(f => f is FromFlag).Cast<FromFlag>();
         var tillFlags = flags.Where(f => f is TillFlag).Cast<TillFlag>();

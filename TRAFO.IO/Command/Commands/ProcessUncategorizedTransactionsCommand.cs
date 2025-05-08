@@ -5,7 +5,7 @@ using TRAFO.IO.TransactionWriting;
 
 namespace TRAFO.IO.Command;
 
-public class ProcessUncategorizedTransactionsCommand : FromTillNoArgumentCommand
+public class ProcessUncategorizedTransactionsCommand : FromTillCommand
 {
     public ProcessUncategorizedTransactionsCommand(
         IBasicUserInputHandler userInputHandler,
@@ -49,6 +49,8 @@ public class ProcessUncategorizedTransactionsCommand : FromTillNoArgumentCommand
             }
         }
     }
+
+    protected override void ValidateInternally() { }
 
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly ICategoryReader _categoryReader;

@@ -2,7 +2,7 @@
 using TRAFO.IO.TransactionReading;
 
 namespace TRAFO.IO.Command;
-public class StatusCommand : FromTillNoArgumentCommand
+public class StatusCommand : FromTillCommand
 {
     public StatusCommand(ITransactionReader transactionReader, IBasicUserOutputHandler userOutputHandler, ICommandFlag[] flags) : base(flags)
     {
@@ -23,10 +23,12 @@ public class StatusCommand : FromTillNoArgumentCommand
         var transactionCount = transactions.Count();
         var categorizedTransactionCount = transactions.Where(t => t.PrimairyLabel is not null).Count();
         var oldestUncategorized = transactions.Where(t => t.PrimairyLabel is null).MinBy(t => t.Timestamp)!;
-        
+
         _userOutputHandler.GiveUserOutput($"You categorized {categorizedTransactionCount}/{transactionCount} transactions.");
         _userOutputHandler.GiveUserOutput($"The oldest uncategorized transaction is from {oldestUncategorized.Timestamp}");
     }
+
+    protected override void ValidateInternally() { }
 
     private readonly ITransactionReader _transactionReader;
     private readonly IBasicUserOutputHandler _userOutputHandler;

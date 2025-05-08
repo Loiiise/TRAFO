@@ -5,7 +5,7 @@ using TRAFO.Logic;
 
 namespace TRAFO.IO.Command;
 
-public class ReportCommand : FromTillNoArgumentCommand
+public class ReportCommand : FromTillCommand
 {
     public ReportCommand(ITransactionReader transactionReader, IBasicUserOutputHandler outputHandler, ICommandFlag[] flags) : base(flags)
     {
@@ -50,6 +50,8 @@ public class ReportCommand : FromTillNoArgumentCommand
             _outputHandler.GiveUserOutput($"{category}: {Transaction.ShowAmount(totalSpendingInCategory, currency)} {currency}");
         }
     }
+
+    protected override void ValidateInternally() { }
 
     private readonly ITransactionReader _transactionReader;
     private readonly IBasicUserOutputHandler _outputHandler;
