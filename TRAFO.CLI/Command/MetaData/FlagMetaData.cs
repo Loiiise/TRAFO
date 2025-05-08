@@ -1,6 +1,8 @@
-﻿namespace TRAFO.IO.Command.Flags;
+﻿using TRAFO.IO.Command.Flags;
 
-public class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
+namespace TRAFO.CLI.Command.MetaData;
+
+internal class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
 {
     protected override FlagConfiguration[] _commandConfigurations => new[]
     {

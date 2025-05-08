@@ -1,26 +1,33 @@
 ﻿using Microsoft.Extensions.Hosting;
+using TRAFO.CLI.Command;
+using TRAFO.CLI.Command.Factory;
+using TRAFO.CLI.Command.MetaData;
 using TRAFO.IO.Command;
 
 namespace TRAFO.CLI;
 internal class UserCommandHandler : BackgroundService
 {
     public UserCommandHandler(
-        ICommandFactory commandFactory,
+        ICommandStringFactory commandStringFactory,
         IBasicUserInputHandler basicUserInputHandler,
         IUserCommunicationHandler userCommunicationHandler,
+        IBasicUserOutputHandler userOutputHandler,
+        ICommandMetaData commandMetaData,
         string[] initialArguments)
     {
         _initialArguments = initialArguments;
-        _commandFactory = commandFactory;
+        _commandStringFactory = commandStringFactory;
         _basicUserInputHandler = basicUserInputHandler;
         _userCommunicationHandler = userCommunicationHandler;
+        _userOutputHandler = userOutputHandler;
+        _commandMetaData = commandMetaData;
     }
 
     private void ExecuteUserCommand(string line) => ExecuteUserCommand(
-        () => (_commandFactory.TryFromString(line, out var command), command),
+        () => (_commandStringFactory.TryFromString(line, out var command), command),
         line);
     private void ExecuteUserCommand(string[] arguments) => ExecuteUserCommand(
-        () => (_commandFactory.TryFromArguments(arguments, out var command), command),
+        () => (_commandStringFactory.TryFromArguments(arguments, out var command), command),
         string.Join(' ', arguments));
 
     private void ExecuteUserCommand(Func<(bool, ICommand?)> tryGetCommand, string stringfiedRawObject)
@@ -28,14 +35,15 @@ internal class UserCommandHandler : BackgroundService
         _userCommunicationHandler.PromptScopeUp("CommandGenerating");
 
         (var commandReceived, var command) = tryGetCommand();
-        if (commandReceived && command is not null)
+
+        // Fall back to the help command
+        if (!commandReceived || command is null)
         {
-            _userCommunicationHandler.PromptScopeDown();
-            ExecuteUserCommand(command);
-            return;
+            command = new HelpCommand(_userOutputHandler, _commandMetaData);
         }
 
-        _userCommunicationHandler.TerminateTask($"Failed to parse \"{stringfiedRawObject}\"");
+        _userCommunicationHandler.PromptScopeDown();
+        ExecuteUserCommand(command);
     }
 
     private void ExecuteUserCommand(ICommand command)
@@ -74,7 +82,9 @@ internal class UserCommandHandler : BackgroundService
     });
 
     private readonly string[] _initialArguments;
-    private readonly ICommandFactory _commandFactory;
+    private readonly ICommandStringFactory _commandStringFactory;
     private readonly IBasicUserInputHandler _basicUserInputHandler;
     private readonly IUserCommunicationHandler _userCommunicationHandler;
+    private readonly IBasicUserOutputHandler _userOutputHandler;
+    private readonly ICommandMetaData _commandMetaData;
 }
