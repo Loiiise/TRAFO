@@ -22,9 +22,6 @@ internal class HelpCommand : IO.Command.Command
         }
     }
 
-    protected override void ValidateInternally() { }
-    protected override bool IsSupported(ICommandFlag flag) => false;
-
     private readonly IBasicUserOutputHandler _userOutputHandler;
     private readonly ICommandMetaData _commandMetaData;
 }

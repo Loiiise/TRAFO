@@ -50,8 +50,6 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
         }
     }
 
-    protected override void ValidateInternally() { }
-
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly ICategoryReader _categoryReader;
     private readonly ITransactionReader _transactionReader;

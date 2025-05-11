@@ -33,14 +33,6 @@ public class LoadTransactionFileCommand : FromTillCommand
         _transactionWriter.WriteTransactions(transactions);
     }
 
-    protected override void ValidateInternally()
-    {
-        if (!File.Exists(FilePathArgument.Value))
-        {
-            throw new FileNotFoundException("File not found: " + FilePathArgument.Value);
-        }
-    }
-
     private readonly ITransactionStringReader _transactionStringReader;
     private readonly IParser _parser;
     private readonly ICategorizator[] _categorizators;

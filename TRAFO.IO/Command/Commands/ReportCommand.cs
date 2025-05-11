@@ -51,8 +51,6 @@ public class ReportCommand : FromTillCommand
         }
     }
 
-    protected override void ValidateInternally() { }
-
     private readonly ITransactionReader _transactionReader;
     private readonly IBasicUserOutputHandler _outputHandler;
 }
