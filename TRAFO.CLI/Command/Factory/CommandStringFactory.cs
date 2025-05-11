@@ -68,7 +68,7 @@ internal class CommandStringFactory
             List<ICommandArgument> commandArguments = new();
             while (i < arguments.Length && !arguments[i].StartsWith(_commandFlagStringFactory.FlagIndicator))
             {
-                var commandArgument = _commandArgumentFactory.GetArgument(arguments[i++]);
+                var commandArgument = _commandArgumentFactory.GetArgument(commandName, arguments[i++]);
                 commandArguments.Add(commandArgument);
             }
 
