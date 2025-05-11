@@ -16,7 +16,7 @@ public interface ICommandStringFactory
     bool TryFromCommandNameAndArguments(string commandName, string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command);
 }
 
-internal class CommandStringFactory
+internal class CommandStringFactory : ICommandStringFactory
 {
     public CommandStringFactory(
         ICommandFactory commandFactory,
@@ -30,22 +30,22 @@ internal class CommandStringFactory
         _commandMetaData = commandMetaData;
     }
 
-    internal ICommand FromString(string input) => FromArguments(input.Split(' ').ToArray());
+    public ICommand FromString(string input) => FromArguments(input.Split(' ').ToArray());
 
-    internal ICommand FromArguments(string[] arguments)
+    public ICommand FromArguments(string[] arguments)
         => FromArgumentsSafe(arguments, out var command, out var exception)
         ? command
         : throw exception;
 
-    internal ICommand FromCommandNameAndArguments(string commandName, string[] arguments)
+    public ICommand FromCommandNameAndArguments(string commandName, string[] arguments)
         => FromArguments(arguments.Prepend(commandName).ToArray());
 
-    internal bool TryFromString(string input, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command) => TryFromArguments(input.Split(' ').ToArray(), out command);
+    public bool TryFromString(string input, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command) => TryFromArguments(input.Split(' ').ToArray(), out command);
 
-    internal bool TryFromArguments(string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
+    public bool TryFromArguments(string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
         => FromArgumentsSafe(arguments, out command, out var _);
 
-    internal bool TryFromCommandNameAndArguments(string commandName, string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
+    public bool TryFromCommandNameAndArguments(string commandName, string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command)
         => TryFromArguments(arguments.Prepend(commandName).ToArray(), out command);
 
     protected bool FromArgumentsSafe(string[] arguments, [MaybeNullWhen(false), NotNullWhen(true)] out ICommand command, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)

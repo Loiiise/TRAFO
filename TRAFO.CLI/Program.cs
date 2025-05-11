@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TRAFO.CLI.Command.Factory;
+using TRAFO.CLI.Command.MetaData;
 using TRAFO.IO.Command;
-using TRAFO.IO.Command.Flags;
+using TRAFO.IO.Command.Factory;
 using TRAFO.IO.Database;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
-using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Categorization.Predicates;
 using TRAFO.Parsing;
@@ -34,15 +35,22 @@ internal class Program
         builder.Services.AddSingleton<ITransactionWriter>(database);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
 
+        builder.Services.AddSingleton<ICommandMetaData, CommandMetaData>();
         builder.Services.AddSingleton<IFlagMetaData, FlagMetaData>();
 
-        builder.Services.AddSingleton<ICommandFlagFactory, CommandFlagFactory>();
         builder.Services.AddSingleton<ICommandFactory, CommandFactory>();
-        
+        builder.Services.AddSingleton<ICommandArgumentFactory, CommandArgumentFactory>();
+        builder.Services.AddSingleton<ICommandFlagFactory, CommandFlagFactory>();
+
+        builder.Services.AddSingleton<ICommandFlagStringFactory, CommandFlagStringFactory>();
+        builder.Services.AddSingleton<ICommandStringFactory, CommandStringFactory>();
+
         builder.Services.AddHostedService(services => new UserCommandHandler(
-            services.GetService<ICommandFactory>()!,
+            services.GetService<ICommandStringFactory>()!,
             services.GetService<IBasicUserInputHandler>()!,
             services.GetService<IUserCommunicationHandler>()!,
+            services.GetService<IBasicUserOutputHandler>()!,
+            services.GetService<ICommandMetaData>()!,
             args
             ));
 
