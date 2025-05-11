@@ -5,7 +5,7 @@ using TRAFO.IO.Command.Arguments;
 
 namespace TRAFO.CLI.Command.Factory;
 
-internal interface ICommandStringFactory
+public interface ICommandStringFactory
 {
     ICommand FromString(string input);
     ICommand FromArguments(string[] arguments);

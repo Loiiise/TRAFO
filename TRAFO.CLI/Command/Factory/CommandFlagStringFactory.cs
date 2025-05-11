@@ -5,7 +5,7 @@ using TRAFO.IO.Command.Flags;
 
 namespace TRAFO.CLI.Command.Factory;
 
-internal interface ICommandFlagStringFactory
+public interface ICommandFlagStringFactory
 {
     ICommandFlag FromString(string value);
     ICommandFlag FromStrings(string[] values);
@@ -13,7 +13,7 @@ internal interface ICommandFlagStringFactory
     bool TryFromString(string value, [MaybeNullWhen(false), NotNullWhen(true)] out ICommandFlag flag);
     bool TryFromStrings(string[] values, [MaybeNullWhen(false), NotNullWhen(true)] out ICommandFlag flag);
 
-    ICommandFlag[] AllFromString(string value);
+    public ICommandFlag[] AllFromString(string value);
     ICommandFlag[] AllFromStrings(string[] values);
 
     bool TryAllFromString(string value, [MaybeNullWhen(false), NotNullWhen(true)] out ICommandFlag[] flags);
@@ -22,7 +22,7 @@ internal interface ICommandFlagStringFactory
     string FlagIndicator { get; }
 }
 
-internal class CommandFlagStringFactory : ICommandFlagStringFactory
+public class CommandFlagStringFactory : ICommandFlagStringFactory
 {
     public CommandFlagStringFactory(IFlagMetaData flagMetaData, ICommandFlagFactory commandFlagFactory)
     {

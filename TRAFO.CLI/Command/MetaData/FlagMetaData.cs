@@ -2,7 +2,7 @@
 
 namespace TRAFO.CLI.Command.MetaData;
 
-internal class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
+public class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
 {
     protected override FlagConfiguration[] _commandConfigurations => new[]
     {

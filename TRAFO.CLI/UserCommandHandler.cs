@@ -50,12 +50,6 @@ internal class UserCommandHandler : BackgroundService
     {
         _userCommunicationHandler.PromptScopeUp(nameof(command));
 
-        if (!command.Validate(out var validationException))
-        {
-            _userCommunicationHandler.TerminateTask($"Command validation failed: {validationException.Message}");
-            return;
-        }
-
         if (!command.TryExecute(out var executionException))
         {
             _userCommunicationHandler.TerminateTask($"Command execution failed: {executionException.Message}");

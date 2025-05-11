@@ -1,11 +1,11 @@
 ﻿namespace TRAFO.CLI.Command.MetaData;
 
-internal abstract record CommandOrFlagConfiguration(string Name, string Tag, string Description);
+public abstract record CommandOrFlagConfiguration(string Name, string Tag, string Description);
 
-internal record CommandConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description) { }
-internal record FlagConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description) { }
+public record CommandConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description) { }
+public record FlagConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description) { }
 
-internal interface IMetaData
+public interface IMetaData
 {
     IEnumerable<(string, string, string)> AllNamesTagsAndDescriptions();
     IEnumerable<(string, string)> AllTagsAndDescriptions();
@@ -17,14 +17,14 @@ internal interface IMetaData
     string GetDescriptionFromName(string commandName);
 }
 
-internal interface IMetaData<T> : IMetaData
+public interface IMetaData<T> : IMetaData
     where T : CommandOrFlagConfiguration
 { }
 
-internal interface ICommandMetaData : IMetaData<CommandConfiguration> { }
-internal interface IFlagMetaData : IMetaData<FlagConfiguration> { }
+public interface ICommandMetaData : IMetaData<CommandConfiguration> { }
+public interface IFlagMetaData : IMetaData<FlagConfiguration> { }
 
-internal abstract class MetaData<T> : IMetaData<T>
+public abstract class MetaData<T> : IMetaData<T>
     where T : CommandOrFlagConfiguration
 {
     public IEnumerable<(string, string, string)> AllNamesTagsAndDescriptions() => _commandConfigurations.Select(c => (c.Name, c.Tag, c.Description));

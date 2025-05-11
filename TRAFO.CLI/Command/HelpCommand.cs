@@ -4,9 +4,9 @@ using TRAFO.IO.Command.Flags;
 
 namespace TRAFO.CLI.Command;
 
-internal class HelpCommand : IO.Command.Command
+public class HelpCommand : IO.Command.Command
 {
-    internal HelpCommand(IBasicUserOutputHandler userOutputHandler, ICommandMetaData commandMetaData) : base(Array.Empty<ICommandFlag>())
+    public HelpCommand(IBasicUserOutputHandler userOutputHandler, ICommandMetaData commandMetaData) : base(Array.Empty<ICommandFlag>())
     {
         _userOutputHandler = userOutputHandler;
         _commandMetaData = commandMetaData;

@@ -1,7 +1,7 @@
 ﻿using TRAFO.IO.Command;
 
 namespace TRAFO.IO.Tests;
-internal class MockBasicOutputHandler : IBasicUserOutputHandler
+public class MockBasicOutputHandler : IBasicUserOutputHandler
 {
     public void GiveUserOutput(string output)
     {
