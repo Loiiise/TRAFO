@@ -1,10 +1,12 @@
 ﻿using Shouldly;
+using TRAFO.CLI.Command.Factory;
+using TRAFO.CLI.Command.MetaData;
 using TRAFO.IO.Command;
 using TRAFO.IO.Command.Flags;
 
 namespace TRAFO.IO.Tests.Command;
 
-public class CommandFlagFactoryTests
+public class CommandFlagStringFactoryTests
 {
     [Fact]
     public void EmptyFlagStringShouldReturnEmptyCollection()
@@ -51,7 +53,8 @@ public class CommandFlagFactoryTests
         tillFlag.Value.Day.ShouldBe(tillDateTime.Day);
     }
 
-    private ICommandFlagFactory GetFactory() => new CommandFlagFactory(new FlagMetaData());
+    private ICommandFlagStringFactory GetFactory() 
+        => new CommandFlagStringFactory(new FlagMetaData(), new CommandFlagFactory());
 
     public static IEnumerable<object[]> GenerateDateTimes()
         => new DateTime[]

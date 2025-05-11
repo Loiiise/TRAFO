@@ -5,7 +5,7 @@ using TRAFO.Logic;
 
 namespace TRAFO.IO.Command;
 
-public class ReportCommand : FromTillNoArgumentCommand
+public class ReportCommand : FromTillCommand
 {
     public ReportCommand(ITransactionReader transactionReader, IBasicUserOutputHandler outputHandler, ICommandFlag[] flags) : base(flags)
     {

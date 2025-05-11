@@ -1,6 +1,6 @@
 ﻿using Shouldly;
 using System.Text;
-using TRAFO.IO.Command;
+using TRAFO.CLI.Command;
 
 namespace TRAFO.IO.Tests.Command;
 

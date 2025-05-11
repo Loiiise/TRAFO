@@ -1,4 +1,6 @@
-﻿namespace TRAFO.IO.Command.Flags;
+﻿using TRAFO.IO.Command.Flags;
+
+namespace TRAFO.CLI.Command.MetaData;
 
 public class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
 {

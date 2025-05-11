@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.Logic.Tests", "Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.IO.Tests", "Tests\TRAFO.IO.Tests\TRAFO.IO.Tests.csproj", "{2D34E228-9B31-4889-A375-BF742CFD8F4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAFO.CLI.Tests", "Tests\TRAFO.CLI.Tests\TRAFO.CLI.Tests.csproj", "{1A7FF7FD-318E-457A-9973-5774CCD42EF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{2D34E228-9B31-4889-A375-BF742CFD8F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D34E228-9B31-4889-A375-BF742CFD8F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D34E228-9B31-4889-A375-BF742CFD8F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A7FF7FD-318E-457A-9973-5774CCD42EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7FF7FD-318E-457A-9973-5774CCD42EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7FF7FD-318E-457A-9973-5774CCD42EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7FF7FD-318E-457A-9973-5774CCD42EF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
