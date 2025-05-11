@@ -1,4 +1,4 @@
-﻿using TRAFO.IO.Command;
+﻿using TRAFO.CLI.Command.MetaData;
 
 namespace TRAFO.IO.Tests.Command;
 internal record MockConfiguration(string Name, string Tag, string Description) : CommandOrFlagConfiguration(Name, Tag, Description);

@@ -1,4 +1,5 @@
-﻿using TRAFO.IO.Command.Flags;
+﻿using TRAFO.IO.Command.Arguments;
+using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
 using TRAFO.Logic.Categorization;
@@ -7,7 +8,9 @@ using TRAFO.Parsing;
 namespace TRAFO.IO.Command;
 public class LoadTransactionFileCommand : FromTillCommand
 {
-    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, string[] arguments, ICommandFlag[] flags) : base(arguments, flags)
+    public required FilePathArgument FilePathArgument { get; init; }
+
+    public LoadTransactionFileCommand(ITransactionStringReader transactionStringReader, IParser parser, ICategorizator[] categorizators, ITransactionWriter transactionWriter, ICommandFlag[] flags) : base(flags)
     {
         _transactionStringReader = transactionStringReader;
         _parser = parser;
@@ -15,11 +18,9 @@ public class LoadTransactionFileCommand : FromTillCommand
         _transactionWriter = transactionWriter;
     }
 
-    protected override int _expectedAmountOfArguments => 1;
-
     public override void Execute()
     {
-        var transactionStrings = _transactionStringReader.ReadAllLines(Arguments[0], true);
+        var transactionStrings = _transactionStringReader.ReadAllLines(FilePathArgument.Value, true);
         var transactions = _parser.Parse(transactionStrings);
             
         if (_from is not null) transactions = transactions.Where(t => t.Timestamp >= _from);
@@ -30,14 +31,6 @@ public class LoadTransactionFileCommand : FromTillCommand
             transactions = categorizator.ApplyPredicates(transactions, Categories.GetDefaultPredicates());
         }
         _transactionWriter.WriteTransactions(transactions);
-    }
-
-    protected override void ValidateInternally()
-    {
-        if (!File.Exists(Arguments[0]))
-        {
-            throw new FileNotFoundException("File not found: " + Arguments[0]);
-        }
     }
 
     private readonly ITransactionStringReader _transactionStringReader;

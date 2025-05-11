@@ -1,4 +1,6 @@
-﻿namespace TRAFO.IO.Command;
+﻿using TRAFO.IO.Command;
+
+namespace TRAFO.CLI.Command.MetaData;
 
 internal class CommandMetaData : MetaData<CommandConfiguration>, ICommandMetaData
 {

@@ -1,4 +1,4 @@
-﻿namespace TRAFO.IO.Command;
+﻿namespace TRAFO.CLI.Command.MetaData;
 
 public abstract record CommandOrFlagConfiguration(string Name, string Tag, string Description);
 
