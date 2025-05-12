@@ -3,5 +3,5 @@
 namespace TRAFO.IO.BalanceReading;
 public interface IBalanceReader
 {
-    Balance ReadBalance(string identifier);
+    IEnumerable<Balance> ReadBalances(string identifier);
 }
