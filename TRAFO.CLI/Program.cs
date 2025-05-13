@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using TRAFO.CLI.Command.Factory;
 using TRAFO.CLI.Command.MetaData;
+using TRAFO.IO.BalanceReading;
+using TRAFO.IO.BalanceWriting;
 using TRAFO.IO.Command;
 using TRAFO.IO.Command.Factory;
 using TRAFO.IO.Database;
@@ -32,6 +34,8 @@ internal class Program
         builder.Services.AddSingleton<IDatabase>(database);
         builder.Services.AddSingleton<ITransactionReader>(database);
         builder.Services.AddSingleton<ICategoryReader>(database);
+        builder.Services.AddSingleton<IBalanceReader>(database);
+        builder.Services.AddSingleton<IBalanceWriter>(database);
         builder.Services.AddSingleton<ITransactionWriter>(database);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
 
