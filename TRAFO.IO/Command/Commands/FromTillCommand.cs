@@ -1,4 +1,5 @@
 ﻿using TRAFO.IO.Command.Flags;
+using TRAFO.Logic.Extensions;
 
 namespace TRAFO.IO.Command;
 
@@ -6,13 +7,13 @@ public abstract class FromTillCommand : Command
 {
     protected FromTillCommand(ICommandFlag[] flags) : base(flags)
     {
-        var fromFlags = flags.Where(f => f is FromFlag).Cast<FromFlag>();
-        var tillFlags = flags.Where(f => f is TillFlag).Cast<TillFlag>();
-
-        _from = fromFlags.Any() ? fromFlags.First().Value : null;
-        _till = tillFlags.Any() ? tillFlags.First().Value : null;
+        FromFlag = flags.GetFirstOrDefault<FromFlag>();
+        TillFlag = flags.GetFirstOrDefault<TillFlag>();
     }
 
-    protected DateTime? _from { get; private init; }
-    protected DateTime? _till { get; private init; }
+    protected FromFlag? FromFlag { get; private init; }
+    protected TillFlag? TillFlag { get; private init; }
+
+    protected DateTime? _from { get => FromFlag == null ? null : FromFlag.Value; }
+    protected DateTime? _till { get => TillFlag == null ? null : TillFlag.Value; }
 }

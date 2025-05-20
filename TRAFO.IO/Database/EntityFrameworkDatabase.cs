@@ -42,6 +42,17 @@ public class EntityFrameworkDatabase : IDatabase
         _context.SaveChanges();
     }
 
+    public IEnumerable<Balance> ReadBalances(string identifier)
+    {
+        return _context.Balances.Where(b => b.ThisPartyIdentifier == identifier).Select(FromDatabaseEntry);
+    }
+
+    public void WriteBalance(Balance balance)
+    {
+        _context.Balances.Add(ToDatabaseEntry(balance));
+        _context.SaveChanges();
+    }
+
     public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
     public void UpdatePrimairyLabel(Transaction transaction)
     {
@@ -67,6 +78,17 @@ public class EntityFrameworkDatabase : IDatabase
         throw new NotImplementedException();
     }
 
+    private BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
+    {
+        return new BalanceDatabaseEntry
+        {
+            Amount = balance.Amount,
+            Currency = balance.Currency,
+            ThisPartyIdentifier = balance.ThisPartyIdentifier,
+            Timestamp = balance.Timestamp,
+        };
+    }
+
     private TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
         return new TransacionDatabaseEntry
@@ -83,6 +105,17 @@ public class EntityFrameworkDatabase : IDatabase
             Description = transaction.Description ?? string.Empty,
             RawData = transaction.RawData,
             PrimairyLabel = transaction.PrimairyLabel ?? string.Empty,
+        };
+    }
+
+    private Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
+    {
+        return new Balance
+        {
+            Amount = balance.Amount,
+            Currency = balance.Currency,
+            ThisPartyIdentifier = balance.ThisPartyIdentifier,
+            Timestamp = balance.Timestamp,
         };
     }
 
@@ -137,9 +170,19 @@ internal class EntityFrameworkDatabaseContext : DbContext
     }
 
     private string _databasePath { get; }
+    public DbSet<BalanceDatabaseEntry> Balances { get; set; }
     public DbSet<TransacionDatabaseEntry> Transactions { get; set; }
 }
 
+
+internal sealed class BalanceDatabaseEntry
+{
+    public Guid Id { get; set; } = new();
+    public required long Amount { get; set; }
+    public required Currency Currency { get; set; }
+    public required string ThisPartyIdentifier { get; set; }
+    public required DateTime Timestamp { get; set; }
+}
 
 internal sealed class TransacionDatabaseEntry
 {

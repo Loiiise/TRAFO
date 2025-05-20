@@ -28,6 +28,11 @@ public class CommandFlagFactory : ICommandFlagFactory
         {
             flag = new TillFlag { Value = tillFlagDateTime };
         }
+        else if (flagName == nameof(DateFlag) &&
+            ParseDateTimeSafe(flagValue, out var dateTime, out exception))
+        {
+            flag = new DateFlag { Value = dateTime };
+        }
         else if (exception != null)
         {
             exception = new ArgumentException($"{flagName} is not a valid flag.");

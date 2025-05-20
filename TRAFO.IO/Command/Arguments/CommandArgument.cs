@@ -1,10 +1,19 @@
-﻿namespace TRAFO.IO.Command.Arguments;
+﻿using TRAFO.Logic;
+
+namespace TRAFO.IO.Command.Arguments;
 
 public interface ICommandArgument { }
 
-public abstract class CommandArgument<T> : ICommandArgument
+public abstract record CommandArgument<T> : ICommandArgument
 {
     public required T Value { get; set; }
 }
 
-public class FilePathArgument : CommandArgument<string> { }
+public abstract record StringArgument : CommandArgument<string> { }
+public abstract record LongArgument : CommandArgument<long> { }
+
+
+public record FilePathArgument : StringArgument { }
+public record AmountArgument : LongArgument { }
+public record CurrencyArgument : CommandArgument<Currency> { }
+public record IdentifierArgument : StringArgument { }
