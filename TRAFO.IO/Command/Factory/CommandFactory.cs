@@ -2,7 +2,6 @@
 using TRAFO.IO.BalanceReading;
 using TRAFO.IO.BalanceWriting;
 using TRAFO.IO.Command.Arguments;
-using TRAFO.IO.Command.Commands;
 using TRAFO.IO.Command.Flags;
 using TRAFO.IO.TransactionReading;
 using TRAFO.IO.TransactionWriting;
@@ -53,7 +52,13 @@ public class CommandFactory : ICommandFactory
         exception = null;
         command = commandName switch
         {
-            nameof(SetBalanceCommand) =>
+            nameof(GetBalanceCommand) =>
+                args.TryGetFirstOrDefault<IdentifierArgument>(out var identifierArgument) ?
+                    new GetBalanceCommand(_balanceReader, flags) 
+                    { 
+                        IdentifierArgument = identifierArgument,
+                    } : new ArgumentNotFoundCommand(),
+            nameof (SetBalanceCommand) =>
                 args.TryGetFirstOrDefault<AmountArgument>(out var amountArgument) &&
                 args.TryGetFirstOrDefault<CurrencyArgument>(out var currencyArgument) &&
                 args.TryGetFirstOrDefault<IdentifierArgument>(out var identifierArgument) ?
@@ -92,7 +97,6 @@ public class CommandFactory : ICommandFactory
 
         public void Execute() => throw new NotSupportedException();
         public bool TryExecute([MaybeNullWhen(true), NotNullWhen(false)] out Exception exception) => throw new NotSupportedException();
-
     }
 
     private readonly ITransactionStringReader _transactionStringReader;

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using TRAFO.IO.Command.Arguments;
-using TRAFO.IO.Command.Commands;
 using TRAFO.Logic;
 
 namespace TRAFO.IO.Command.Factory;
@@ -25,6 +24,10 @@ public class CommandArgumentFactory : ICommandArgumentFactory
             {
                 Value = argumentValue,
             };
+        }
+        if (commandName == nameof(GetBalanceCommand))
+        {
+            argument = new IdentifierArgument { Value = argumentValue };
         }
         if (commandName == nameof(SetBalanceCommand))
         {

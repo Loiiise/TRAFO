@@ -3,7 +3,7 @@ using TRAFO.IO.Command.Arguments;
 using TRAFO.IO.Command.Flags;
 using TRAFO.Logic;
 
-namespace TRAFO.IO.Command.Commands;
+namespace TRAFO.IO.Command;
 public class SetBalanceCommand : Command
 {
     public required AmountArgument AmountArgument { get; init; }
