@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using TRAFO.IO.Database.Entities;
 using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
 
@@ -21,7 +22,7 @@ public class EntityFrameworkDatabase : IDatabase
     }
 
     public IEnumerable<Transaction> ReadTransactionsInRange(DateTime? from, DateTime? till)
-    { 
+    {
         var transactions = ReadAllTransactions();
 
         if (from is not null) transactions = transactions.Where(t => t.Timestamp >= from);
@@ -172,31 +173,4 @@ internal class EntityFrameworkDatabaseContext : DbContext
     private string _databasePath { get; }
     public DbSet<BalanceDatabaseEntry> Balances { get; set; }
     public DbSet<TransacionDatabaseEntry> Transactions { get; set; }
-}
-
-
-internal sealed class BalanceDatabaseEntry
-{
-    public Guid Id { get; set; } = new();
-    public required long Amount { get; set; }
-    public required Currency Currency { get; set; }
-    public required string ThisPartyIdentifier { get; set; }
-    public required DateTime Timestamp { get; set; }
-}
-
-internal sealed class TransacionDatabaseEntry
-{
-    public Guid Id { get; set; } = new();
-    public required long Amount { get; set; }
-    public required Currency Currency { get; set; }
-    public required string ThisPartyIdentifier { get; set; }
-    public required string ThisPartyName { get; set; }
-    public required string OtherPartyIdentifier { get; set; }
-    public required string OtherPartyName { get; set; }
-    public required DateTime Timestamp { get; set; }
-    public required string PaymentReference { get; set; }
-    public required string BIC { get; set; }
-    public required string Description { get; set; }
-    public required string RawData { get; set; }
-    public required string PrimairyLabel { get; set; }
 }
