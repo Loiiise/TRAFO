@@ -1,5 +1,5 @@
 # Summary
-Current version (0.1) is only meant for internal use. Documentation and instruction on how to use the program will be done in 0.2, but feel free to look around!
+Current version (0.1) is only meant for internal use. Documentation and instruction on how to use the program will be done in 0.3, but feel free to look around!
 
 # Personal note
 This is a hobby project. I know some of the code structures are not optimal, could be more layered or stricter. The point of this project is a pragmatic approach to this problem, a fun project for me to work on and a practical solution to a real life problem people have.
