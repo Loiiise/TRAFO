@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TRAFO.Logic\TRAFO.Logic.csproj" />
+    <ProjectReference Include="..\TRAFO.Repositories\TRAFO.Repositories.csproj" />
+    <ProjectReference Include="..\TRAFO.Services\TRAFO.Services.csproj" />
+  </ItemGroup>
+
+</Project>
