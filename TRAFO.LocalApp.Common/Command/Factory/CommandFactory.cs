@@ -19,7 +19,7 @@ public class CommandFactory : ICommandFactory
         ITransactionReader transactionReader,
         IBalanceReader balanceReader,
         IBalanceWriter balanceWriter,
-        ICategoryReader categoryReader,
+        ILabelReader labelReader,
         ITransactionWriter transactionWriter,
         ITransactionLabelUpdater transactionLabelUpdater,
         IParser parser,
@@ -31,7 +31,7 @@ public class CommandFactory : ICommandFactory
         _transactionReader = transactionReader;
         _balanceReader = balanceReader;
         _balanceWriter = balanceWriter;
-        _categoryReader = categoryReader;
+        _labelReader = labelReader;
         _transactionWriter = transactionWriter;
         _transactionLabelUpdater = transactionLabelUpdater;
         _parser = parser;
@@ -75,7 +75,7 @@ public class CommandFactory : ICommandFactory
                     {
                         FilePathArgument = filePathArgument
                     } : new ArgumentNotFoundCommand(),
-            nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _categoryReader, _transactionReader, _transactionLabelUpdater, flags),
+            nameof(ProcessUncategorizedTransactionsCommand) => new ProcessUncategorizedTransactionsCommand(_userInputHandler, _labelReader, _transactionReader, _transactionLabelUpdater, flags),
             nameof(ReportCommand) => new ReportCommand(_transactionReader, _userOutputHandler, flags),
             nameof(ShowUncategorizedTransactionsCommand) => new ShowUncategorizedTransactionsCommand(_transactionReader, _userOutputHandler, flags),
             nameof(StatusCommand) => new StatusCommand(_transactionReader, _userOutputHandler, flags),
@@ -104,7 +104,7 @@ public class CommandFactory : ICommandFactory
     private readonly ITransactionReader _transactionReader;
     private readonly IBalanceReader _balanceReader;
     private readonly IBalanceWriter _balanceWriter;
-    private readonly ICategoryReader _categoryReader;
+    private readonly ILabelReader _labelReader;
     private readonly ITransactionWriter _transactionWriter;
     private readonly ITransactionLabelUpdater _transactionLabelUpdater;
     private readonly IParser _parser;

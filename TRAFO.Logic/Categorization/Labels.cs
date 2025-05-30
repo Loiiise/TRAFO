@@ -2,17 +2,12 @@
 
 namespace TRAFO.Logic.Categorization;
 
-public static class Categories
+// todo #75: fix
+public static class Labels
 {
     public const string Groceries = nameof(Groceries);
     public const string Rent = nameof(Rent);
 
-
-    public static IEnumerable<string> GetAllCategories() => new string[]
-    {
-        Groceries,
-        Rent,
-    };
 
     public static TransactionPredicate[] GetDefaultPredicates() => new TransactionPredicate[]
     {

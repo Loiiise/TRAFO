@@ -15,7 +15,7 @@ public class ReportCommand : FromTillCommand
 
     public override void Execute()
     {
-        var noPrimairyLabel = "No category";
+        var noPrimairyLabel = "No label";
 
         var primairyLabelToGroupedTransactions = new Dictionary<string, List<Transaction>>();
         primairyLabelToGroupedTransactions[noPrimairyLabel] = new List<Transaction>();
@@ -38,7 +38,7 @@ public class ReportCommand : FromTillCommand
             }
         }
 
-        foreach ((var category, var transactions) in primairyLabelToGroupedTransactions)
+        foreach ((var label, var transactions) in primairyLabelToGroupedTransactions)
         {
             if (!transactions.Any()) continue;
             var currency = transactions.First().Currency;
@@ -47,7 +47,7 @@ public class ReportCommand : FromTillCommand
 
             var totalSpendingInCategory = transactions.Sum(t => t.Amount);
 
-            _outputHandler.GiveUserOutput($"{category}: {Transaction.ShowAmount(totalSpendingInCategory, currency)} {currency}");
+            _outputHandler.GiveUserOutput($"{label}: {Transaction.ShowAmount(totalSpendingInCategory, currency)} {currency}");
         }
     }
 

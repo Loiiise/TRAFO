@@ -28,7 +28,7 @@ public class LoadTransactionFileCommand : FromTillCommand
 
         foreach (var categorizator in _categorizators)
         {
-            transactions = categorizator.ApplyPredicates(transactions, Categories.GetDefaultPredicates());
+            transactions = categorizator.ApplyPredicates(transactions, Labels.GetDefaultPredicates());
         }
         _transactionWriter.WriteTransactions(transactions);
     }

@@ -13,7 +13,11 @@ public class EntityFrameworkDatabase : IDatabase
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
 
-    public IEnumerable<string> GetAllCategories() => Categories.GetAllCategories();
+    public IEnumerable<string> GetAllLabels() => new string[]
+    {
+        Labels.Groceries,
+        Labels.Rent,
+    };
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {

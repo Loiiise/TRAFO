@@ -5,7 +5,7 @@ using TRAFO.Repositories.TransactionWriting;
 
 namespace TRAFO.Repositories.Database;
 public interface IDatabase :
-    ICategoryReader,
+    ILabelReader,
     ITransactionReader,
     ITransactionWriter,
     ITransactionLabelUpdater,
