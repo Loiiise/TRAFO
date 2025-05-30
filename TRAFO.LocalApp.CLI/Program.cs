@@ -4,7 +4,7 @@ using TRAFO.LocalApp.CLI.Command.Factory;
 using TRAFO.LocalApp.CLI.Command.MetaData;
 using TRAFO.LocalApp.Common.Command;
 using TRAFO.LocalApp.Common.Command.Factory;
-using TRAFO.LocalApp.Common.TransactionReading;
+using TRAFO.LocalApp.Common.FileReading;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Categorization.Predicates;
 using TRAFO.Repositories.BalanceReading;
@@ -29,7 +29,7 @@ internal class Program
         builder.Services.AddSingleton<IBasicUserOutputHandler>(consoleUserInputHandler);
 
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
-        builder.Services.AddSingleton<ITransactionStringReader, FileReader>();
+        builder.Services.AddSingleton<ITransactionFileReader, TransactionFileReader>();
         builder.Services.AddSingleton<ICategorizator, PrimairyLabelSetter>();
 
         var database = new EntityFrameworkDatabase();
@@ -64,22 +64,4 @@ internal class Program
 
         host.Run();
     }
-
-    public static void DummyFlowFunction(
-        ITransactionStringReader reader,
-        IParser parser,
-        ICategorizator categorizator,
-        ITransactionWriter writer
-        )
-    {
-        var stringLines = reader.ReadAllLines(string.Empty);
-
-        var transactions = parser.Parse(stringLines);
-
-        categorizator.ApplyPredicates(transactions, Array.Empty<TransactionPredicate>());
-
-        writer.WriteTransactions(transactions);
-    }
-
-
 }

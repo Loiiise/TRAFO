@@ -62,6 +62,7 @@ public class EntityFrameworkDatabase : IDatabase
         */
     }
 
+    // todo #72
     public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
     public void UpdatePrimairyLabel(Transaction transaction)
     {

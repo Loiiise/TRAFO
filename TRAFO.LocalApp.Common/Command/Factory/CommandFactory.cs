@@ -8,14 +8,14 @@ using TRAFO.LocalApp.Common.Command.Flags;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Extensions;
 using TRAFO.Services.Parser;
-using TRAFO.LocalApp.Common.TransactionReading;
+using TRAFO.LocalApp.Common.FileReading;
 
 namespace TRAFO.LocalApp.Common.Command;
 
 public class CommandFactory : ICommandFactory
 {
     public CommandFactory(
-        ITransactionStringReader transactionStringReader,
+        ITransactionFileReader transactionFileReader,
         ITransactionReader transactionReader,
         IBalanceReader balanceReader,
         IBalanceWriter balanceWriter,
@@ -27,7 +27,7 @@ public class CommandFactory : ICommandFactory
         IBasicUserInputHandler userInputHandler,
         IBasicUserOutputHandler userOutputHandler)
     {
-        _transactionStringReader = transactionStringReader;
+        _transactionFileReader = transactionFileReader;
         _transactionReader = transactionReader;
         _balanceReader = balanceReader;
         _balanceWriter = balanceWriter;
@@ -71,7 +71,7 @@ public class CommandFactory : ICommandFactory
                     } : new ArgumentNotFoundCommand(),
             nameof(LoadTransactionFileCommand) =>
                 args.TryGetFirstOrDefault<FilePathArgument>(out var filePathArgument) ?
-                    new LoadTransactionFileCommand(_transactionStringReader, _parser, new[] { _categorizer }, _transactionWriter, flags)
+                    new LoadTransactionFileCommand(_transactionFileReader, new[] { _categorizer }, _transactionWriter, flags)
                     {
                         FilePathArgument = filePathArgument
                     } : new ArgumentNotFoundCommand(),
@@ -100,7 +100,7 @@ public class CommandFactory : ICommandFactory
         public bool TryExecute([MaybeNullWhen(true), NotNullWhen(false)] out Exception exception) => throw new NotSupportedException();
     }
 
-    private readonly ITransactionStringReader _transactionStringReader;
+    private readonly ITransactionFileReader _transactionFileReader;
     private readonly ITransactionReader _transactionReader;
     private readonly IBalanceReader _balanceReader;
     private readonly IBalanceWriter _balanceWriter;
