@@ -38,7 +38,6 @@ public sealed record Transaction
 
     public required string RawData { get; init; }
 
-    public string? PrimairyLabel { get; init; }
     public required string[] Labels { get; init; }
 
     private readonly string? _thisPartyName;

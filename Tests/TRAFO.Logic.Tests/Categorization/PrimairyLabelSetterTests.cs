@@ -5,46 +5,47 @@ using TRAFO.Logic.Dto;
 
 namespace TRAFO.Logic.Tests.Categorization;
 
-public class PrimairyLabelSetterTests
+public class TransactionLabelSetterTests
 {
     [Theory, MemberData(nameof(GenerateLegalTransactions))]
     public void AlwaysTruePredicateIsAlwaysApplied(Transaction transaction)
     {
-        var primairyLabel = "I'm always set";
+        var label = "I'm always set";
         var alwaysTruePredicate = new CustomPredicate()
         {
             Predicate = _ => true,
-            LabelToSet = primairyLabel,
+            LabelToSet = label,
         };
 
         var predicates = new TransactionPredicate[] { alwaysTruePredicate };
-        var primairyLabelSetter = new TransactionLabelSetter();
+        var labelSetter = new TransactionLabelSetter();
 
-        var result = primairyLabelSetter.ApplyPredicates(transaction, predicates);
+        var result = labelSetter.ApplyPredicates(transaction, predicates);
 
-        result.PrimairyLabel.ShouldBe(primairyLabel);
+        result.Labels.ShouldContain(label);
+        result.Labels.ShouldBe(new string[] { label });
     }
 
     [Theory, MemberData(nameof(GenerateLegalTransactions))]
     public void AlwaysFalsePredicatesAreNeverApplied(Transaction transaction)
     {
-        var primairyLabel = "Don't you dare setting me";
+        var label = "Don't you dare setting me";
         var alwaysFalsePredicate = new CustomPredicate()
         {
             Predicate = _ => false,
-            LabelToSet = primairyLabel,
+            LabelToSet = label,
         };
 
         var predicates = new TransactionPredicate[] { alwaysFalsePredicate };
-        var primairyLabelSetter = new TransactionLabelSetter();
+        var labelSetter = new TransactionLabelSetter();
 
-        var result = primairyLabelSetter.ApplyPredicates(transaction, predicates);
+        var result = labelSetter.ApplyPredicates(transaction, predicates);
 
-        result.PrimairyLabel.ShouldBeNull();
+        result.Labels.ShouldBeEmpty();
     }
 
     [Theory, MemberData(nameof(GenerateLegalTransactions))]
-    public void MultiplePassingPredicatesResultsInTheFirstOneBeingApplied(Transaction transaction)
+    public void MultiplePassingPredicatesAreAppliedInOrder(Transaction transaction)
     {
         var labelZero = "Label 0";
         var alwaysLabelZeroPredicate = new CustomPredicate()
@@ -62,15 +63,15 @@ public class PrimairyLabelSetterTests
 
         var zeroFirstPredicates = new TransactionPredicate[] { alwaysLabelZeroPredicate, alwaysLabelOnePredicate };
         var oneFirstPredicates = new TransactionPredicate[] { alwaysLabelOnePredicate, alwaysLabelZeroPredicate };
-        var primairyLabelSetter = new TransactionLabelSetter();
+        var labelSetter = new TransactionLabelSetter();
 
-        var zeroFirstResult = primairyLabelSetter.ApplyPredicates(transaction, zeroFirstPredicates);
-        zeroFirstResult.PrimairyLabel.ShouldBe(labelZero);
-        zeroFirstResult.PrimairyLabel.ShouldNotBe(labelOne);
+        var zeroFirstResult = labelSetter.ApplyPredicates(transaction, zeroFirstPredicates);
+        zeroFirstResult.Labels.ShouldContain(labelZero);
+        zeroFirstResult.Labels.ShouldBe(new string[] { labelZero, labelOne });
 
-        var oneFirstResult = primairyLabelSetter.ApplyPredicates(transaction, oneFirstPredicates);
-        oneFirstResult.PrimairyLabel.ShouldNotBe(labelZero);
-        oneFirstResult.PrimairyLabel.ShouldBe(labelOne);
+        var oneFirstResult = labelSetter.ApplyPredicates(transaction, oneFirstPredicates);
+        zeroFirstResult.Labels.ShouldContain(labelOne);
+        zeroFirstResult.Labels.ShouldBe(new string[] { labelOne, labelZero });
     }
 
     public static IEnumerable<object[]> GenerateLegalTransactions()

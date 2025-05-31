@@ -63,32 +63,6 @@ public class EntityFrameworkDatabase : IDatabase
         */
     }
 
-    // todo #72
-    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
-    public void UpdatePrimairyLabel(Transaction transaction)
-    {
-        // todo #72
-        throw new NotImplementedException();
-        /*
-        if (transaction.PrimairyLabel is null) return;
-
-        var matches = _context.Transactions.Where(t => t.RawData == transaction.RawData);
-
-        if (!matches.Any())
-        {
-            WriteTransaction(transaction);
-            return;
-        }
-        Debug.Assert(matches.Count() == 1);
-
-        var match = matches.First()!;
-        // todo: #72
-        //match.PrimairyLabel = transaction.PrimairyLabel;
-        _context.Transactions.Update(match);
-        _context.SaveChanges();
-        */
-    }
-
     public void UpdateLabels(Transaction transaction)
     {
         // todo #72 or #77

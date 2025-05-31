@@ -32,7 +32,11 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
 
     public override void Execute()
     {
-        var uncategorizedTransactions = _transactionReader.ReadTransactionsInRange(_from, _till).Where(t => t.PrimairyLabel == null);
+        // todo #80
+        var uncategorizedTransactions = 
+            _transactionReader
+                .ReadTransactionsInRange(_from, _till)
+                /*.Where(t => t.PrimairyLabel == null)*/;
 
         foreach (var uncategorizedTransaction in uncategorizedTransactions)
         {

@@ -21,8 +21,14 @@ public class StatusCommand : FromTillCommand
         }
 
         var transactionCount = transactions.Count();
-        var categorizedTransactionCount = transactions.Where(t => t.PrimairyLabel is not null).Count();
-        var oldestUncategorized = transactions.Where(t => t.PrimairyLabel is null).MinBy(t => t.Timestamp)!;
+        var categorizedTransactionCount = transactions
+            // todo #80
+            //.Where(t => t.PrimairyLabel is not null)
+            .Count();
+        var oldestUncategorized = transactions
+            // todo #80
+            // .Where(t => t.PrimairyLabel is null)
+            .MinBy(t => t.Timestamp)!;
 
         _userOutputHandler.GiveUserOutput($"You categorized {categorizedTransactionCount}/{transactionCount} transactions.");
         _userOutputHandler.GiveUserOutput($"The oldest uncategorized transaction is from {oldestUncategorized.Timestamp}");

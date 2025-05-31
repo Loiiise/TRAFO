@@ -15,7 +15,8 @@ public class ShowUncategorizedTransactionsCommand : FromTillCommand
     {
         var uncategorizedTransactions = _transactionReader
             .ReadTransactionsInRange(_from, _till)
-            .Where(t => t.PrimairyLabel is null)
+            // todo #80
+            //.Where(t => t.PrimairyLabel is null)
             .ToArray();
 
         var totalCount = uncategorizedTransactions.Length;
