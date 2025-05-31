@@ -7,7 +7,7 @@ namespace TRAFO.Logic.Tests.Categorization;
 
 public class TransactionLabelSetterTests
 {
-    [Theory, MemberData(nameof(GenerateLegalTransactions))]
+    [Theory, MemberData(nameof(GenerateLegalTransactionsWithoutLabels))]
     public void AlwaysTruePredicateIsAlwaysApplied(Transaction transaction)
     {
         var label = "I'm always set";
@@ -26,7 +26,7 @@ public class TransactionLabelSetterTests
         result.Labels.ShouldBe(new string[] { label });
     }
 
-    [Theory, MemberData(nameof(GenerateLegalTransactions))]
+    [Theory, MemberData(nameof(GenerateLegalTransactionsWithoutLabels))]
     public void AlwaysFalsePredicatesAreNeverApplied(Transaction transaction)
     {
         var label = "Don't you dare setting me";
@@ -44,7 +44,7 @@ public class TransactionLabelSetterTests
         result.Labels.ShouldBeEmpty();
     }
 
-    [Theory, MemberData(nameof(GenerateLegalTransactions))]
+    [Theory, MemberData(nameof(GenerateLegalTransactionsWithoutLabels))]
     public void MultiplePassingPredicatesAreAppliedInOrder(Transaction transaction)
     {
         var labelZero = "Label 0";
@@ -70,10 +70,12 @@ public class TransactionLabelSetterTests
         zeroFirstResult.Labels.ShouldBe(new string[] { labelZero, labelOne });
 
         var oneFirstResult = labelSetter.ApplyPredicates(transaction, oneFirstPredicates);
-        zeroFirstResult.Labels.ShouldContain(labelOne);
-        zeroFirstResult.Labels.ShouldBe(new string[] { labelOne, labelZero });
+        oneFirstResult.Labels.ShouldContain(labelOne);
+        oneFirstResult.Labels.ShouldBe(new string[] { labelOne, labelZero });
     }
 
-    public static IEnumerable<object[]> GenerateLegalTransactions()
-        => TransactionFixture.GenerateBasicLegalTransactionsWithoutRawData().Select(transaction => new object[] { transaction });
+    public static IEnumerable<object[]> GenerateLegalTransactionsWithoutLabels()
+        => TransactionFixture.GenerateBasicLegalTransactionsWithoutRawData()
+            .Where(transaction => !transaction.Labels.Any())
+            .Select(transaction => new object[] { transaction });
 }
