@@ -30,7 +30,7 @@ internal class Program
 
         builder.Services.AddSingleton<IParser>(new CustomCSVParser(6, 1, 0, null, 8, 9, 4, 15, 2, 19, "\",\""));
         builder.Services.AddSingleton<ITransactionFileReader, TransactionFileReader>();
-        builder.Services.AddSingleton<ICategorizator, PrimairyLabelSetter>();
+        builder.Services.AddSingleton<ILabelApplier, TransactionLabelSetter>();
 
         var database = new EntityFrameworkDatabase();
         builder.Services.AddSingleton<IDatabase>(database);

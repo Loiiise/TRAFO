@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.TransactionReading;
 
 namespace TRAFO.LocalApp.Common.Command;
@@ -22,6 +22,8 @@ public class ReportCommand : FromTillCommand
 
         foreach (var transaction in _transactionReader.ReadTransactionsInRange(_from, _till))
         {
+            // todo #80
+            /*
             if (transaction.PrimairyLabel is null)
             {
                 primairyLabelToGroupedTransactions[noPrimairyLabel].Add(transaction);
@@ -36,6 +38,7 @@ public class ReportCommand : FromTillCommand
             {
                 primairyLabelToGroupedTransactions[transaction.PrimairyLabel].Add(transaction);
             }
+            */
         }
 
         foreach ((var label, var transactions) in primairyLabelToGroupedTransactions)

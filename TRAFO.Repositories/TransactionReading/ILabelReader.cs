@@ -1,6 +1,8 @@
-﻿namespace TRAFO.Repositories.TransactionReading;
+﻿using TRAFO.Logic.Dto;
+
+namespace TRAFO.Repositories.TransactionReading;
 
 public interface ILabelReader
 {
-    IEnumerable<string> GetAllLabels();
+    IEnumerable<Label> GetAllLabels();
 }

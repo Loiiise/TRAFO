@@ -1,4 +1,4 @@
-﻿using TRAFO.Logic;
+﻿using TRAFO.Logic.Dto;
 
 namespace TRAFO.Repositories.TransactionWriting;
 
@@ -10,8 +10,6 @@ public interface ITransactionWriter
 
 public interface ITransactionLabelUpdater
 {
-    // todo #72
-    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel);
-    public void UpdatePrimairyLabel(Transaction transaction);
+    public void SetLabel(Transaction transaction, Label label);
     public void UpdateLabels(Transaction transaction);
 }

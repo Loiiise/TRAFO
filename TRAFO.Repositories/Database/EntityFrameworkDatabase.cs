@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.Database.Entities;
 
 namespace TRAFO.Repositories.Database;
@@ -13,11 +13,8 @@ public class EntityFrameworkDatabase : IDatabase
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
 
-    public IEnumerable<string> GetAllLabels() => new string[]
-    {
-        Labels.Groceries,
-        Labels.Rent,
-    };
+    // todo #71
+    public IEnumerable<Label> GetAllLabels() => _context.Label.Select(FromDatabaseEntry);
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {
@@ -48,14 +45,14 @@ public class EntityFrameworkDatabase : IDatabase
 
     public IEnumerable<Balance> ReadBalances(string identifier)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         //return _context.Balances.Where(b => b. == identifier).Select(FromDatabaseEntry);
     }
 
     public void WriteBalance(Balance balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
         _context.Balance.Add(ToDatabaseEntry(balance));
@@ -63,41 +60,21 @@ public class EntityFrameworkDatabase : IDatabase
         */
     }
 
-    // todo #72
-    public void UpdatePrimairyLabel(Transaction transaction, string newPrimairyLabel) => UpdatePrimairyLabel(transaction with { PrimairyLabel = newPrimairyLabel });
-    public void UpdatePrimairyLabel(Transaction transaction)
+    public void SetLabel(Transaction transaction, Label label)
     {
-        // todo #72
+        // todo #86
         throw new NotImplementedException();
-        /*
-        if (transaction.PrimairyLabel is null) return;
-
-        var matches = _context.Transactions.Where(t => t.RawData == transaction.RawData);
-
-        if (!matches.Any())
-        {
-            WriteTransaction(transaction);
-            return;
-        }
-        Debug.Assert(matches.Count() == 1);
-
-        var match = matches.First()!;
-        // todo: #72
-        //match.PrimairyLabel = transaction.PrimairyLabel;
-        _context.Transactions.Update(match);
-        _context.SaveChanges();
-        */
     }
 
     public void UpdateLabels(Transaction transaction)
     {
-        // todo #72 or #77
+        // todo #86
         throw new NotImplementedException();
     }
 
     private BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
 
@@ -113,7 +90,7 @@ public class EntityFrameworkDatabase : IDatabase
 
     private TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
-        // todo #77
+        // todo #88
         throw new NotImplementedException();
         /*
         return new TransacionDatabaseEntry
@@ -133,10 +110,11 @@ public class EntityFrameworkDatabase : IDatabase
         };
         */
     }
-
+    // todo #86
+    private Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
     private Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
         return new Balance
@@ -151,7 +129,7 @@ public class EntityFrameworkDatabase : IDatabase
 
     private Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
-        // todo #77
+        // todo #88
         throw new NotImplementedException();
         /*
         Debug.Assert(account.AccountId == transaction.ThisPartyAccountId);

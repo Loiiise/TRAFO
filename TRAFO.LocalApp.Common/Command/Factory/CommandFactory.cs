@@ -23,7 +23,7 @@ public class CommandFactory : ICommandFactory
         ITransactionWriter transactionWriter,
         ITransactionLabelUpdater transactionLabelUpdater,
         IParser parser,
-        ICategorizator categorizer,
+        ILabelApplier categorizer,
         IBasicUserInputHandler userInputHandler,
         IBasicUserOutputHandler userOutputHandler)
     {
@@ -108,7 +108,7 @@ public class CommandFactory : ICommandFactory
     private readonly ITransactionWriter _transactionWriter;
     private readonly ITransactionLabelUpdater _transactionLabelUpdater;
     private readonly IParser _parser;
-    private readonly ICategorizator _categorizer;
+    private readonly ILabelApplier _categorizer;
     private readonly IBasicUserInputHandler _userInputHandler;
     private readonly IBasicUserOutputHandler _userOutputHandler;
 }

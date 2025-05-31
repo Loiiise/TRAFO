@@ -1,6 +1,6 @@
 ﻿using TRAFO.LocalApp.Common.Command.Arguments;
 using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.BalanceWriting;
 
 namespace TRAFO.LocalApp.Common.Command;
@@ -21,7 +21,6 @@ public class SetBalanceCommand : Command
         {
             Amount = AmountArgument.Value,
             Currency = CurrencyArgument.Value,
-            ThisPartyIdentifier = IdentifierArgument.Value,
             Timestamp = GetTimestampOrDefault() ?? DateTime.Now,
         };
 

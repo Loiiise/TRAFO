@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 
 namespace TRAFO.Services.Parser;
 

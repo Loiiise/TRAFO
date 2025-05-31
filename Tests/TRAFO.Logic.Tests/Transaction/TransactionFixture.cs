@@ -1,12 +1,14 @@
-﻿namespace TRAFO.Logic.Tests;
+﻿using TRAFO.Logic.Dto;
+
+namespace TRAFO.Logic.Tests;
 public static class TransactionFixture
 {
     public static Transaction GetEmptyTransaction() => new Transaction
     {
         Amount = 0,
         Currency = Currency.EUR,
-        ThisPartyIdentifier = string.Empty,
-        OtherPartyIdentifier = string.Empty,
+        ThisAccountIdentifier = string.Empty,
+        OtherAccountIdentifier = string.Empty,
         Timestamp = new DateTime(1970, 01, 01),
         RawData = string.Empty,
         Labels = Array.Empty<string>(),
@@ -29,8 +31,8 @@ public static class TransactionFixture
                                 {
                                     Amount = amount,
                                     Currency = currency,
-                                    ThisPartyIdentifier = thisPartyIdentifier,
-                                    OtherPartyIdentifier = otherPartyIdentifier,
+                                    ThisAccountIdentifier = thisPartyIdentifier,
+                                    OtherAccountIdentifier = otherPartyIdentifier,
                                     Timestamp = timestamp,
                                     RawData = string.Empty,
                                     Labels = labels,
@@ -52,7 +54,7 @@ public static class TransactionFixture
                         {
                             var transactionWithAllFields = transactionWithMandatoryFields with
                             {
-                                ThisPartyName = thisPartyName,
+                                ThisAccountName = thisPartyName,
                                 OtherPartyName = otherPartyName,
                                 PaymentReference = paymentReference,
                                 BIC = bic,

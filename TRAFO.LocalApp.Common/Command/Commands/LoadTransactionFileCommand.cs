@@ -11,10 +11,10 @@ public class LoadTransactionFileCommand : FromTillCommand
 {
     public required FilePathArgument FilePathArgument { get; init; }
 
-    public LoadTransactionFileCommand(ITransactionFileReader transactionFileReader, ICategorizator[] categorizators, ITransactionWriter transactionWriter, ICommandFlag[] flags) : base(flags)
+    public LoadTransactionFileCommand(ITransactionFileReader transactionFileReader, ILabelApplier[] labelers, ITransactionWriter transactionWriter, ICommandFlag[] flags) : base(flags)
     {
         _transactionFileReader = transactionFileReader;
-        _categorizators = categorizators;
+        _labelers = labelers;
         _transactionWriter = transactionWriter;
     }
 
@@ -25,7 +25,7 @@ public class LoadTransactionFileCommand : FromTillCommand
         if (_from is not null) transactions = transactions.Where(t => t.Timestamp >= _from);
         if (_till is not null) transactions = transactions.Where(t => t.Timestamp <= _till);
 
-        foreach (var categorizator in _categorizators)
+        foreach (var categorizator in _labelers)
         {
             transactions = categorizator.ApplyPredicates(transactions, Labels.GetDefaultPredicates());
         }
@@ -33,6 +33,6 @@ public class LoadTransactionFileCommand : FromTillCommand
     }
 
     private readonly ITransactionFileReader _transactionFileReader;
-    private readonly ICategorizator[] _categorizators;
+    private readonly ILabelApplier[] _labelers;
     private readonly ITransactionWriter _transactionWriter;
 }

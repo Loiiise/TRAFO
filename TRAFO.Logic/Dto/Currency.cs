@@ -1,4 +1,4 @@
-﻿namespace TRAFO.Logic;
+﻿namespace TRAFO.Logic.Dto;
 
 // This enum is compatible with the ISO-4217 standard and includes obsolete currencies. See "https://en.wikipedia.org/wiki/ISO_4217"
 public enum Currency

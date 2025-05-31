@@ -11,15 +11,15 @@ public class TransactionTests
         var thisPartyIdentifier = "Identify me";
         var thisPartyName = "My name";
 
-        var transactionWithOnlyThisPartyIdentifier = GetEmptyTransaction() with { ThisPartyIdentifier = thisPartyIdentifier };
+        var transactionWithOnlyThisPartyIdentifier = GetEmptyTransaction() with { ThisAccountIdentifier = thisPartyIdentifier };
 
-        transactionWithOnlyThisPartyIdentifier.ThisPartyIdentifier.ShouldBe(thisPartyIdentifier);
-        transactionWithOnlyThisPartyIdentifier.ThisPartyName.ShouldBe(thisPartyIdentifier);
+        transactionWithOnlyThisPartyIdentifier.ThisAccountIdentifier.ShouldBe(thisPartyIdentifier);
+        transactionWithOnlyThisPartyIdentifier.ThisAccountName.ShouldBe(thisPartyIdentifier);
 
-        var transactionWithThisPartyIdentifierAndThisPartyName = transactionWithOnlyThisPartyIdentifier with { ThisPartyName = thisPartyName };
+        var transactionWithThisPartyIdentifierAndThisPartyName = transactionWithOnlyThisPartyIdentifier with { ThisAccountName = thisPartyName };
 
-        transactionWithThisPartyIdentifierAndThisPartyName.ThisPartyIdentifier.ShouldBe(thisPartyIdentifier);
-        transactionWithThisPartyIdentifierAndThisPartyName.ThisPartyName.ShouldBe(thisPartyName);
+        transactionWithThisPartyIdentifierAndThisPartyName.ThisAccountIdentifier.ShouldBe(thisPartyIdentifier);
+        transactionWithThisPartyIdentifierAndThisPartyName.ThisAccountName.ShouldBe(thisPartyName);
     }
 
     [Fact]
@@ -28,14 +28,14 @@ public class TransactionTests
         var otherPartyIdentifier = "Identify you";
         var otherPartyName = "Your name";
 
-        var transactionWithOnlyOtherPartyIdentifier = GetEmptyTransaction() with { OtherPartyIdentifier = otherPartyIdentifier };
+        var transactionWithOnlyOtherPartyIdentifier = GetEmptyTransaction() with { OtherAccountIdentifier = otherPartyIdentifier };
 
-        transactionWithOnlyOtherPartyIdentifier.OtherPartyIdentifier.ShouldBe(otherPartyIdentifier);
+        transactionWithOnlyOtherPartyIdentifier.OtherAccountIdentifier.ShouldBe(otherPartyIdentifier);
         transactionWithOnlyOtherPartyIdentifier.OtherPartyName.ShouldBe(otherPartyIdentifier);
 
         var transactionWithOtherPartyIdentifierAndOtherPartyName = transactionWithOnlyOtherPartyIdentifier with { OtherPartyName = otherPartyName };
 
-        transactionWithOtherPartyIdentifierAndOtherPartyName.OtherPartyIdentifier.ShouldBe(otherPartyIdentifier);
+        transactionWithOtherPartyIdentifierAndOtherPartyName.OtherAccountIdentifier.ShouldBe(otherPartyIdentifier);
         transactionWithOtherPartyIdentifierAndOtherPartyName.OtherPartyName.ShouldBe(otherPartyName);
     }
 
@@ -49,8 +49,8 @@ public class TransactionTests
                 transaction.ToString().ShouldContain(digitOrSign);
             }
             transaction.ToString().ShouldContain(transaction.Currency.ToString());
-            transaction.ToString().ShouldContain(transaction.ThisPartyIdentifier);
-            transaction.ToString().ShouldContain(transaction.OtherPartyIdentifier);
+            transaction.ToString().ShouldContain(transaction.ThisAccountIdentifier);
+            transaction.ToString().ShouldContain(transaction.OtherAccountIdentifier);
             transaction.ToString().ShouldContain(transaction.Timestamp.ToString());
         }
     }
