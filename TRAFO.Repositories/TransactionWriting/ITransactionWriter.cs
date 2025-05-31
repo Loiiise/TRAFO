@@ -10,5 +10,6 @@ public interface ITransactionWriter
 
 public interface ITransactionLabelUpdater
 {
+    public void SetLabel(Transaction transaction, Label label);
     public void UpdateLabels(Transaction transaction);
 }

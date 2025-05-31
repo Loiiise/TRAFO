@@ -13,11 +13,8 @@ public class EntityFrameworkDatabase : IDatabase
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
 
-    public IEnumerable<string> GetAllLabels() => new string[]
-    {
-        Labels.Groceries,
-        Labels.Rent,
-    };
+    // todo #71
+    public IEnumerable<Label> GetAllLabels() => Array.Empty<Label>();
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {
@@ -61,6 +58,12 @@ public class EntityFrameworkDatabase : IDatabase
         _context.Balance.Add(ToDatabaseEntry(balance));
         _context.SaveChanges();
         */
+    }
+
+    public void SetLabel(Transaction transaction, Label label)
+    {
+        // todo #77
+        throw new NotImplementedException();
     }
 
     public void UpdateLabels(Transaction transaction)
@@ -150,7 +153,7 @@ public class EntityFrameworkDatabase : IDatabase
         string? NullIfEmptyString(string value) => value == string.Empty ? null : value;
 
         */
-    }
+    }    
 
     private EntityFrameworkDatabaseContext _context;
 }

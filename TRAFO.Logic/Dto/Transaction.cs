@@ -2,7 +2,7 @@
 
 public sealed record Transaction
 {
-    public required Guid TransactionId { get; init; }
+    public Guid TransactionId { get; init; } = Guid.Empty;
 
     /// <summary>
     /// In cents

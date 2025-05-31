@@ -2,7 +2,7 @@
 
 public sealed record Balance
 {
-    public required Guid BalanceId { get; init; }
+    public Guid BalanceId { get; init; } = Guid.Empty;
     /// <summary>
     /// In cents
     /// </summary>

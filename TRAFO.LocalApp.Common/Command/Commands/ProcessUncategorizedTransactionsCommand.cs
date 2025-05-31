@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using TRAFO.LocalApp.Common.Command.Flags;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.TransactionReading;
 using TRAFO.Repositories.TransactionWriting;
 
@@ -19,12 +20,12 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
         _transactionReader = transactionReader;
         _transactionLabelUpdater = transactionLabelUpdater;
 
-        _indexToCategory = new();
+        _indexToLabel = new();
         var labelStringBuilder = new StringBuilder();
         int i = 0;
-        foreach (var label in _labelReader.GetAllLabels().Prepend("Skip"))
+        foreach (var label in _labelReader.GetAllLabels().Prepend(new Label { Name = "Skip", }))
         {
-            _indexToCategory.Add(i, label);
+            _indexToLabel.Add(i, label);
             labelStringBuilder.AppendLine($"[{i++}]: {label}");
         }
         _allCategoriesString = labelStringBuilder.ToString();
@@ -33,7 +34,7 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
     public override void Execute()
     {
         // todo #80
-        var uncategorizedTransactions = 
+        var uncategorizedTransactions =
             _transactionReader
                 .ReadTransactionsInRange(_from, _till)
                 /*.Where(t => t.PrimairyLabel == null)*/;
@@ -44,12 +45,12 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
                 "What label do you want add to this transaction?" + Environment.NewLine +
                 uncategorizedTransaction.ToString() + Environment.NewLine +
                 _allCategoriesString,
-                0, _indexToCategory.Count());
+                0, _indexToLabel.Count());
 
             // 0 is skipping this transaction
             if (labelIndex != 0)
             {
-                _transactionLabelUpdater.UpdatePrimairyLabel(uncategorizedTransaction, _indexToCategory[labelIndex]);
+                _transactionLabelUpdater.SetLabel(uncategorizedTransaction, _indexToLabel[labelIndex]);
             }
         }
     }
@@ -60,5 +61,5 @@ public class ProcessUncategorizedTransactionsCommand : FromTillCommand
     private readonly ITransactionLabelUpdater _transactionLabelUpdater;
 
     private readonly string _allCategoriesString;
-    private readonly Dictionary<int, string> _indexToCategory;
+    private readonly Dictionary<int, Label> _indexToLabel;
 }
