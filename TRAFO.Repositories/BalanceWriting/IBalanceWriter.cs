@@ -2,7 +2,7 @@
 
 namespace TRAFO.Repositories.BalanceWriting;
 
-// todo #77
+// todo #85
 public interface IBalanceWriter
 {
     void WriteBalance(Balance balance);

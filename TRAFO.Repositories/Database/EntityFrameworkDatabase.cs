@@ -14,7 +14,7 @@ public class EntityFrameworkDatabase : IDatabase
     }
 
     // todo #71
-    public IEnumerable<Label> GetAllLabels() => Array.Empty<Label>();
+    public IEnumerable<Label> GetAllLabels() => _context.Label.Select(FromDatabaseEntry);
 
     public IEnumerable<Transaction> ReadAllTransactions()
     {
@@ -45,14 +45,14 @@ public class EntityFrameworkDatabase : IDatabase
 
     public IEnumerable<Balance> ReadBalances(string identifier)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         //return _context.Balances.Where(b => b. == identifier).Select(FromDatabaseEntry);
     }
 
     public void WriteBalance(Balance balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
         _context.Balance.Add(ToDatabaseEntry(balance));
@@ -62,19 +62,19 @@ public class EntityFrameworkDatabase : IDatabase
 
     public void SetLabel(Transaction transaction, Label label)
     {
-        // todo #77
+        // todo #86
         throw new NotImplementedException();
     }
 
     public void UpdateLabels(Transaction transaction)
     {
-        // todo #72 or #77
+        // todo #86
         throw new NotImplementedException();
     }
 
     private BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
 
@@ -90,7 +90,7 @@ public class EntityFrameworkDatabase : IDatabase
 
     private TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
-        // todo #77
+        // todo #88
         throw new NotImplementedException();
         /*
         return new TransacionDatabaseEntry
@@ -110,10 +110,11 @@ public class EntityFrameworkDatabase : IDatabase
         };
         */
     }
-
+    // todo #86
+    private Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
     private Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
-        // todo #77
+        // todo #85
         throw new NotImplementedException();
         /*
         return new Balance
@@ -128,7 +129,7 @@ public class EntityFrameworkDatabase : IDatabase
 
     private Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
-        // todo #77
+        // todo #88
         throw new NotImplementedException();
         /*
         Debug.Assert(account.AccountId == transaction.ThisPartyAccountId);
@@ -153,7 +154,7 @@ public class EntityFrameworkDatabase : IDatabase
         string? NullIfEmptyString(string value) => value == string.Empty ? null : value;
 
         */
-    }    
+    }
 
     private EntityFrameworkDatabaseContext _context;
 }
