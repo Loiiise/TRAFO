@@ -2,6 +2,8 @@
 
 public sealed record Transaction
 {
+    public required Guid TransactionId { get; init; }
+
     /// <summary>
     /// In cents
     /// </summary>

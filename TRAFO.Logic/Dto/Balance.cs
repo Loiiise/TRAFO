@@ -2,6 +2,7 @@
 
 public sealed record Balance
 {
+    public required Guid BalanceId { get; init; }
     /// <summary>
     /// In cents
     /// </summary>
