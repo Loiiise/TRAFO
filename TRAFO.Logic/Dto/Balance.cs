@@ -1,4 +1,4 @@
-﻿namespace TRAFO.Logic;
+﻿namespace TRAFO.Logic.Dto;
 
 public sealed record Balance
 {
@@ -7,6 +7,5 @@ public sealed record Balance
     /// </summary>
     public required long Amount { get; init; }
     public required Currency Currency { get; init; }
-    public required string ThisPartyIdentifier { get; init; }
     public required DateTime Timestamp { get; init; }
 }

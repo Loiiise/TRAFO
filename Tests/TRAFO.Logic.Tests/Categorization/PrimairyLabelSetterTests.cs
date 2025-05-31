@@ -1,6 +1,7 @@
 ﻿using Shouldly;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Categorization.Predicates;
+using TRAFO.Logic.Dto;
 
 namespace TRAFO.Logic.Tests.Categorization;
 
@@ -17,7 +18,7 @@ public class PrimairyLabelSetterTests
         };
 
         var predicates = new TransactionPredicate[] { alwaysTruePredicate };
-        var primairyLabelSetter = new PrimairyLabelSetter();
+        var primairyLabelSetter = new TransactionLabelSetter();
 
         var result = primairyLabelSetter.ApplyPredicates(transaction, predicates);
 
@@ -35,7 +36,7 @@ public class PrimairyLabelSetterTests
         };
 
         var predicates = new TransactionPredicate[] { alwaysFalsePredicate };
-        var primairyLabelSetter = new PrimairyLabelSetter();
+        var primairyLabelSetter = new TransactionLabelSetter();
 
         var result = primairyLabelSetter.ApplyPredicates(transaction, predicates);
 
@@ -61,7 +62,7 @@ public class PrimairyLabelSetterTests
 
         var zeroFirstPredicates = new TransactionPredicate[] { alwaysLabelZeroPredicate, alwaysLabelOnePredicate };
         var oneFirstPredicates = new TransactionPredicate[] { alwaysLabelOnePredicate, alwaysLabelZeroPredicate };
-        var primairyLabelSetter = new PrimairyLabelSetter();
+        var primairyLabelSetter = new TransactionLabelSetter();
 
         var zeroFirstResult = primairyLabelSetter.ApplyPredicates(transaction, zeroFirstPredicates);
         zeroFirstResult.PrimairyLabel.ShouldBe(labelZero);

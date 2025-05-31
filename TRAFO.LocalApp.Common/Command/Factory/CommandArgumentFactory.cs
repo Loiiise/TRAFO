@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using TRAFO.LocalApp.Common.Command.Arguments;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 
 namespace TRAFO.LocalApp.Common.Command.Factory;
 public class CommandArgumentFactory : ICommandArgumentFactory

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 using TRAFO.Services.Parser;
 
 namespace TRAFO.LocalApp.Common.FileReading;

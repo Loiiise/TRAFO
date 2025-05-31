@@ -1,6 +1,6 @@
 ﻿using Shouldly;
 using System.Numerics;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 using TRAFO.Logic.Extensions;
 using static TRAFO.Logic.Tests.TransactionFixture;
 
@@ -18,8 +18,8 @@ public class CSVParserTests
         parseResult.ShouldNotBeNull();
         parseResult.Amount.ShouldBe(transaction.Amount);
         parseResult.Currency.ShouldBe(transaction.Currency);
-        parseResult.ThisPartyIdentifier.ShouldBe(transaction.ThisPartyIdentifier);
-        parseResult.OtherPartyIdentifier.ShouldBe(transaction.OtherPartyIdentifier);
+        parseResult.ThisAccountIdentifier.ShouldBe(transaction.ThisAccountIdentifier);
+        parseResult.OtherAccountIdentifier.ShouldBe(transaction.OtherAccountIdentifier);
         parseResult.Timestamp.ShouldBe(transaction.Timestamp);
         parseResult.RawData.ShouldBe(transaction.RawData);
         // Labels are not set in the parser, so the collection will always be empty
@@ -76,8 +76,8 @@ public class CSVParserTests
                             var mockDataFiels = new string[totalAmountOfFiels];
                             mockDataFiels[i] = transaction.Amount.ToString();
                             mockDataFiels[j] = transaction.Currency.ToString();
-                            mockDataFiels[k] = transaction.ThisPartyIdentifier;
-                            mockDataFiels[l] = transaction.OtherPartyIdentifier;
+                            mockDataFiels[k] = transaction.ThisAccountIdentifier;
+                            mockDataFiels[l] = transaction.OtherAccountIdentifier;
                             mockDataFiels[m] = transaction.Timestamp.ToString();
 
                             var parser = new MockCSVParser(i, j, k, l, m);
@@ -87,8 +87,8 @@ public class CSVParserTests
 
                             parseResult.Amount.ShouldBe(transaction.Amount);
                             parseResult.Currency.ShouldBe(transaction.Currency);
-                            parseResult.ThisPartyIdentifier.ShouldBe(transaction.ThisPartyIdentifier);
-                            parseResult.OtherPartyIdentifier.ShouldBe(transaction.OtherPartyIdentifier);
+                            parseResult.ThisAccountIdentifier.ShouldBe(transaction.ThisAccountIdentifier);
+                            parseResult.OtherAccountIdentifier.ShouldBe(transaction.OtherAccountIdentifier);
                             parseResult.Timestamp.ShouldBe(transaction.Timestamp);
                         }
     }
@@ -101,8 +101,8 @@ public class CSVParserTests
         // Get legal values for all other fields
         string
             legalCurrency = transaction.Currency.ToString(),
-            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalThisPartyIdentifier = transaction.ThisAccountIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherAccountIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If amount is a Int32 string, it all goes well
@@ -137,8 +137,8 @@ public class CSVParserTests
         // Get legal values for all other fields
         string
             legalCurrency = transaction.Currency.ToString(),
-            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalThisPartyIdentifier = transaction.ThisAccountIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherAccountIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         foreach ((string legalNumberAmount, long expectedAmount) in new[]
@@ -165,12 +165,12 @@ public class CSVParserTests
         // Get legal values for all other fields
         string
             legalAmount = transaction.Amount.ToString(),
-            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalThisPartyIdentifier = transaction.ThisAccountIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherAccountIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         // If currency is a supported currency string, it all goes well
-        foreach (string legalCurrencyString in EnumExtensions.CommonCurrencies().Select(currency => currency.ToString()))
+        foreach (string legalCurrencyString in CurrencyExtensions.CommonCurrencies().Select(currency => currency.ToString()))
         {
             var rawData = GenerateBasicRawDataLine(legalAmount, legalCurrencyString, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
@@ -193,8 +193,8 @@ public class CSVParserTests
         string
             legalAmount = transaction.Amount.ToString(),
             legalCurrency = transaction.Currency.ToString(),
-            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier;
+            legalThisPartyIdentifier = transaction.ThisAccountIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherAccountIdentifier;
 
         // If timestamp is a DateTime string, it all goes well
         foreach (var legalDateTimeString in new[] { "2025-01-15T15:15:12", "2024-10-06T10:30:45", "2024-11-12T01:02:03" })
@@ -214,12 +214,12 @@ public class CSVParserTests
     [Theory, CombinatorialData]
     public void TransactionWitThisPartyNameCanBeParsed(
         [CombinatorialMemberData(nameof(GenerateLegalTransactions))] Transaction transaction,
-        [CombinatorialMemberData(nameof(GetExamplesFor), nameof(Transaction.ThisPartyName))] string thisPartyName)
+        [CombinatorialMemberData(nameof(GetExamplesFor), nameof(Transaction.ThisAccountName))] string thisPartyName)
         => ParseRawDataWithOptionalFieldTestHelper(
             MockCSVParser.GetBasicCSVParserWithThisPartyNameIndex(),
             transaction,
             thisPartyName,
-            parseResult => parseResult.ThisPartyName.ShouldBe(thisPartyName));
+            parseResult => parseResult.ThisAccountName.ShouldBe(thisPartyName));
 
     [Theory, CombinatorialData]
     public void TransactionWithOtherPartyNameCanBeParsed(
@@ -266,8 +266,8 @@ public class CSVParserTests
         string
             legalAmount = transaction.Amount.ToString(),
             legalCurrency = transaction.Currency.ToString(),
-            legalThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            legalOtherPartyIdentifier = transaction.OtherPartyIdentifier,
+            legalThisPartyIdentifier = transaction.ThisAccountIdentifier,
+            legalOtherPartyIdentifier = transaction.OtherAccountIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
         var rawData = GenerateBasicRawDataLineWithOptionalField(legalAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp, optionalValue);
@@ -285,9 +285,9 @@ public class CSVParserTests
 
         parseResult.Amount.ShouldBe(transaction.Amount);
         parseResult.Currency.ShouldBe(transaction.Currency);
-        parseResult.ThisPartyIdentifier.ShouldBe(transaction.ThisPartyIdentifier);
-        parseResult.ThisPartyName.ShouldBe(transaction.ThisPartyName);
-        parseResult.OtherPartyIdentifier.ShouldBe(transaction.OtherPartyIdentifier);
+        parseResult.ThisAccountIdentifier.ShouldBe(transaction.ThisAccountIdentifier);
+        parseResult.ThisAccountName.ShouldBe(transaction.ThisAccountName);
+        parseResult.OtherAccountIdentifier.ShouldBe(transaction.OtherAccountIdentifier);
         parseResult.OtherPartyName.ShouldBe(transaction.OtherPartyName);
         parseResult.Timestamp.ShouldBe(transaction.Timestamp);
         parseResult.PaymentReference.ShouldBe(transaction.PaymentReference);
@@ -308,8 +308,8 @@ public class CSVParserTests
         var parseResult = parser.Parse(rawData);
         parseResult.Amount.ShouldBe(transaction.Amount);
         parseResult.Currency.ShouldBe(transaction.Currency);
-        parseResult.ThisPartyIdentifier.ShouldBe(transaction.ThisPartyIdentifier);
-        parseResult.OtherPartyIdentifier.ShouldBe(transaction.OtherPartyIdentifier);
+        parseResult.ThisAccountIdentifier.ShouldBe(transaction.ThisAccountIdentifier);
+        parseResult.OtherAccountIdentifier.ShouldBe(transaction.OtherAccountIdentifier);
         parseResult.Timestamp.ShouldBe(transaction.Timestamp);
     }
 
@@ -321,9 +321,9 @@ public class CSVParserTests
         => GenerateAllFieldsLegalTransactions(transaction => GenerateBasicRawDataLineWithAllOptionalFields(
                                     transaction.Amount.ToString(),
                                     transaction.Currency.ToString(),
-                                    transaction.ThisPartyIdentifier,
-                                    transaction.ThisPartyName,
-                                    transaction.OtherPartyIdentifier,
+                                    transaction.ThisAccountIdentifier,
+                                    transaction.ThisAccountName,
+                                    transaction.OtherAccountIdentifier,
                                     transaction.OtherPartyName,
                                     transaction.Timestamp.ToString(),
                                     transaction.PaymentReference!,
@@ -335,7 +335,7 @@ public class CSVParserTests
         => GenerateBasicLegalTransactions(transaction => GenerateBasicRawDataLine(transaction, MockCSVParser.DefaultSeparator));
 
     private static string GenerateBasicRawDataLine(Transaction transaction, string separator)
-        => GenerateBasicRawDataLine(transaction.Amount.ToString(), transaction.Currency.ToString(), transaction.ThisPartyIdentifier, transaction.OtherPartyIdentifier, transaction.Timestamp.ToString(), separator);
+        => GenerateBasicRawDataLine(transaction.Amount.ToString(), transaction.Currency.ToString(), transaction.ThisAccountIdentifier, transaction.OtherAccountIdentifier, transaction.Timestamp.ToString(), separator);
     private static string GenerateBasicRawDataLine(string amount, string currency, string thisPartyIdentifier, string otherPartyIdentifier, string timestamp, string separator = MockCSVParser.DefaultSeparator)
         => GenerateSeperatedValueString(separator, amount, currency, thisPartyIdentifier, otherPartyIdentifier, timestamp);
     private static string GenerateBasicRawDataLineWithOptionalField(string amount, string currency, string thisPartyIdentifier, string otherPartyIdentifier, string timestamp, string optionalFieldValue, string separator = MockCSVParser.DefaultSeparator)
@@ -359,7 +359,7 @@ public class CSVParserTests
 
     public static string[] GetExamplesFor(string fieldName) => fieldName switch
     {
-        nameof(Transaction.ThisPartyName) => ThisPartyNameExamples(),
+        nameof(Transaction.ThisAccountName) => ThisPartyNameExamples(),
         nameof(Transaction.OtherPartyName) => OtherPartyNameExamples(),
         nameof(Transaction.PaymentReference) => PaymentReferenceExamples(),
         nameof(Transaction.BIC) => BICExamples(),

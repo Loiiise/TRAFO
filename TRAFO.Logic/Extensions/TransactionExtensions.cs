@@ -1,4 +1,6 @@
-﻿namespace TRAFO.Logic.Extensions;
+﻿using TRAFO.Logic.Dto;
+
+namespace TRAFO.Logic.Extensions;
 public static class TransactionExtensions
 {
     public static Transaction SetPrimairyLabel(this Transaction transaction, string primairyLabel, bool addToLabelCollection = true)
@@ -22,7 +24,8 @@ public static class TransactionExtensions
             ? transaction
             : transaction with { Labels = transaction.Labels.Append(label).ToArray() };
 
-    public static Transaction AddLabels(this Transaction transaction, params string[] labels)
+    public static Transaction AddLabels(this Transaction transaction, params string[] labels) => AddLabels(transaction, labels.AsEnumerable());
+    public static Transaction AddLabels(this Transaction transaction, IEnumerable<string> labels)
     {
         var newLabels = labels.Distinct().Where(l => !transaction.Labels.Contains(l));
 

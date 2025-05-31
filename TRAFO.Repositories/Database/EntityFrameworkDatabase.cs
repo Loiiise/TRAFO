@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TRAFO.Logic;
 using TRAFO.Logic.Categorization;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.Database.Entities;
 
 namespace TRAFO.Repositories.Database;

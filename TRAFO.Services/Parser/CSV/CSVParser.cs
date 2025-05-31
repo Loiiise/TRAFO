@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 
 namespace TRAFO.Services.Parser.CSV;
 public abstract class CSVParser : Parser
@@ -64,8 +64,8 @@ public abstract class CSVParser : Parser
         {
             Amount = amount,
             Currency = currency,
-            ThisPartyIdentifier = items[_configuration.ThisPartyIdentifierIndex],
-            OtherPartyIdentifier = items[_configuration.OtherPartyIdentifierIndex],
+            ThisAccountIdentifier = items[_configuration.ThisPartyIdentifierIndex],
+            OtherAccountIdentifier = items[_configuration.OtherPartyIdentifierIndex],
             Timestamp = timestamp,
             PaymentReference = paymentReference,
             BIC = bic,
@@ -74,7 +74,7 @@ public abstract class CSVParser : Parser
         };
 
         // Set fields that are not nullable, but are optional to set
-        if (thisPartyName is not null) transaction = transaction with { ThisPartyName = thisPartyName };
+        if (thisPartyName is not null) transaction = transaction with { ThisAccountName = thisPartyName };
         if (otherPartyName is not null) transaction = transaction with { OtherPartyName = otherPartyName };
         if (description is not null) transaction = transaction with { Description = description };
 

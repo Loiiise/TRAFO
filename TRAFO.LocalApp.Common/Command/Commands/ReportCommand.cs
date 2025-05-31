@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 using TRAFO.Repositories.TransactionReading;
 
 namespace TRAFO.LocalApp.Common.Command;

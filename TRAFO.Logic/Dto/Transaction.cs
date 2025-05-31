@@ -1,4 +1,4 @@
-﻿namespace TRAFO.Logic;
+﻿namespace TRAFO.Logic.Dto;
 
 public sealed record Transaction
 {
@@ -9,17 +9,22 @@ public sealed record Transaction
 
     public required Currency Currency { get; init; }
 
-    public required string ThisPartyIdentifier { get; init; }
-    public string ThisPartyName
+
+    public Account? ThisAccount { get; init; }
+
+    public required string ThisAccountIdentifier { get; init; }
+    public string ThisAccountName
     {
-        get => _thisPartyName ?? ThisPartyIdentifier;
+        get => _thisPartyName ?? ThisAccountIdentifier;
         init => _thisPartyName = value;
     }
 
-    public required string OtherPartyIdentifier { get; init; }
+    public Account? OtherAccount { get; init; }
+
+    public required string OtherAccountIdentifier { get; init; }
     public string OtherPartyName
     {
-        get => _otherPartyName ?? OtherPartyIdentifier;
+        get => _otherPartyName ?? OtherAccountIdentifier;
         init => _otherPartyName = value;
     }
 
@@ -37,7 +42,7 @@ public sealed record Transaction
     private readonly string? _thisPartyName;
     private readonly string? _otherPartyName;
 
-    public override string ToString() => $"Transaction of {ShowAmount()} {Currency} on {Timestamp} from {ThisPartyIdentifier} to {OtherPartyIdentifier} with description {Description}";
+    public override string ToString() => $"Transaction of {ShowAmount()} {Currency} on {Timestamp} from {ThisAccountIdentifier} to {OtherAccountIdentifier} with description {Description}";
 
     private string ShowAmount() => ShowAmount(Amount, Currency);
     public static string ShowAmount(long amount, Currency currency)

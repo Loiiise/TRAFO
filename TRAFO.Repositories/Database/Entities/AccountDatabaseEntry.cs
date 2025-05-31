@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TRAFO.Logic;
+using TRAFO.Logic.Dto;
 
 namespace TRAFO.Repositories.Database.Entities;
 

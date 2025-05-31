@@ -1,4 +1,4 @@
-﻿using TRAFO.Logic;
+﻿using TRAFO.Logic.Dto;
 
 namespace TRAFO.LocalApp.Common.Command.Arguments;
 
