@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using TRAFO.LocalApp.Common.Command.Flags;
 using TRAFO.Logic.Dto;
+using TRAFO.Logic.Extensions;
 using TRAFO.Repositories.TransactionReading;
 
 namespace TRAFO.LocalApp.Common.Command;
@@ -50,7 +51,7 @@ public class ReportCommand : FromTillCommand
 
             var totalSpendingInCategory = transactions.Sum(t => t.Amount);
 
-            _outputHandler.GiveUserOutput($"{label}: {Transaction.ShowAmount(totalSpendingInCategory, currency)} {currency}");
+            _outputHandler.GiveUserOutput($"{label}: {TransactionExtensions.ShowAmount(totalSpendingInCategory, currency)} {currency}");
         }
     }
 

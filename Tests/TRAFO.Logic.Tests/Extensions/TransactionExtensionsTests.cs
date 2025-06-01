@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using TRAFO.Logic.Dto;
 using TRAFO.Logic.Extensions;
 using static TRAFO.Logic.Tests.TransactionFixture;
 
@@ -121,4 +122,33 @@ public class TransactionExtensionsTests
         transactionWithoutAnyLabels.Labels.ShouldNotContain(basicLabel);
         transactionWithoutAnyLabels.Labels.ShouldNotContain(otherLabel);
     }
+
+    [Theory]
+    [InlineData(111, "1,11")]
+    [InlineData(1234, "12,34")]
+    [InlineData(-5867, "-58,67")]
+    [InlineData(-420, "-4,20")]
+    [InlineData(806, "8,06")]
+    [InlineData(100000000, "1000000,00")]
+    public void EurosCanBeProperlyDisplayed(long amount, string expectedResult)
+    {
+        var currency = Currency.EUR;
+
+        var result = TransactionExtensions.ShowAmount(amount, currency);
+        result.ShouldBe(expectedResult);
+    }
+
+    [Theory, MemberData(nameof(GenerateNonEuroLegalTransactions))]
+    public void NonEurosAreSimplyStringified(Transaction transaction)
+    {
+        var actual = transaction.ShowAmount();
+        var expected = transaction.Amount.ToString();
+
+        actual.ShouldBe(expected);
+    }
+
+    public static IEnumerable<object[]> GenerateNonEuroLegalTransactions()
+        => GenerateBasicLegalTransactionsWithoutRawData()
+            .Where(t => t.Currency != Currency.EUR)
+            .Select(transaction => new object[] { transaction });
 }

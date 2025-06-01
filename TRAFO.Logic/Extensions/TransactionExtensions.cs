@@ -23,4 +23,16 @@ public static class TransactionExtensions
 
     public static Transaction RemoveAllLabels(this Transaction transaction)
         => transaction with { Labels = Array.Empty<string>() };
+
+    public static string ShowAmount(this Transaction transaction) => ShowAmount(transaction.Amount, transaction.Currency);
+    public static string ShowAmount(long amount, Currency currency)
+    {
+        return currency switch
+        {
+            Currency.EUR => $"{amount / 100},{GetEuroCentString(amount % 100)}",
+            _ => amount.ToString(),
+        };
+
+        string GetEuroCentString(long cents) => Math.Abs(cents).ToString("D2");
+    }
 }
