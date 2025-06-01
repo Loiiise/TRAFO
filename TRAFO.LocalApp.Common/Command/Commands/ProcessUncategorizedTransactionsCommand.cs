@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using TRAFO.LocalApp.Common.Command.Flags;
 using TRAFO.Logic.Dto;
-using TRAFO.Repositories.TransactionReading;
-using TRAFO.Repositories.TransactionWriting;
+using TRAFO.Repositories;
 
 namespace TRAFO.LocalApp.Common.Command;
 

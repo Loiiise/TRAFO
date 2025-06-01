@@ -105,14 +105,14 @@ public class CSVParserTests
             legalOtherPartyIdentifier = transaction.OtherAccountIdentifier,
             legalTimestamp = transaction.Timestamp.ToString();
 
-        // If amount is a Int32 string, it all goes well
-        foreach (var legalNumberAmount in new[] { "1", "69", "987654321", "-123456789", "420", "0", "-45781", int.MinValue.ToString(), int.MaxValue.ToString() })
+        // If amount is a Int64 string, it all goes well
+        foreach (var legalNumberAmount in new[] { "1", "69", "987654321", "-123456789", "420", "0", "-45781", (long.MinValue + 1).ToString(), (long.MaxValue - 1).ToString() })
         {
             var rawData = GenerateBasicRawDataLine(legalNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);
             Should.NotThrow(() => parser.Parse(rawData));
         }
 
-        // If amount is a number outside of the Int32 range, the parser throws
+        // If amount is a number outside of the Int64 range, the parser throws
         foreach (var outOfRangeNumberAmount in new[] { ((BigInteger)long.MaxValue + 1).ToString(), ((BigInteger)long.MinValue - 1).ToString(), "-99999999999999999999", "99999999999999999999" })
         {
             var rawData = GenerateBasicRawDataLine(outOfRangeNumberAmount, legalCurrency, legalThisPartyIdentifier, legalOtherPartyIdentifier, legalTimestamp);

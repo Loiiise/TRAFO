@@ -2,7 +2,7 @@
 using TRAFO.LocalApp.Common.Command.Flags;
 using TRAFO.Logic.Dto;
 using TRAFO.Logic.Extensions;
-using TRAFO.Repositories.TransactionReading;
+using TRAFO.Repositories;
 
 namespace TRAFO.LocalApp.Common.Command;
 

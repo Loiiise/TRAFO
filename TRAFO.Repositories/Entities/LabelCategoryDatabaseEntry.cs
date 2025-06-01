@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TRAFO.Repositories.Database.Entities;
+namespace TRAFO.Repositories.Entities;
 
 [PrimaryKey(nameof(LabelCategoryId))]
 internal sealed class LabelCategoryDatabaseEntry

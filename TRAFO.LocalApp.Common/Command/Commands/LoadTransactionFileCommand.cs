@@ -1,10 +1,8 @@
 ﻿using TRAFO.LocalApp.Common.Command.Arguments;
 using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Logic.Categorization;
-using TRAFO.Services.Parser;
-using TRAFO.Repositories.TransactionWriting;
-using TRAFO.Repositories.TransactionReading;
 using TRAFO.LocalApp.Common.FileReading;
+using TRAFO.Logic.Categorization;
+using TRAFO.Repositories;
 
 namespace TRAFO.LocalApp.Common.Command;
 public class LoadTransactionFileCommand : FromTillCommand

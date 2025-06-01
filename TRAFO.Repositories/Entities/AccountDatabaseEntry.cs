@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TRAFO.Logic.Dto;
 
-namespace TRAFO.Repositories.Database.Entities;
+namespace TRAFO.Repositories.Entities;
 
 [PrimaryKey(nameof(AccountId))]
 internal sealed class AccountDatabaseEntry
