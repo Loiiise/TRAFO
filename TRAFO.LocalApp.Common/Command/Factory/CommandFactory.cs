@@ -1,14 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using TRAFO.Repositories.BalanceReading;
-using TRAFO.Repositories.BalanceWriting;
-using TRAFO.Repositories.TransactionReading;
-using TRAFO.Repositories.TransactionWriting;
 using TRAFO.LocalApp.Common.Command.Arguments;
 using TRAFO.LocalApp.Common.Command.Flags;
+using TRAFO.LocalApp.Common.FileReading;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Extensions;
+using TRAFO.Repositories.Interfaces;
 using TRAFO.Services.Parser;
-using TRAFO.LocalApp.Common.FileReading;
 
 namespace TRAFO.LocalApp.Common.Command;
 

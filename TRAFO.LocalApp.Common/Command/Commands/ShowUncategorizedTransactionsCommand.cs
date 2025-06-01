@@ -1,5 +1,5 @@
 ﻿using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Repositories.TransactionReading;
+using TRAFO.Repositories.Interfaces;
 
 namespace TRAFO.LocalApp.Common.Command;
 

@@ -6,12 +6,8 @@ using TRAFO.LocalApp.Common.Command;
 using TRAFO.LocalApp.Common.Command.Factory;
 using TRAFO.LocalApp.Common.FileReading;
 using TRAFO.Logic.Categorization;
-using TRAFO.Logic.Categorization.Predicates;
-using TRAFO.Repositories.BalanceReading;
-using TRAFO.Repositories.BalanceWriting;
 using TRAFO.Repositories.Database;
-using TRAFO.Repositories.TransactionReading;
-using TRAFO.Repositories.TransactionWriting;
+using TRAFO.Repositories.Interfaces;
 using TRAFO.Services.Parser;
 using TRAFO.Services.Parser.CSV;
 
@@ -33,7 +29,6 @@ internal class Program
         builder.Services.AddSingleton<ILabelApplier, TransactionLabelSetter>();
 
         var database = new EntityFrameworkDatabase();
-        builder.Services.AddSingleton<IDatabase>(database);
         builder.Services.AddSingleton<ITransactionReader>(database);
         builder.Services.AddSingleton<ILabelReader>(database);
         builder.Services.AddSingleton<IBalanceReader>(database);

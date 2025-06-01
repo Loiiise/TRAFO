@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Dto;
 using TRAFO.Repositories.Database.Entities;
+using TRAFO.Repositories.Interfaces;
 
 namespace TRAFO.Repositories.Database;
 
-public class EntityFrameworkDatabase : IDatabase
+public class EntityFrameworkDatabase :
+    ILabelRepository,
+    ITransactionRepository,
+    IBalanceRepository
 {
     public EntityFrameworkDatabase() : this(new DbContextOptions<EntityFrameworkDatabaseContext>()) { }
     public EntityFrameworkDatabase(DbContextOptions databaseContextOptions)

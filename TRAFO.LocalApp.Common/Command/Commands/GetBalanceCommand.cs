@@ -1,6 +1,6 @@
 ﻿using TRAFO.LocalApp.Common.Command.Arguments;
 using TRAFO.LocalApp.Common.Command.Flags;
-using TRAFO.Repositories.BalanceReading;
+using TRAFO.Repositories.Interfaces;
 
 namespace TRAFO.LocalApp.Common.Command;
 public class GetBalanceCommand : Command
