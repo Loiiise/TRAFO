@@ -11,17 +11,12 @@ public sealed record Transaction
 
     public required Currency Currency { get; init; }
 
-
-    public Account? ThisAccount { get; init; }
-
     public required string ThisAccountIdentifier { get; init; }
     public string ThisAccountName
     {
         get => _thisPartyName ?? ThisAccountIdentifier;
         init => _thisPartyName = value;
     }
-
-    public Account? OtherAccount { get; init; }
 
     public required string OtherAccountIdentifier { get; init; }
     public string OtherPartyName
