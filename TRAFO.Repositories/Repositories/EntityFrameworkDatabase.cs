@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TRAFO.Logic.Dto;
-using TRAFO.Repositories.Database.Entities;
-using TRAFO.Repositories.Interfaces;
+using TRAFO.Repositories.Entities;
 
-namespace TRAFO.Repositories.Database;
+namespace TRAFO.Repositories.Repositories;
 
 public class EntityFrameworkDatabase :
     ILabelRepository,

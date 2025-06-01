@@ -4,7 +4,7 @@ using TRAFO.LocalApp.Common.Command.Flags;
 using TRAFO.LocalApp.Common.FileReading;
 using TRAFO.Logic.Categorization;
 using TRAFO.Logic.Extensions;
-using TRAFO.Repositories.Interfaces;
+using TRAFO.Repositories;
 using TRAFO.Services.Parser;
 
 namespace TRAFO.LocalApp.Common.Command;

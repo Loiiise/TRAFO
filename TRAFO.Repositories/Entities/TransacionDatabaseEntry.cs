@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TRAFO.Repositories.Database.Entities;
+namespace TRAFO.Repositories.Entities;
 
 [PrimaryKey(nameof(TransactionId))]
 internal sealed class TransacionDatabaseEntry

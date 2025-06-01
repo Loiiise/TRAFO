@@ -1,6 +1,6 @@
 ﻿using TRAFO.Logic.Dto;
 
-namespace TRAFO.Repositories.Interfaces;
+namespace TRAFO.Repositories;
 internal interface ITransactionRepository :
     ITransactionReader,
     ITransactionWriter

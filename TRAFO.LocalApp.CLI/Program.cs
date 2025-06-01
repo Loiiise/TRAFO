@@ -6,8 +6,8 @@ using TRAFO.LocalApp.Common.Command;
 using TRAFO.LocalApp.Common.Command.Factory;
 using TRAFO.LocalApp.Common.FileReading;
 using TRAFO.Logic.Categorization;
-using TRAFO.Repositories.Database;
-using TRAFO.Repositories.Interfaces;
+using TRAFO.Repositories;
+using TRAFO.Repositories.Repositories;
 using TRAFO.Services.Parser;
 using TRAFO.Services.Parser.CSV;
 
