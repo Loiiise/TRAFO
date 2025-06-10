@@ -33,6 +33,11 @@ public class CommandFlagFactory : ICommandFlagFactory
         {
             flag = new DateFlag { Value = dateTime };
         }
+        else if (flagName == nameof(SkipFirstLineFlag) &&
+            ParseBoolSafe(flagValue, out var skipFirstLine, out exception))
+        {
+            flag = new SkipFirstLineFlag { Value = skipFirstLine };
+        }
         else if (exception != null)
         {
             exception = new ArgumentException($"{flagName} is not a valid flag.");
@@ -41,11 +46,23 @@ public class CommandFlagFactory : ICommandFlagFactory
         return exception == null;
     }
 
-    private bool ParseDateTimeSafe(string dateTimeString, [MaybeNullWhen(false), NotNullWhen(true)] out DateTime dateTime, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
-    {
-        var isDateTime = DateTime.TryParse(dateTimeString, out dateTime);
+    private bool ParseBoolSafe(string dateTimeString, [MaybeNullWhen(false), NotNullWhen(true)] out bool boolean, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
+        => ParseXSafe(dateTimeString, bool.TryParse, out boolean, out exception);
 
-        exception = isDateTime ? null : new ArgumentException($"{dateTimeString} could not be parsed as a date.");
-        return isDateTime;
+    private bool ParseDateTimeSafe(string dateTimeString, [MaybeNullWhen(false), NotNullWhen(true)] out DateTime dateTime, [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
+        => ParseXSafe(dateTimeString, DateTime.TryParse, out dateTime, out exception);
+
+    private bool ParseXSafe<T>(
+        string inputString,
+        TryParseDelegate<T> parseDelegate,
+        [MaybeNullWhen(false), NotNullWhen(true)] out T? item,
+        [MaybeNullWhen(true), NotNullWhen(false)] out Exception exception)
+
+    {
+        var isX = parseDelegate(inputString, out item);
+
+        exception = isX ? null : new ArgumentException($"{inputString} could not be parsed as a {typeof(T)}.");
+        return isX;
     }
+    public delegate bool TryParseDelegate<T>(string input, out T result);
 }

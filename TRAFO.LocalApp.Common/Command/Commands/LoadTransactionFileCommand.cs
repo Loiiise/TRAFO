@@ -8,6 +8,7 @@ namespace TRAFO.LocalApp.Common.Command;
 public class LoadTransactionFileCommand : FromTillCommand
 {
     public required FilePathArgument FilePathArgument { get; init; }
+    public required SkipFirstLineFlag? SkipFirstLineFlag { get; init; }
 
     public LoadTransactionFileCommand(ITransactionFileReader transactionFileReader, ILabelApplier[] labelers, ITransactionWriter transactionWriter, ICommandFlag[] flags) : base(flags)
     {
