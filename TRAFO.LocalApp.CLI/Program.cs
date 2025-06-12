@@ -28,6 +28,11 @@ internal class Program
         builder.Services.AddSingleton<ITransactionFileReader, TransactionFileReader>();
         builder.Services.AddSingleton<ILabelApplier, TransactionLabelSetter>();
 
+        var labelRepository = new LabelRepository();
+        builder.Services.AddSingleton<ILabelReader>(labelRepository);
+        builder.Services.AddSingleton<ITransactionLabelUpdater>(labelRepository);
+
+
         var database = new EntityFrameworkDatabase();
         builder.Services.AddSingleton<ITransactionReader>(database);
         builder.Services.AddSingleton<ILabelReader>(database);

@@ -2,10 +2,9 @@
 using TRAFO.Logic.Dto;
 using TRAFO.Repositories.Entities;
 
-namespace TRAFO.Repositories.Repositories;
+namespace TRAFO.Repositories;
 
 public class EntityFrameworkDatabase :
-    ILabelRepository,
     ITransactionRepository,
     IBalanceRepository
 {
@@ -14,15 +13,6 @@ public class EntityFrameworkDatabase :
     {
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
-
-    // todo #71
-    public IEnumerable<Label> GetAllLabels() => _context.Label.Select(FromDatabaseEntry);
-
-    public IEnumerable<Transaction> ReadAllTransactions()
-    {
-        return _context.Transaction.Select(FromDatabaseEntry);
-    }
-
     public IEnumerable<Transaction> ReadTransactionsInRange(DateTime? from, DateTime? till)
     {
         var transactions = ReadAllTransactions();
@@ -62,19 +52,9 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    public void SetLabel(Transaction transaction, Label label)
-    {
-        // todo #86
-        throw new NotImplementedException();
-    }
+    
 
-    public void UpdateLabels(Transaction transaction)
-    {
-        // todo #86
-        throw new NotImplementedException();
-    }
-
-    private BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
+    internal BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -90,7 +70,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
+    internal TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
         // todo #88
         throw new NotImplementedException();
@@ -113,8 +93,8 @@ public class EntityFrameworkDatabase :
         */
     }
     // todo #86
-    private Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
-    private Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
+    internal Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
+    internal Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -129,7 +109,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
+    internal Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
         // todo #88
         throw new NotImplementedException();
@@ -158,7 +138,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private EntityFrameworkDatabaseContext _context;
+    internal EntityFrameworkDatabaseContext _context;
 }
 
 internal class EntityFrameworkDatabaseContext : DbContext
