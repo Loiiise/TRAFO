@@ -2,12 +2,9 @@
 using TRAFO.Logic.Dto;
 using TRAFO.Repositories.Entities;
 
-namespace TRAFO.Repositories.Repositories;
+namespace TRAFO.Repositories;
 
-public class EntityFrameworkDatabase :
-    ILabelRepository,
-    ITransactionRepository,
-    IBalanceRepository
+public class EntityFrameworkDatabase
 {
     public EntityFrameworkDatabase() : this(new DbContextOptions<EntityFrameworkDatabaseContext>()) { }
     public EntityFrameworkDatabase(DbContextOptions databaseContextOptions)
@@ -15,66 +12,7 @@ public class EntityFrameworkDatabase :
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
 
-    // todo #71
-    public IEnumerable<Label> GetAllLabels() => _context.Label.Select(FromDatabaseEntry);
-
-    public IEnumerable<Transaction> ReadAllTransactions()
-    {
-        return _context.Transaction.Select(FromDatabaseEntry);
-    }
-
-    public IEnumerable<Transaction> ReadTransactionsInRange(DateTime? from, DateTime? till)
-    {
-        var transactions = ReadAllTransactions();
-
-        if (from is not null) transactions = transactions.Where(t => t.Timestamp >= from);
-        if (till is not null) transactions = transactions.Where(t => t.Timestamp <= till);
-
-        return transactions;
-    }
-
-    public void WriteTransaction(Transaction transaction)
-    {
-        _context.Transaction.Add(ToDatabaseEntry(transaction));
-        _context.SaveChanges();
-    }
-
-    public void WriteTransactions(IEnumerable<Transaction> transactions)
-    {
-        _context.Transaction.AddRange(transactions.Select(ToDatabaseEntry));
-        _context.SaveChanges();
-    }
-
-    public IEnumerable<Balance> ReadBalances(string identifier)
-    {
-        // todo #85
-        throw new NotImplementedException();
-        //return _context.Balances.Where(b => b. == identifier).Select(FromDatabaseEntry);
-    }
-
-    public void WriteBalance(Balance balance)
-    {
-        // todo #85
-        throw new NotImplementedException();
-        /*
-        _context.Balance.Add(ToDatabaseEntry(balance));
-        _context.SaveChanges();
-        */
-    }
-
-    public void SetLabel(Transaction transaction, Label label)
-    {
-        // todo #86
-        throw new NotImplementedException();
-    }
-
-    public void UpdateLabels(Transaction transaction)
-    {
-        // todo #86
-        throw new NotImplementedException();
-    }
-
-    private BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
+    internal BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -90,7 +28,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
+    internal TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
         // todo #88
         throw new NotImplementedException();
@@ -113,8 +51,8 @@ public class EntityFrameworkDatabase :
         */
     }
     // todo #86
-    private Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
-    private Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
+    internal Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
+    internal Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -129,7 +67,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
+    internal Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
         // todo #88
         throw new NotImplementedException();
@@ -158,7 +96,7 @@ public class EntityFrameworkDatabase :
         */
     }
 
-    private EntityFrameworkDatabaseContext _context;
+    internal EntityFrameworkDatabaseContext _context;
 }
 
 internal class EntityFrameworkDatabaseContext : DbContext

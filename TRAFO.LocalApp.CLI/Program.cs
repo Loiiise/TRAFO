@@ -28,13 +28,17 @@ internal class Program
         builder.Services.AddSingleton<ITransactionFileReader, TransactionFileReader>();
         builder.Services.AddSingleton<ILabelApplier, TransactionLabelSetter>();
 
-        var database = new EntityFrameworkDatabase();
-        builder.Services.AddSingleton<ITransactionReader>(database);
-        builder.Services.AddSingleton<ILabelReader>(database);
-        builder.Services.AddSingleton<IBalanceReader>(database);
-        builder.Services.AddSingleton<IBalanceWriter>(database);
-        builder.Services.AddSingleton<ITransactionWriter>(database);
-        builder.Services.AddSingleton<ITransactionLabelUpdater>(database);
+        var transactionRepository = new TransactionRepository();
+        builder.Services.AddSingleton<ITransactionReader>(transactionRepository);
+        builder.Services.AddSingleton<ITransactionWriter>(transactionRepository);
+
+        var labelRepository = new LabelRepository();
+        builder.Services.AddSingleton<ILabelReader>(labelRepository);
+        builder.Services.AddSingleton<ITransactionLabelUpdater>(labelRepository);
+
+        var balanceRepository = new BalanceRepository();
+        builder.Services.AddSingleton<IBalanceReader>(balanceRepository);
+        builder.Services.AddSingleton<IBalanceWriter>(balanceRepository);
 
         builder.Services.AddSingleton<ICommandMetaData, CommandMetaData>();
         builder.Services.AddSingleton<IFlagMetaData, FlagMetaData>();
