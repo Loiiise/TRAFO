@@ -4,33 +4,13 @@ using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories;
 
-public class EntityFrameworkDatabase :
-    IBalanceRepository
+public class EntityFrameworkDatabase
 {
     public EntityFrameworkDatabase() : this(new DbContextOptions<EntityFrameworkDatabaseContext>()) { }
     public EntityFrameworkDatabase(DbContextOptions databaseContextOptions)
     {
         _context = new EntityFrameworkDatabaseContext(databaseContextOptions);
     }
-
-    public IEnumerable<Balance> ReadBalances(string identifier)
-    {
-        // todo #85
-        throw new NotImplementedException();
-        //return _context.Balances.Where(b => b. == identifier).Select(FromDatabaseEntry);
-    }
-
-    public void WriteBalance(Balance balance)
-    {
-        // todo #85
-        throw new NotImplementedException();
-        /*
-        _context.Balance.Add(ToDatabaseEntry(balance));
-        _context.SaveChanges();
-        */
-    }
-
-    
 
     internal BalanceDatabaseEntry ToDatabaseEntry(Balance balance)
     {

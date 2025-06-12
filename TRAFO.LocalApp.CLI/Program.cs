@@ -36,9 +36,9 @@ internal class Program
         builder.Services.AddSingleton<ILabelReader>(labelRepository);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(labelRepository);
 
-        var database = new EntityFrameworkDatabase();
-        builder.Services.AddSingleton<IBalanceReader>(database);
-        builder.Services.AddSingleton<IBalanceWriter>(database);
+        var balanceRepository = new BalanceRepository();
+        builder.Services.AddSingleton<IBalanceReader>(balanceRepository);
+        builder.Services.AddSingleton<IBalanceWriter>(balanceRepository);
 
         builder.Services.AddSingleton<ICommandMetaData, CommandMetaData>();
         builder.Services.AddSingleton<IFlagMetaData, FlagMetaData>();
