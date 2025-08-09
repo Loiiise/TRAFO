@@ -4,6 +4,16 @@ namespace TRAFO.Repositories.Repositories;
 
 public sealed class LabelRepository : EntityFrameworkDatabase, ILabelRepository
 {
+    public void CreateIfNotExists(IEnumerable<string> labelNames)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CreateIfNotExists(IEnumerable<Label> label)
+    {
+        throw new NotImplementedException();
+    }
+
     // todo #71
     public IEnumerable<Label> GetAllLabels() => _context.Label.Select(FromDatabaseEntry);
 

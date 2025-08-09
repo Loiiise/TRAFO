@@ -5,6 +5,15 @@ namespace TRAFO.Repositories;
 
 public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactionRepository
 {
+    private readonly IAccountRepository _accountRepository;
+    private readonly ILabelRepository _labelRepository;
+
+    public TransactionRepository(IAccountRepository accountRepository, ILabelRepository labelRepository) : base()
+    {
+        _accountRepository = accountRepository;
+        _labelRepository = labelRepository;
+    }
+
     private IQueryable<TransactionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till) => QueryTransactionsInRange(_context.Transaction, from, till);
     private IQueryable<TransactionDatabaseEntry> QueryTransactionsInRange(IQueryable<TransactionDatabaseEntry> baseQuery, DateTime? from, DateTime? till)
         => from == null && till == null ?
@@ -63,11 +72,59 @@ public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactio
     public void WriteTransaction(Transaction transaction) => WriteTransactions(new[] { transaction });
     public void WriteTransactions(IEnumerable<Transaction> transactions)
     {
-        // todo #88: make sure all entities exist (accounts and labels and such)
-        //_context.Account.FirstOrDefault(account => account.AccountId == transaction.ThisAccountIdentifier) ?? throw new ArgumentException($"{transaction.ThisAccountIdentifier} does not exist"),
-        var transactionsToWrite = new List<TransactionDatabaseEntry>();//transactions.Select(ToDatabaseEntry);
-        _context.Transaction.AddRange(transactionsToWrite);
-        // todo #88: link labels and transacions
+        var firstTransaction = transactions.FirstOrDefault();
+        if (firstTransaction is null) return;
+
+        if (transactions.Any(t => t.Currency != firstTransaction.Currency))
+        {
+            throw new ArgumentException("All transactions must have the same currency.");
+        }
+
+        var accountsDtos = transactions
+            .Select(t => (t.ThisAccountIdentifier, t.ThisAccountName))
+            .Concat(transactions.Select(t => (t.OtherAccountIdentifier, t.OtherAccountName)))
+            .Distinct()
+            .Select(thisAccountIdAndName => new Account
+            {
+                AccountId = thisAccountIdAndName.Item1,
+                AccountName = thisAccountIdAndName.Item2,
+                // Balance is unknown in transactions, so we set it to 0 at the start of time. 
+                Balance = new Balance
+                {
+                    Amount = 0,
+                    Currency = firstTransaction.Currency,
+                    Timestamp = new DateTime(0),
+                },
+            });
+        var labels = transactions.SelectMany(t => t.Labels).Distinct();
+
+        _accountRepository.CreateIfNotExists(accountsDtos);
+        _labelRepository.CreateIfNotExists(labels);
+        _context.SaveChanges();
+
+        // All related entities exist now, we can setup transactions
+        var accountDatabaseEntriesById = _context.Account
+            .Where(account => accountsDtos.Select(a => a.AccountId).Contains(account.AccountId))
+            .ToDictionary(account => account.AccountId);
+        var labelDatabaseEntriesByName = _context.Label
+            .Where(label => labels.Contains(label.Name))
+            .ToDictionary(label => label.Name);
+
+        var transactionsToAddTuples = transactions.Select(transaction =>
+            (ToDatabaseEntry(
+                transaction,
+                accountDatabaseEntriesById[transaction.ThisAccountIdentifier],
+                accountDatabaseEntriesById[transaction.OtherAccountIdentifier])
+            , transaction));
+
+        _context.Transaction.AddRange(transactionsToAddTuples.Select(transactionTuple => transactionTuple.Item1));
+        _context.TransactionLabels.AddRange(transactionsToAddTuples
+            .SelectMany(transactionTuple => transactionTuple.Item2.Labels.Select(labelName =>
+            new TransacionLabelerDatabaseEntry
+            {
+                Transaction = transactionTuple.Item1,
+                Label = labelDatabaseEntriesByName[labelName],
+            })));
         _context.SaveChanges();
     }
 

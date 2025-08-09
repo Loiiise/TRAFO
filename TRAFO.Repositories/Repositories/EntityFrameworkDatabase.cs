@@ -91,6 +91,7 @@ internal class EntityFrameworkDatabaseContext : DbContext
     public DbSet<LabelBalanceDatabaseEntry> LabelBalance { get; set; }
     public DbSet<LabelCategoryBalanceDatabaseEntry> LabelCategoryBalance { get; set; }
     public DbSet<LabelDatabaseEntry> Label { get; set; }
+    public DbSet<LabelCategoryDatabaseEntry> LabelCategory { get; set; }
     public DbSet<TransactionDatabaseEntry> Transaction { get; set; }
-    public DbSet<LabelCategoryDatabaseEntry> LabelCategorie { get; set; }
+    public DbSet<TransacionLabelerDatabaseEntry> TransactionLabels { get; set; }
 }

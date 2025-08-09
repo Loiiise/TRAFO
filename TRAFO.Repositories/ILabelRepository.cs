@@ -2,10 +2,18 @@
 
 namespace TRAFO.Repositories;
 
-internal interface ILabelRepository :
+public interface ILabelRepository :
+    ILabelWriter,
     ILabelReader,
     ITransactionLabelUpdater
 { }
+
+public interface ILabelWriter
+{
+    // todo #86: check if this still makes sense
+    void CreateIfNotExists(IEnumerable<string> labelNames);
+    void CreateIfNotExists(IEnumerable<Label> label);
+}
 
 public interface ILabelReader
 {
