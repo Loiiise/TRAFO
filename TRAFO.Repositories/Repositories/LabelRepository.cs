@@ -13,6 +13,16 @@ public sealed class LabelRepository : EntityFrameworkDatabase, ILabelRepository
         throw new NotImplementedException();
     }
 
+    public Label? TryGetLabelById(Guid labelId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Label> TryGetLabelById(IEnumerable<Guid> labelIds)
+    {
+        throw new NotImplementedException();
+    }
+
     public void UpdateLabels(Transaction transaction)
     {
         // todo #86

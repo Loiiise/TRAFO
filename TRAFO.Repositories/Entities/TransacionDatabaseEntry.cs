@@ -20,4 +20,6 @@ internal sealed class TransacionDatabaseEntry
     public string? BIC { get; set; }
     public string? Description { get; set; }
     public string? RawData { get; set; }
+
+    public required ICollection<TransacionLabelerDatabaseEntry> Labels { get; set; }
 }

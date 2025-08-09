@@ -13,13 +13,13 @@ public interface ITransactionReader
 
     public IEnumerable<Transaction> ReadTransactionsFromAccount(Account account);
     public IEnumerable<Transaction> ReadTransactionsFromAccount(Account account, DateTime? from, DateTime? till);
-    public IEnumerable<Transaction> ReadTransactionsFromAccount(Guid accountId);
-    public IEnumerable<Transaction> ReadTransactionsFromAccount(Guid accountId, DateTime? from, DateTime? till);
+    public IEnumerable<Transaction> ReadTransactionsFromAccount(string accountId);
+    public IEnumerable<Transaction> ReadTransactionsFromAccount(string accountId, DateTime? from, DateTime? till);
 
-    public IEnumerable<Transaction> ReadTransactionsFromLabel(Label label, bool includeChildTransactions = true);
-    public IEnumerable<Transaction> ReadTransactionsFromLabel(Label label, DateTime? from, DateTime? till, bool includeChildTransactions = true);
-    public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, bool includeChildTransactions = true);
-    public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, DateTime? from, DateTime? till, bool includeChildTransactions = true);
+    public IEnumerable<Transaction> ReadTransactionsFromLabel(Label label, bool includeParentTransactions = true);
+    public IEnumerable<Transaction> ReadTransactionsFromLabel(Label label, DateTime? from, DateTime? till, bool includeParentTransactions = true);
+    public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, bool includeParentTransactions = true);
+    public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, DateTime? from, DateTime? till, bool includeParentTransactions = true);
 
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Label> labels);
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Label> labels, DateTime? from, DateTime? till);

@@ -28,7 +28,7 @@ public class EntityFrameworkDatabase
         */
     }
 
-    internal TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
+    internal static TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
     {
         // todo #88
         throw new NotImplementedException();
@@ -51,8 +51,8 @@ public class EntityFrameworkDatabase
         */
     }
     // todo #86
-    internal Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
-    internal Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
+    internal static Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
+    internal static Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -67,7 +67,7 @@ public class EntityFrameworkDatabase
         */
     }
 
-    internal Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
+    internal static Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
         // todo #88
         throw new NotImplementedException();

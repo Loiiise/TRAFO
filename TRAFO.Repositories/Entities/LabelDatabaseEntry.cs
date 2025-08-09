@@ -14,4 +14,6 @@ internal sealed class LabelDatabaseEntry
     public required Guid LabelCategoryId { get; set; } = new();
     public string? Description { get; set; }
     public int? DisplayId { get; set; }
+
+    public required ICollection<TransacionLabelerDatabaseEntry> Transactions { get; set; }
 }

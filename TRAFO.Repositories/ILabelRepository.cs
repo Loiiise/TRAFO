@@ -10,6 +10,8 @@ internal interface ILabelRepository :
 public interface ILabelReader
 {
     IEnumerable<Label> GetAllLabels();
+    Label? TryGetLabelById(Guid labelId);
+    IEnumerable<Label> TryGetLabelById(IEnumerable<Guid> labelIds);
 }
 
 public interface ITransactionLabelUpdater
