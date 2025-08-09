@@ -3,18 +3,7 @@ using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories;
 
-public class EntityFrameworkDatabase
-{
-    public EntityFrameworkDatabase() : this(new DbContextOptions<EntityFrameworkDatabaseContext>()) { }
-    public EntityFrameworkDatabase(DbContextOptions databaseContextOptions)
-    {
-        throw new NotSupportedException();
-    }
-
-    internal EntityFrameworkDatabaseContext _context;
-}
-
-internal class EntityFrameworkDatabaseContext : DbContext
+public class EntityFrameworkDatabaseContext : DbContext
 {
     public EntityFrameworkDatabaseContext() : this(new DbContextOptions<EntityFrameworkDatabaseContext>()) { }
     public EntityFrameworkDatabaseContext(DbContextOptions options) : base(options)
@@ -40,12 +29,12 @@ internal class EntityFrameworkDatabaseContext : DbContext
     }
 
     private string _databasePath { get; }
-    public DbSet<AccountDatabaseEntry> Account { get; set; }
-    public DbSet<AccountBalanceDatabaseEntry> AccountBalance { get; set; }
-    public DbSet<LabelBalanceDatabaseEntry> LabelBalance { get; set; }
-    public DbSet<LabelCategoryBalanceDatabaseEntry> LabelCategoryBalance { get; set; }
-    public DbSet<LabelDatabaseEntry> Label { get; set; }
-    public DbSet<LabelCategoryDatabaseEntry> LabelCategory { get; set; }
-    public DbSet<TransactionDatabaseEntry> Transaction { get; set; }
-    public DbSet<TransacionLabelerDatabaseEntry> TransactionLabels { get; set; }
+    internal DbSet<AccountDatabaseEntry> Account { get; set; }
+    internal DbSet<AccountBalanceDatabaseEntry> AccountBalance { get; set; }
+    internal DbSet<LabelBalanceDatabaseEntry> LabelBalance { get; set; }
+    internal DbSet<LabelCategoryBalanceDatabaseEntry> LabelCategoryBalance { get; set; }
+    internal DbSet<LabelDatabaseEntry> Label { get; set; }
+    internal DbSet<LabelCategoryDatabaseEntry> LabelCategory { get; set; }
+    internal DbSet<TransactionDatabaseEntry> Transaction { get; set; }
+    internal DbSet<TransacionLabelerDatabaseEntry> TransactionLabels { get; set; }
 }

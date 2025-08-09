@@ -3,15 +3,17 @@ using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories;
 
-public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactionRepository
+public sealed class TransactionRepository : ITransactionRepository
 {
+    private readonly EntityFrameworkDatabaseContext _context;
     private readonly IAccountRepository _accountRepository;
     private readonly ILabelRepository _labelRepository;
 
-    public TransactionRepository(IAccountRepository accountRepository, ILabelRepository labelRepository) : base()
+    public TransactionRepository(EntityFrameworkDatabaseContext context, IAccountRepository accountRepository, ILabelRepository labelRepository) : base()
     {
-        _accountRepository = accountRepository;
-        _labelRepository = labelRepository;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
+        _labelRepository = labelRepository ?? throw new ArgumentNullException(nameof(labelRepository));
     }
 
     private IQueryable<TransactionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till) => QueryTransactionsInRange(_context.Transaction, from, till);

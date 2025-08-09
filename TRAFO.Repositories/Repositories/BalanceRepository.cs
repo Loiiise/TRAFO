@@ -2,7 +2,7 @@
 using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories.Repositories;
-public sealed class BalanceRepository : EntityFrameworkDatabase, IBalanceRepository
+public sealed class BalanceRepository : IBalanceRepository
 {
     public IEnumerable<Balance> ReadBalances(string identifier)
     {
