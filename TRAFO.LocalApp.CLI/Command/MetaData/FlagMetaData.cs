@@ -10,6 +10,6 @@ public class FlagMetaData : MetaData<FlagConfiguration>, IFlagMetaData
         new FlagConfiguration(nameof(FromFlag), "from", "start date of the range in a YYYY-MM-DD format."),
         new FlagConfiguration(nameof(TillFlag), "till", "end date of the range in a YYYY-MM-DD format."),
         new FlagConfiguration(nameof(DateFlag), "at", "timestamp in a YYYY-MM-DD format."),
-        new FlagConfiguration(nameof(SkipFirstLineFlag), "skipFirstLine", "Skips the first line of the doecument to be parsed."),
+        new FlagConfiguration(nameof(SkipFirstLineFlag), "skipFirstLine", "Skips the first line of the document to be parsed."),
     };
 }

@@ -9,4 +9,7 @@ internal sealed class AccountDatabaseEntry
     public required string AccountId { get; set; }
     public string? AccountName { get; set; }
     public required Currency Currency { get; set; }
+
+    public required ICollection<AccountBalanceDatabaseEntry> Balances { get; set; }
+    public required ICollection<TransactionDatabaseEntry> Transactions { get; set; }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TRAFO.Repositories.Entities;
 
@@ -10,8 +9,10 @@ internal sealed class LabelDatabaseEntry
     public Guid? ParentLabelId { get; set; }
     public required string Name { get; set; }
 
-    [ForeignKey(nameof(LabelCategoryDatabaseEntry.LabelCategoryId))]
-    public required Guid LabelCategoryId { get; set; } = new();
+    public required LabelCategoryDatabaseEntry LabelCategory { get; set; }
     public string? Description { get; set; }
     public int? DisplayId { get; set; }
+
+    public required ICollection<LabelBalanceDatabaseEntry> Balances { get; set; }
+    public required ICollection<TransacionLabelerDatabaseEntry> Transactions { get; set; }
 }

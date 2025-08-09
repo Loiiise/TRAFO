@@ -55,7 +55,7 @@ public static class TransactionFixture
                             var transactionWithAllFields = transactionWithMandatoryFields with
                             {
                                 ThisAccountName = thisPartyName,
-                                OtherPartyName = otherPartyName,
+                                OtherAccountName = otherPartyName,
                                 PaymentReference = paymentReference,
                                 BIC = bic,
                                 Description = description,

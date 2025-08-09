@@ -28,31 +28,9 @@ public class EntityFrameworkDatabase
         */
     }
 
-    internal TransacionDatabaseEntry ToDatabaseEntry(Transaction transaction)
-    {
-        // todo #88
-        throw new NotImplementedException();
-        /*
-        return new TransacionDatabaseEntry
-        {
-            Amount = transaction.Amount,
-            Currency = transaction.Currency,
-            ThisPartyIdentifier = transaction.ThisPartyIdentifier,
-            ThisPartyName = transaction.ThisPartyName,
-            OtherPartyIdentifier = transaction.OtherPartyIdentifier,
-            OtherPartyName = transaction.OtherPartyName,
-            Timestamp = transaction.Timestamp,
-            PaymentReference = transaction.PaymentReference ?? string.Empty,
-            BIC = transaction.BIC ?? string.Empty,
-            Description = transaction.Description ?? string.Empty,
-            RawData = transaction.RawData,
-            PrimairyLabel = transaction.PrimairyLabel ?? string.Empty,
-        };
-        */
-    }
     // todo #86
-    internal Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
-    internal Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
+    internal static Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
+    internal static Balance FromDatabaseEntry(BalanceDatabaseEntry balance)
     {
         // todo #85
         throw new NotImplementedException();
@@ -67,34 +45,17 @@ public class EntityFrameworkDatabase
         */
     }
 
-    internal Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
+    internal static LabelCategory FromDatabaseEntry(LabelCategoryDatabaseEntry labelCategory)
     {
-        // todo #88
+        // todo #87
         throw new NotImplementedException();
-        /*
-        Debug.Assert(account.AccountId == transaction.ThisPartyAccountId);
-
-        return new Transaction
-        {
-            Amount = transaction.Amount,
-            Currency = account.Currency,
-            ThisPartyIdentifier = transaction.ThisPartyAccountId,
-            ThisPartyName = transaction.ThisPartyName ?? transaction.ThisPartyAccountId,
-            OtherPartyIdentifier = transaction.OtherPartyAccountId,
-            OtherPartyName = transaction.OtherPartyName ?? transaction.OtherPartyAccountId,
-            Timestamp = transaction.Timestamp,
-            PaymentReference = transaction.PaymentReference,
-            BIC = transaction.BIC,
-            Description = transaction.Description,
-            RawData = transaction.RawData ?? string.Empty,
-            PrimairyLabel = string.Empty, // todo #:
-            Labels = Array.Empty<string>(),
-        };
-
-        string? NullIfEmptyString(string value) => value == string.Empty ? null : value;
-
-        */
     }
+
+    internal static Account FromDatabaseEntry(AccountBalanceDatabaseEntry account)
+    {
+        // todo #84
+        throw new NotImplementedException();
+    }    
 
     internal EntityFrameworkDatabaseContext _context;
 }
@@ -125,11 +86,12 @@ internal class EntityFrameworkDatabaseContext : DbContext
     }
 
     private string _databasePath { get; }
-    public DbSet<AccountBalanceDatabaseEntry> Account { get; set; }
+    public DbSet<AccountDatabaseEntry> Account { get; set; }
     public DbSet<AccountBalanceDatabaseEntry> AccountBalance { get; set; }
     public DbSet<LabelBalanceDatabaseEntry> LabelBalance { get; set; }
     public DbSet<LabelCategoryBalanceDatabaseEntry> LabelCategoryBalance { get; set; }
     public DbSet<LabelDatabaseEntry> Label { get; set; }
-    public DbSet<TransacionDatabaseEntry> Transaction { get; set; }
-    public DbSet<LabelCategoryDatabaseEntry> LabelCategorie { get; set; }
+    public DbSet<LabelCategoryDatabaseEntry> LabelCategory { get; set; }
+    public DbSet<TransactionDatabaseEntry> Transaction { get; set; }
+    public DbSet<TransacionLabelerDatabaseEntry> TransactionLabels { get; set; }
 }
