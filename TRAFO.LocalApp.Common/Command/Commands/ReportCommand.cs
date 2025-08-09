@@ -21,7 +21,7 @@ public class ReportCommand : FromTillCommand
         var primairyLabelToGroupedTransactions = new Dictionary<string, List<Transaction>>();
         primairyLabelToGroupedTransactions[noPrimairyLabel] = new List<Transaction>();
 
-        foreach (var transaction in _transactionReader.ReadTransactionsInRange(_from, _till))
+        foreach (var transaction in _transactionReader.ReadTransactions(_from, _till))
         {
             // todo #80
             /*

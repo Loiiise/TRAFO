@@ -5,15 +5,15 @@ namespace TRAFO.Repositories;
 
 public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactionRepository
 {
-    private IQueryable<TransacionDatabaseEntry> QueryTransactions() => _context.Transaction;
-    private IQueryable<TransacionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till)
+    private IQueryable<TransacionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till) => QueryTransactionsInRange(_context.Transaction, from, till);
+    private IQueryable<TransacionDatabaseEntry> QueryTransactionsInRange(IQueryable<TransacionDatabaseEntry> baseQuery, DateTime? from, DateTime? till)
         => from == null && till == null ?
-            QueryTransactions() :
+            baseQuery :
             from == null ?
-                QueryTransactions().Where(t => t.Timestamp <= till) :
+                baseQuery.Where(t => t.Timestamp <= till) :
                 till == null ?
-                    QueryTransactions().Where(t => t.Timestamp >= from) :
-                    QueryTransactions()
+                    baseQuery.Where(t => t.Timestamp >= from) :
+                    baseQuery
                         .Where(t => t.Timestamp <= till)
                         .Where(t => t.Timestamp >= from);
 

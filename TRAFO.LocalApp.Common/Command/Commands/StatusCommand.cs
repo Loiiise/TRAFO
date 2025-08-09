@@ -12,7 +12,7 @@ public class StatusCommand : FromTillCommand
 
     public override void Execute()
     {
-        var transactions = _transactionReader.ReadTransactionsInRange(_from, _till);
+        var transactions = _transactionReader.ReadTransactions(_from, _till);
 
         if (!transactions.Any())
         {

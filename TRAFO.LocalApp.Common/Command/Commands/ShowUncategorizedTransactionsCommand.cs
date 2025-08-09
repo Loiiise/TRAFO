@@ -14,7 +14,7 @@ public class ShowUncategorizedTransactionsCommand : FromTillCommand
     public override void Execute()
     {
         var uncategorizedTransactions = _transactionReader
-            .ReadTransactionsInRange(_from, _till)
+            .ReadTransactions(_from, _till)
             // todo #80
             //.Where(t => t.PrimairyLabel is null)
             .ToArray();
