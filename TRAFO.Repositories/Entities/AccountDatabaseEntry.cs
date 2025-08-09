@@ -11,5 +11,5 @@ internal sealed class AccountDatabaseEntry
     public required Currency Currency { get; set; }
 
     public required ICollection<AccountBalanceDatabaseEntry> Balances { get; set; }
-    public required ICollection<TransacionDatabaseEntry> Transactions { get; set; }
+    public required ICollection<TransactionDatabaseEntry> Transactions { get; set; }
 }

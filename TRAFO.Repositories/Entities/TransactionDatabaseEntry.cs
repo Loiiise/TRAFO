@@ -3,10 +3,10 @@
 namespace TRAFO.Repositories.Entities;
 
 [PrimaryKey(nameof(TransactionId))]
-internal sealed class TransacionDatabaseEntry
+internal sealed class TransactionDatabaseEntry
 {
     public required Guid TransactionId { get; set; } = new();
-    public Guid? ParentTransactionId { get; set; }
+    public TransactionDatabaseEntry? ParentTransaction { get; set; }
     public required long Amount { get; set; }
 
     public required AccountDatabaseEntry ThisPartyAccount { get; set; }
@@ -16,6 +16,6 @@ internal sealed class TransacionDatabaseEntry
     public string? BIC { get; set; }
     public string? Description { get; set; }
     public string? RawData { get; set; }
-
-    public required ICollection<TransacionLabelerDatabaseEntry> Labels { get; set; }
+    
+    public ICollection<TransacionLabelerDatabaseEntry> Labels { get; set; } = new List<TransacionLabelerDatabaseEntry>();
 }

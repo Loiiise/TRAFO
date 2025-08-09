@@ -31,12 +31,12 @@ public class TransactionTests
         var transactionWithOnlyOtherPartyIdentifier = GetEmptyTransaction() with { OtherAccountIdentifier = otherPartyIdentifier };
 
         transactionWithOnlyOtherPartyIdentifier.OtherAccountIdentifier.ShouldBe(otherPartyIdentifier);
-        transactionWithOnlyOtherPartyIdentifier.OtherPartyName.ShouldBe(otherPartyIdentifier);
+        transactionWithOnlyOtherPartyIdentifier.OtherAccountName.ShouldBe(otherPartyIdentifier);
 
-        var transactionWithOtherPartyIdentifierAndOtherPartyName = transactionWithOnlyOtherPartyIdentifier with { OtherPartyName = otherPartyName };
+        var transactionWithOtherPartyIdentifierAndOtherPartyName = transactionWithOnlyOtherPartyIdentifier with { OtherAccountName = otherPartyName };
 
         transactionWithOtherPartyIdentifierAndOtherPartyName.OtherAccountIdentifier.ShouldBe(otherPartyIdentifier);
-        transactionWithOtherPartyIdentifierAndOtherPartyName.OtherPartyName.ShouldBe(otherPartyName);
+        transactionWithOtherPartyIdentifierAndOtherPartyName.OtherAccountName.ShouldBe(otherPartyName);
     }
 
     [Fact]

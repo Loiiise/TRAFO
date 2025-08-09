@@ -75,7 +75,7 @@ public abstract class CSVParser : Parser
 
         // Set fields that are not nullable, but are optional to set
         if (thisPartyName is not null) transaction = transaction with { ThisAccountName = thisPartyName };
-        if (otherPartyName is not null) transaction = transaction with { OtherPartyName = otherPartyName };
+        if (otherPartyName is not null) transaction = transaction with { OtherAccountName = otherPartyName };
         if (description is not null) transaction = transaction with { Description = description };
 
         return true;

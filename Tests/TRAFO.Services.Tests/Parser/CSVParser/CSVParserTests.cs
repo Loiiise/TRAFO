@@ -224,12 +224,12 @@ public class CSVParserTests
     [Theory, CombinatorialData]
     public void TransactionWithOtherPartyNameCanBeParsed(
         [CombinatorialMemberData(nameof(GenerateLegalTransactions))] Transaction transaction,
-        [CombinatorialMemberData(nameof(GetExamplesFor), nameof(Transaction.OtherPartyName))] string otherPartyName)
+        [CombinatorialMemberData(nameof(GetExamplesFor), nameof(Transaction.OtherAccountName))] string otherPartyName)
         => ParseRawDataWithOptionalFieldTestHelper(
             MockCSVParser.GetBasicCSVParserWithOtherPartyNameIndex(),
             transaction,
             otherPartyName,
-            parseResult => parseResult.OtherPartyName.ShouldBe(otherPartyName));
+            parseResult => parseResult.OtherAccountName.ShouldBe(otherPartyName));
 
     [Theory, CombinatorialData]
     public void TransactionWithPaymentReferenceCanBeParsed(
@@ -288,7 +288,7 @@ public class CSVParserTests
         parseResult.ThisAccountIdentifier.ShouldBe(transaction.ThisAccountIdentifier);
         parseResult.ThisAccountName.ShouldBe(transaction.ThisAccountName);
         parseResult.OtherAccountIdentifier.ShouldBe(transaction.OtherAccountIdentifier);
-        parseResult.OtherPartyName.ShouldBe(transaction.OtherPartyName);
+        parseResult.OtherAccountName.ShouldBe(transaction.OtherAccountName);
         parseResult.Timestamp.ShouldBe(transaction.Timestamp);
         parseResult.PaymentReference.ShouldBe(transaction.PaymentReference);
         parseResult.BIC.ShouldBe(transaction.BIC);
@@ -324,7 +324,7 @@ public class CSVParserTests
                                     transaction.ThisAccountIdentifier,
                                     transaction.ThisAccountName,
                                     transaction.OtherAccountIdentifier,
-                                    transaction.OtherPartyName,
+                                    transaction.OtherAccountName,
                                     transaction.Timestamp.ToString(),
                                     transaction.PaymentReference!,
                                     transaction.BIC!,
@@ -360,7 +360,7 @@ public class CSVParserTests
     public static string[] GetExamplesFor(string fieldName) => fieldName switch
     {
         nameof(Transaction.ThisAccountName) => ThisPartyNameExamples(),
-        nameof(Transaction.OtherPartyName) => OtherPartyNameExamples(),
+        nameof(Transaction.OtherAccountName) => OtherPartyNameExamples(),
         nameof(Transaction.PaymentReference) => PaymentReferenceExamples(),
         nameof(Transaction.BIC) => BICExamples(),
         nameof(Transaction.Description) => DescriptionExamples(),

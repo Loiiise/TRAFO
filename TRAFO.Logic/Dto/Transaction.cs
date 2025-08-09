@@ -16,15 +16,15 @@ public sealed record Transaction
     public required string ThisAccountIdentifier { get; init; }
     public string ThisAccountName
     {
-        get => _thisPartyName ?? ThisAccountIdentifier;
-        init => _thisPartyName = value;
+        get => _thisAccountName ?? ThisAccountIdentifier;
+        init => _thisAccountName = value;
     }
 
     public required string OtherAccountIdentifier { get; init; }
-    public string OtherPartyName
+    public string OtherAccountName
     {
-        get => _otherPartyName ?? OtherAccountIdentifier;
-        init => _otherPartyName = value;
+        get => _otherAccountName ?? OtherAccountIdentifier;
+        init => _otherAccountName = value;
     }
 
     public required DateTime Timestamp { get; init; }
@@ -37,8 +37,8 @@ public sealed record Transaction
 
     public required string[] Labels { get; init; }
 
-    private readonly string? _thisPartyName;
-    private readonly string? _otherPartyName;
+    private readonly string? _thisAccountName;
+    private readonly string? _otherAccountName;
 
     public override string ToString() => $"Transaction of {this.ShowAmount()} {Currency} on {Timestamp} from {ThisAccountIdentifier} to {OtherAccountIdentifier} with description {Description}";    
 }

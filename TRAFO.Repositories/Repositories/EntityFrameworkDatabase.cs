@@ -137,11 +137,11 @@ internal class EntityFrameworkDatabaseContext : DbContext
     }
 
     private string _databasePath { get; }
-    public DbSet<AccountBalanceDatabaseEntry> Account { get; set; }
+    public DbSet<AccountDatabaseEntry> Account { get; set; }
     public DbSet<AccountBalanceDatabaseEntry> AccountBalance { get; set; }
     public DbSet<LabelBalanceDatabaseEntry> LabelBalance { get; set; }
     public DbSet<LabelCategoryBalanceDatabaseEntry> LabelCategoryBalance { get; set; }
     public DbSet<LabelDatabaseEntry> Label { get; set; }
-    public DbSet<TransacionDatabaseEntry> Transaction { get; set; }
+    public DbSet<TransactionDatabaseEntry> Transaction { get; set; }
     public DbSet<LabelCategoryDatabaseEntry> LabelCategorie { get; set; }
 }
