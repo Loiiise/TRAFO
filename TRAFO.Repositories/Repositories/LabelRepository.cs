@@ -1,4 +1,5 @@
 ﻿using TRAFO.Logic.Dto;
+using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories.Repositories;
 
@@ -38,4 +39,7 @@ public sealed class LabelRepository : EntityFrameworkDatabase, ILabelRepository
         // todo #86
         throw new NotImplementedException();
     }
+
+    // todo #86
+    internal static Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
 }
