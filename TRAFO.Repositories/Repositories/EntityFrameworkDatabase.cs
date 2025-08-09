@@ -67,6 +67,18 @@ public class EntityFrameworkDatabase
         */
     }
 
+    internal static LabelCategory FromDatabaseEntry(LabelCategoryDatabaseEntry labelCategory)
+    {
+        // todo #87
+        throw new NotImplementedException();
+    }
+
+    internal static Account FromDatabaseEntry(AccountBalanceDatabaseEntry account)
+    {
+        // todo #84
+        throw new NotImplementedException();
+    }
+
     internal static Transaction FromDatabaseEntry(TransacionDatabaseEntry transaction)
     {
         // todo #88
