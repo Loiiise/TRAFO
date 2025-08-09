@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TRAFO.Repositories.Entities;
 
-[PrimaryKey(nameof(TransactionId) + nameof(LabelId))]
+[PrimaryKey(nameof(Transaction.TransactionId) + nameof(Label.LabelId))]
 internal sealed class TransacionLabelerDatabaseEntry
 {
-    [ForeignKey(nameof(TransacionDatabaseEntry.TransactionId))]
-    public required Guid TransactionId { get; set; }
+    public required TransacionDatabaseEntry Transaction { get; set; }
 
-    [ForeignKey(nameof(LabelDatabaseEntry.LabelId))]
-    public required Guid LabelId { get; set; }
+    public required LabelDatabaseEntry Label { get; set; }
 }

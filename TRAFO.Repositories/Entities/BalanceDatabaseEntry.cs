@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TRAFO.Repositories.Entities;
 
@@ -14,18 +13,15 @@ internal abstract class BalanceDatabaseEntry
 
 internal sealed class AccountBalanceDatabaseEntry : BalanceDatabaseEntry
 {
-    [ForeignKey(nameof(AccountDatabaseEntry.AccountId))]
-    public required string AccountId { get; set; }
+    public required AccountDatabaseEntry Account { get; set; }
 }
 
 internal sealed class LabelBalanceDatabaseEntry : BalanceDatabaseEntry
 {
-    [ForeignKey(nameof(LabelDatabaseEntry.LabelId))]
-    public required Guid LabelId { get; set; }
+    public required LabelDatabaseEntry Label { get; set; }
 }
 
 internal sealed class LabelCategoryBalanceDatabaseEntry : BalanceDatabaseEntry
 {
-    [ForeignKey(nameof(LabelCategoryDatabaseEntry.LabelCategoryId))]
-    public required Guid LabelCategoryId { get; set; }
+    public required LabelCategoryBalanceDatabaseEntry LabelCategory { get; set; }
 }

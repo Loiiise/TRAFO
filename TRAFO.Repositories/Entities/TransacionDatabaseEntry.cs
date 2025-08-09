@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TRAFO.Repositories.Entities;
 
@@ -10,11 +9,8 @@ internal sealed class TransacionDatabaseEntry
     public Guid? ParentTransactionId { get; set; }
     public required long Amount { get; set; }
 
-    [ForeignKey(nameof(AccountDatabaseEntry.AccountId))]
-    public required string ThisPartyAccountId { get; set; }
-    public string? ThisPartyName { get; set; }
-    public required string OtherPartyAccountId { get; set; }
-    public string? OtherPartyName { get; set; }
+    public required AccountDatabaseEntry ThisPartyAccount { get; set; }
+    public required AccountDatabaseEntry OtherPartyAccount { get; set; }
     public required DateTime Timestamp { get; set; }
     public string? PaymentReference { get; set; }
     public string? BIC { get; set; }
