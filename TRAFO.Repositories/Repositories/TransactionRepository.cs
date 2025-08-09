@@ -5,8 +5,8 @@ namespace TRAFO.Repositories;
 
 public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactionRepository
 {
-    private IQueryable<TransacionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till) => QueryTransactionsInRange(_context.Transaction, from, till);
-    private IQueryable<TransacionDatabaseEntry> QueryTransactionsInRange(IQueryable<TransacionDatabaseEntry> baseQuery, DateTime? from, DateTime? till)
+    private IQueryable<TransactionDatabaseEntry> QueryTransactionsInRange(DateTime? from, DateTime? till) => QueryTransactionsInRange(_context.Transaction, from, till);
+    private IQueryable<TransactionDatabaseEntry> QueryTransactionsInRange(IQueryable<TransactionDatabaseEntry> baseQuery, DateTime? from, DateTime? till)
         => from == null && till == null ?
             baseQuery :
             from == null ?
@@ -25,7 +25,7 @@ public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactio
     public IEnumerable<Transaction> ReadTransactionsFromAccount(string accountId) => ReadTransactionsFromAccount(accountId, null, null);
     public IEnumerable<Transaction> ReadTransactionsFromAccount(string accountId, DateTime? from, DateTime? till)
         => QueryTransactionsInRange(from, till)
-            .Where(t => t.ThisPartyAccountId == accountId)
+            .Where(t => t.ThisPartyAccount.AccountId == accountId)
             .ToDto();
 
     public IEnumerable<Transaction> ReadTransactionsFromLabel(Label label, bool includeParentTransactions = true) => ReadTransactionsFromLabel(label, null, null, includeParentTransactions);
@@ -33,17 +33,17 @@ public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactio
     public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, bool includeParentTransactions = true) => ReadTransactionsFromLabel(labelId, null, null, includeParentTransactions);
     public IEnumerable<Transaction> ReadTransactionsFromLabel(Guid labelId, DateTime? from, DateTime? till, bool includeParentTransactions = true)
         => QueryTransactionsInRange(from, till)
-            .Where(t => t.Labels.Any(labelTransactionEntry => labelTransactionEntry.LabelId == labelId))
-            .WhereIf(!includeParentTransactions, childTransaction => !_context.Transaction.Any(t => t.ParentTransactionId == childTransaction.TransactionId))
+            .Where(t => t.Labels.Any(labelTransactionEntry => labelTransactionEntry.Label.LabelId == labelId))
+            .WhereIf(!includeParentTransactions, childTransaction => !_context.Transaction.Any(t => t.ParentTransaction != null && t.ParentTransaction.TransactionId == childTransaction.TransactionId))
             .ToDto();
-
 
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Label> labels) => ReadTransactionsFromLabel(labels, null, null);
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Label> labels, DateTime? from, DateTime? till) => ReadTransactionsFromLabel(labels.Select(label => label.LabelId), from, till);
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Guid> labelIds) => ReadTransactionsFromLabel(labelIds, null, null);
     public IEnumerable<Transaction> ReadTransactionsFromLabel(IEnumerable<Guid> labelIds, DateTime? from, DateTime? till)
         => QueryTransactionsInRange(from, till)
-            .Where(t => t.Labels.Any(labelTransactionEntry => labelIds.Contains(labelTransactionEntry.LabelId)))
+            .Where(t => t.Labels.Any(labelTransactionEntry => labelIds.Contains(labelTransactionEntry.Label.LabelId)))
+            .WhereIf(labelIds.Count() > 1, childTransaction => !_context.Transaction.Any(t => t.ParentTransaction != null && t.ParentTransaction.TransactionId == childTransaction.TransactionId))
             .ToDto();
 
     public IEnumerable<Transaction> ReadTransactionsFromLabelCategory(LabelCategory labelCategory) => ReadTransactionsFromLabelCategory(labelCategory, null, null);
@@ -52,23 +52,65 @@ public sealed class TransactionRepository : EntityFrameworkDatabase, ITransactio
     public IEnumerable<Transaction> ReadTransactionsFromLabelCategory(Guid labelCategoryId, DateTime? from, DateTime? till)
     {
         var labelIdsInCategory = _context.Label
-            .Where(label => label.LabelCategoryId == labelCategoryId)
+            .Where(label => label.LabelCategory.LabelCategoryId == labelCategoryId)
             .Select(label => label.LabelId);
 
         return QueryTransactionsInRange(from, till)
-             .Where(t => t.Labels.Any(label => labelIdsInCategory.Contains(label.LabelId)))
+             .Where(t => t.Labels.Any(label => labelIdsInCategory.Contains(label.Label.LabelId)))
              .ToDto();
     }
 
-    public void WriteTransaction(Transaction transaction)
+    public void WriteTransaction(Transaction transaction) => WriteTransactions(new[] { transaction });
+    public void WriteTransactions(IEnumerable<Transaction> transactions)
     {
-        _context.Transaction.Add(ToDatabaseEntry(transaction));
+        // todo #88: make sure all entities exist (accounts and labels and such)
+        //_context.Account.FirstOrDefault(account => account.AccountId == transaction.ThisAccountIdentifier) ?? throw new ArgumentException($"{transaction.ThisAccountIdentifier} does not exist"),
+        var transactionsToWrite = new List<TransactionDatabaseEntry>();//transactions.Select(ToDatabaseEntry);
+        _context.Transaction.AddRange(transactionsToWrite);
+        // todo #88: link labels and transacions
         _context.SaveChanges();
     }
 
-    public void WriteTransactions(IEnumerable<Transaction> transactions)
+    internal static Transaction FromDatabaseEntry(TransactionDatabaseEntry transaction)
     {
-        _context.Transaction.AddRange(transactions.Select(ToDatabaseEntry));
-        _context.SaveChanges();
+        return new Transaction
+        {
+            TransactionId = transaction.TransactionId,
+            Amount = transaction.Amount,
+            Currency = transaction.ThisPartyAccount.Currency,
+            ThisAccountIdentifier = transaction.ThisPartyAccount.AccountId,
+            ThisAccountName = transaction.ThisPartyAccount.AccountName ?? transaction.ThisPartyAccount.AccountId,
+            OtherAccountIdentifier = transaction.OtherPartyAccount.AccountId,
+            OtherAccountName = transaction.OtherPartyAccount.AccountName ?? transaction.OtherPartyAccount.AccountId,
+            Timestamp = transaction.Timestamp,
+            PaymentReference = transaction.PaymentReference,
+            BIC = transaction.BIC,
+            Description = transaction.Description,
+            RawData = GetRawData(transaction),
+            Labels = transaction.Labels.Select(l => l.Label.Name).ToArray(),
+        };
+
+        string GetRawData(TransactionDatabaseEntry transaction)
+            => transaction.RawData ??
+                (transaction.ParentTransaction != null ?
+                    GetRawData(transaction.ParentTransaction) :
+                    string.Empty);
+    }
+
+    private TransactionDatabaseEntry ToDatabaseEntry(Transaction transaction, AccountDatabaseEntry thisPartyAccount, AccountDatabaseEntry otherPartyAccount)
+    {
+        return new TransactionDatabaseEntry
+        {
+            TransactionId = transaction.TransactionId,
+            ParentTransaction = null,
+            Amount = transaction.Amount,
+            ThisPartyAccount = thisPartyAccount,
+            OtherPartyAccount = otherPartyAccount,
+            Timestamp = transaction.Timestamp,
+            PaymentReference = transaction.PaymentReference,
+            BIC = transaction.BIC,
+            Description = transaction.Description,
+            RawData = transaction.RawData,
+        };
     }
 }
