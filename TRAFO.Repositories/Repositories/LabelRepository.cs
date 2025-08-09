@@ -1,9 +1,17 @@
 ﻿using TRAFO.Logic.Dto;
+using TRAFO.Repositories.Entities;
 
 namespace TRAFO.Repositories.Repositories;
 
-public sealed class LabelRepository : EntityFrameworkDatabase, ILabelRepository
+public sealed class LabelRepository : ILabelRepository
 {
+    private readonly EntityFrameworkDatabaseContext _context;
+
+    public LabelRepository(EntityFrameworkDatabaseContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
+
     public void CreateIfNotExists(IEnumerable<string> labelNames)
     {
         throw new NotImplementedException();
@@ -38,4 +46,7 @@ public sealed class LabelRepository : EntityFrameworkDatabase, ILabelRepository
         // todo #86
         throw new NotImplementedException();
     }
+
+    // todo #86
+    internal static Label FromDatabaseEntry(LabelDatabaseEntry label) => throw new NotImplementedException();
 }

@@ -28,9 +28,10 @@ internal class Program
         builder.Services.AddSingleton<ITransactionFileReader, TransactionFileReader>();
         builder.Services.AddSingleton<ILabelApplier, TransactionLabelSetter>();
 
+        var databaseContext = new EntityFrameworkDatabaseContext();
         var accountRepository = new AccountRepository();
 
-        var labelRepository = new LabelRepository();
+        var labelRepository = new LabelRepository(databaseContext);
         builder.Services.AddSingleton<ILabelReader>(labelRepository);
         builder.Services.AddSingleton<ITransactionLabelUpdater>(labelRepository);
 
@@ -38,7 +39,7 @@ internal class Program
         builder.Services.AddSingleton<IBalanceReader>(balanceRepository);
         builder.Services.AddSingleton<IBalanceWriter>(balanceRepository);
 
-        var transactionRepository = new TransactionRepository(accountRepository, labelRepository);
+        var transactionRepository = new TransactionRepository(databaseContext, accountRepository, labelRepository);
         builder.Services.AddSingleton<ITransactionReader>(transactionRepository);
         builder.Services.AddSingleton<ITransactionWriter>(transactionRepository);
 
